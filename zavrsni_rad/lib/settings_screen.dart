@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:provider/provider.dart';
+import 'settings_provider.dart';
 
 class SettingsScreen extends StatefulWidget {
+  const SettingsScreen({super.key});
+  
   @override
   _SettingsScreenState createState() => _SettingsScreenState();
 }
 
-class _SettingsScreenState extends State<SettingsScreen> {
-  List<String> fonts = ["Sans", "Serif", "Monospace"];
-  String selectedFont = "Sans";
-  double fontSize = 16.0;
+class _SettingsScreenState extends State<SettingsScreen>{
+  double _fontSize = 20.0;
+  String _selectedFont = 'Sans';
+  List<String> _fonts = ['Sans', 'Monospace', 'Serif'];
 
   @override
   void initState() {
@@ -17,68 +21,82 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _loadSettings();
   }
 
-  // Load saved font and font size
-  Future<void> _loadSettings() async {
-    final prefs = await SharedPreferences.getInstance();
+  // Load saved settings
+  void _loadSettings() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
-      selectedFont = prefs.getString("font") ?? "Sans";
-      fontSize = prefs.getDouble("fontSize") ?? 16.0;
+      _fontSize = prefs.getDouble('fontSize') ?? 20.0;
+      _selectedFont = prefs.getString('font') ?? 'Sans';
     });
   }
 
-  // Save font and font size
-  Future<void> _saveSettings() async {
-    final prefs = await SharedPreferences.getInstance();
-    await prefs.setString("font", selectedFont);
-    await prefs.setDouble("fontSize", fontSize);
+  // Save font size
+  void _saveFontSize(double size) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setDouble('fontSize', size);
+    setState(() {
+      _fontSize = size;
+    });
+  }
+
+  // Save font
+  void _saveFont(String font) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString('font', font);
+    setState(() {
+      _selectedFont = font;
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Settings")),
+      appBar: AppBar(title: Text("Postavke",
+      style: TextStyle(fontSize: 40)),
+      backgroundColor: Colors.yellow[100],
+      foregroundColor: Color(0xFF9D3D25),
+      leading: IconButton(
+        icon: Icon (Icons.arrow_back,
+        size: 40.0),
+        onPressed: () {
+          Navigator.of(context).pop();
+        },
+      ),
+        ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Font Selection
-            Text("Choose Font:", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text("Izaberi font:", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
             DropdownButton<String>(
-              value: selectedFont,
-              items: fonts.map((String font) {
+              value: _selectedFont,
+              isExpanded: true,
+              iconSize: 40,
+              onChanged: (String? newFont) {
+                if (newFont != null) _saveFont(newFont);
+              },
+              items: _fonts.map<DropdownMenuItem<String>>((String font) {
                 return DropdownMenuItem<String>(
                   value: font,
-                  child: Text(font, style: TextStyle(fontFamily: font)),
+                  child: Text(font, style: TextStyle(fontSize: 30, fontFamily: font)),
                 );
               }).toList(),
-              onChanged: (String? newValue) {
-                if (newValue != null) {
-                  setState(() {
-                    selectedFont = newValue;
-                  });
-                  _saveSettings();
-                }
-              },
             ),
             SizedBox(height: 20),
-
-            // Font Size Adjustment
-            Text("Font Size: ${fontSize.toInt()}",
-                style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            Text("Prilagodi veličinu fonta:", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
             Slider(
-              value: fontSize,
-              min: 12.0,
-              max: 32.0,
+              value: _fontSize,
+              min: 10.0,
+              max: 40.0,
               divisions: 10,
-              label: fontSize.toInt().toString(),
+              label: _fontSize.round().toString(),
               onChanged: (double value) {
-                setState(() {
-                  fontSize = value;
-                });
-                _saveSettings();
+                _saveFontSize(value);
               },
             ),
+            Text("Izgled odabranih opcija", 
+            style: TextStyle(fontSize: _fontSize, fontFamily: _selectedFont),),
           ],
         ),
       ),
