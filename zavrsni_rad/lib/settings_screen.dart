@@ -51,9 +51,10 @@ class _SettingsScreenState extends State<SettingsScreen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(title: Text("Postavke",
-      style: TextStyle(fontSize: 40)),
-      backgroundColor: Colors.yellow[100],
+      style: TextStyle(fontSize: 30)),
+      backgroundColor: Color(0XFFC4E2FF),
       foregroundColor: Color(0xFF9D3D25),
       leading: IconButton(
         icon: Icon (Icons.arrow_back,
@@ -68,7 +69,7 @@ class _SettingsScreenState extends State<SettingsScreen>{
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text("Izaberi font:", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+            Text("Izaberi font:", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             DropdownButton<String>(
               value: _selectedFont,
               isExpanded: true,
@@ -79,15 +80,15 @@ class _SettingsScreenState extends State<SettingsScreen>{
               items: _fonts.map<DropdownMenuItem<String>>((String font) {
                 return DropdownMenuItem<String>(
                   value: font,
-                  child: Text(font, style: TextStyle(fontSize: 30, fontFamily: font)),
+                  child: Text(font, style: TextStyle(fontSize: 24, fontFamily: font)),
                 );
               }).toList(),
             ),
             SizedBox(height: 20),
-            Text("Prilagodi veličinu fonta:", style: TextStyle(fontSize: 40, fontWeight: FontWeight.bold)),
+            Text("Prilagodi veličinu fonta:", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
             Slider(
               value: _fontSize,
-              min: 10.0,
+              min: 24.0,
               max: 40.0,
               divisions: 10,
               label: _fontSize.round().toString(),

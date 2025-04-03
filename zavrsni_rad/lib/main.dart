@@ -3,6 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:provider/provider.dart';
 import 'package:zavrsni_rad/about_app_screen.dart';
 import 'package:zavrsni_rad/info_screen.dart';
+import 'package:zavrsni_rad/winter_screen.dart';
+import 'package:zavrsni_rad/checking_knowledge.dart';
 import 'settings_screen.dart';
 
 void main() {
@@ -21,7 +23,9 @@ class NavigatorApp extends StatelessWidget {
         "/" : (context) => const HomeScreen(),
         "/settings" : (context) => const SettingsScreen(),
         "/info" : (context) => const InfoScreen(),
-        "/aboutApp" : (context) => const AboutAppScreen(),
+        "/about" : (context) => const AboutAppScreen(),
+        "/winter" : (context) => const WinterScreen(),
+        "/checkingKnowledge" : (context) => const CheckingKnowledge(),
       },
     );
   }
@@ -75,16 +79,19 @@ class _HomeScreenState extends State<HomeScreen> {
             child: Column(
               children: [
                 SizedBox(
-                  width: 800,
+                  width: 600,
+                  height: 70,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/winter');
+                    },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.yellow[100],
+                      backgroundColor: Colors.white,
                       foregroundColor: Color(0xFF9D3D25),
                       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                       textStyle: TextStyle(
-                        fontFamily: _font,
-                        fontSize: _fontSize,
+                        fontFamily: "Calibri",
+                        fontSize: 24, //_fontSize
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -96,16 +103,19 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 SizedBox(height: 20),
                 SizedBox(
-                  width: 800,
+                  width: 600,
+                  height: 70,
                   child: ElevatedButton(
-                    onPressed: () {},
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/checkingKnowledge');
+                    },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.yellow[100],
+                      backgroundColor: Colors.white,
                       foregroundColor: Color(0xFF9D3D25),
                       padding: EdgeInsets.symmetric(horizontal: 30, vertical: 15),
                       textStyle: TextStyle(
-                        fontFamily: _font,
-                        fontSize: _fontSize,
+                        fontFamily: "Calibri",
+                        fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -136,7 +146,7 @@ class _HomeScreenState extends State<HomeScreen> {
             right: 20,
             child: IconButton(
               onPressed: () {
-                Navigator.of(context).pushNamed('/aboutApp');
+                Navigator.of(context).pushNamed('/about');
               },
               icon: Icon(Icons.help, size: 80, color: Color(0xFFA93741)), 
               tooltip: "Help",
