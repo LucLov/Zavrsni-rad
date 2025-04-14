@@ -8,16 +8,24 @@ void main() {
   ));
 }
 
-class SpringScreen extends StatelessWidget {
+class SpringScreen extends StatefulWidget {
   const SpringScreen({super.key});
+
+  @override
+  _SpringScreenState createState() => _SpringScreenState();
+}
+
+class _SpringScreenState extends State<SpringScreen> {
+  bool isTravanjSelected = false;
+  bool isSvibanjSelected = false;
+  bool isLipanjSelected = false;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: PageView(
         children: [
-          //_buildWinterPage(context),
-          _buildSpringPage(context), // Add another page if you want to swipe to it
+          _buildSpringPage(context),
         ],
       ),
     );
@@ -28,7 +36,7 @@ class SpringScreen extends StatelessWidget {
       children: [
         Positioned.fill(
           child: Image.asset(
-            'assets/images/spring_screen.png', // Replace with your image
+            'assets/images/4.png',
             fit: BoxFit.cover,
           ),
         ),
@@ -46,43 +54,81 @@ class SpringScreen extends StatelessWidget {
                   },
                 ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 100),
               Align(
                 alignment: Alignment.topRight,
                 child: _buildBox(
-                    "4. TRAVANJ\n Prvi dan ovog mjesec poznatiji je kao Dan šale - stoga nemoj zaboraviti nasamariti nekoga!\nInače, u travnju najčešće slavimo Uskrs i bojamo pisanice.",
-                    24),
+                    context,
+                    "4. TRAVANJ",
+                    "TRAVANJ",
+                    "4.",
+                    "30",
+                    "Prvi dan ovog mjesec poznatiji je kao Dan šale - stoga nemoj zaboraviti nasamariti nekoga!\nInače, u travnju najčešće slavimo Uskrs i bojamo pisanice.",
+                    24,
+                    "Klikni za informacije o travnju!",
+                    isTravanjSelected,
+                    (bool isSelected) {
+                      setState(() {
+                        isTravanjSelected = isSelected;
+                      });
+                    }),
               ),
-              //const SizedBox(height: 5),
+              const SizedBox(height: 120),
               Align(
                 alignment: Alignment.centerLeft,
                 child: _buildBox(
-                    "5. SVIBANJ\n Ovaj mjesec je obilježen vedrim proljetnim vremenom koje iskorištavamo provodeći dane u prirodi.",
-                    24),
+                    context,
+                    "5. SVIBANJ",
+                    "SVIBANJ",
+                    "5.",
+                    "30",
+                    "Ovaj mjesec je obilježen vedrim proljetnim vremenom koje iskorištavamo provodeći dane u prirodi.",
+                    24,
+                    "Klikni za informacije o svibnju!",
+                    isSvibanjSelected,
+                    (bool isSelected) {
+                      setState(() {
+                        isSvibanjSelected = isSelected;
+                      });
+                    }),
               ),
-              const SizedBox(height: 10),
+              const SizedBox(height: 120),
               Align(
                 alignment: Alignment.centerRight,
                 child: _buildBox(
-                    "6. LIPANJ\n Najdulji dan u godini i početak ljeta padaju krajem ovog mjeseca. Škola završava, a polako se ide i na ljetovanje.",
-                    24),
+                    context,
+                    "6. LIPANJ",
+                    "LIPANJ",
+                    "6.",
+                    "31",
+                    "Najdulji dan u godini i početak ljeta padaju krajem ovog mjeseca. Škola završava, a polako se ide i na ljetovanje.",
+                    24,
+                    "Klikni za informacije o lipnju!",
+                    isLipanjSelected,
+                    (bool isSelected) {
+                      setState(() {
+                        isLipanjSelected = isSelected;
+                      });
+                    }),
               ),
-              const SizedBox(height: 125),
+              const SizedBox(height: 150),
               SizedBox(
                 width: double.infinity,
                 height: 100,
                 child: FilledButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    _showMatchingGameDialog(context);
+                  },
                   style: ButtonStyle(
-                    backgroundColor: WidgetStateProperty.all(
-                      Color(0xFFFF5757),
+                    backgroundColor: MaterialStateProperty.all(
+                     Colors.deepOrange,
                     ),
                   ),
                   child: const Text(
                     "Provježbaj znanje o proljetnim mjesecima!",
                     style: TextStyle(
-                      fontSize: 24, // Set the font size
-                      color: Colors.white, // Set the text color
+                      fontSize: 24,
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -94,27 +140,281 @@ class SpringScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBox(String text, double fontSize) {
-    return ConstrainedBox(
-      constraints: BoxConstraints(
-        minWidth: 200,
-        maxWidth: 480,
-      ),
-      child: Container(
-        margin: EdgeInsets.all(5),
-        padding: EdgeInsets.all(20),
-        decoration: BoxDecoration(
-          color: Colors.transparent, // Make background fully transparent
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: fontSize,
+  Widget _buildBox(
+    BuildContext context,
+    String buttonText,
+    String title,
+    String monthNumber,
+    String daysInMonth,
+    String activityText,
+    double fontSize,
+    String instructionText,
+    bool isSelected,
+    Function(bool) onSelected,
+  ) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 12.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            instructionText,
+            style: TextStyle(fontSize: fontSize - 4, color: Colors.black),
+            textAlign: TextAlign.center,
           ),
-          textAlign: TextAlign.center,
-        ),
+          const SizedBox(height: 8),
+          ConstrainedBox(
+            constraints: BoxConstraints(
+              minWidth: 200,
+              maxWidth: 480,
+            ),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white.withOpacity(0.8),
+                padding: EdgeInsets.symmetric(vertical: 20, horizontal: 10),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  side: BorderSide(
+                    //color: isSelected ? Colors.blue : Colors.transparent, // Blue border when selected
+                    color: Colors.transparent,
+                    width: 3,
+                  ),
+                ),
+              ),
+              onPressed: () {
+                setState(() {
+                  onSelected(!isSelected); // Toggle the selection state
+                });
+                // Show the dialog when button is pressed
+                showDialog(
+                  context: context,
+                  builder: (context) => AlertDialog(
+                    title: Text(title, textAlign: TextAlign.center,),
+                    content: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text("Redni broj u godini: $monthNumber", style: TextStyle(fontSize: 24)),
+                        Text("Broj dana: $daysInMonth", style: TextStyle(fontSize: 24)),
+                        const SizedBox(height: 12),
+                        Text(activityText, style: TextStyle(fontSize: 24)),
+                      ],
+                    ),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context),
+                        child: Text('Zatvori', style: TextStyle(fontSize: 24)),
+                      ),
+                    ],
+                  ),
+                );
+              },
+              child: Text(
+                buttonText,
+                style: TextStyle(fontSize: fontSize, color: Colors.black),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+        ],
       ),
+    );
+  }
+
+  void _showMatchingGameDialog(BuildContext context) {
+    final months = ["travanj", "svibanj", "lipanj"];
+    final descriptions = [
+      "Dan šale",
+      "Lijepo vrijeme",
+      "Najdulji dan u godini"
+    ];
+
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Center(
+          child: Material(
+            type: MaterialType.transparency,
+            child: Container(
+              padding: EdgeInsets.all(20),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(15),
+              ),
+              child: ConstrainedBox(
+                constraints: BoxConstraints(
+                  maxWidth: 600,
+                ),
+                child: InteractiveViewer(
+                  panEnabled: true,
+                  child: MatchingGame(
+                    months: months,
+                    descriptions: descriptions,
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+class MatchingGame extends StatefulWidget {
+  final List<String> months;
+  final List<String> descriptions;
+
+  const MatchingGame({super.key, required this.months, required this.descriptions});
+
+  @override
+  State<MatchingGame> createState() => _MatchingGameState();
+}
+
+class _MatchingGameState extends State<MatchingGame> {
+  final Map<String, String> matchedPairs = {};
+  final Set<String> usedDescriptions = {};
+  bool showResults = false;
+  String? selectedMonth;
+
+  String? _correctMatch(String month) {
+    switch (month) {
+      case "travanj":
+        return "Dan šale";
+      case "svibanj":
+        return "Lijepo vrijeme";
+      case "lipanj":
+        return "Najdulji dan u godini";
+    }
+    return null;
+  }
+
+  void _onDrop(String month, String description) {
+    if (!matchedPairs.containsKey(month) && !usedDescriptions.contains(description)) {
+      setState(() {
+        matchedPairs[month] = description;
+        usedDescriptions.add(description);
+        selectedMonth = null;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Text("Spoji mjesec s opisom:", style: TextStyle(fontSize: 20)),
+        const SizedBox(height: 20),
+        Row(
+          children: [
+            Expanded(
+              child: Column(
+                children: widget.months.map((month) {
+                  final matchedDesc = matchedPairs[month];
+                  final isCorrect = matchedDesc == _correctMatch(month);
+                  return DragTarget<String>(
+                    onAccept: (desc) => _onDrop(month, desc),
+                    builder: (context, candidateData, rejectedData) {
+                      return GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            selectedMonth = month;
+                          });
+                        },
+                        child: Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(16),
+                          margin: const EdgeInsets.symmetric(vertical: 8),
+                          decoration: BoxDecoration(
+                            color: showResults
+                                ? (isCorrect ? Colors.green[300] : Colors.red[300])
+                                : (matchedDesc != null ? Colors.grey[400] : (selectedMonth == month ? Colors.yellow[100] : Colors.blue[100])),
+                            borderRadius: BorderRadius.circular(10),
+                            
+                          ),
+                          child: Text(
+                            matchedDesc != null ? "$month\n $matchedDesc" : month,
+                            textAlign: TextAlign.center,
+                            style: TextStyle(fontSize: 20),
+                          ),
+                        ),
+                      );
+                    },
+                  );
+                }).toList(),
+              ),
+            ),
+            const SizedBox(width: 20),
+            Expanded(
+              child: Column(
+                children: widget.descriptions.where((desc) => !usedDescriptions.contains(desc)).map((desc) {
+                  return Draggable<String>(
+                    data: desc,
+                    feedback: Material(
+                      color: Colors.transparent,
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        decoration: BoxDecoration(
+                          color: Colors.orange,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(desc, style: TextStyle(fontSize: 18, color: Colors.white)),
+                      ),
+                    ),
+                    childWhenDragging: Container(),
+                    child: GestureDetector(
+                      onTap: () {
+                        if (selectedMonth != null && !matchedPairs.containsKey(selectedMonth) && !usedDescriptions.contains(desc)) {
+                          _onDrop(selectedMonth!, desc);
+                        }
+                      },
+                      child: Container(
+                        padding: const EdgeInsets.all(12),
+                        margin: const EdgeInsets.symmetric(vertical: 4),
+                        decoration: BoxDecoration(
+                          color: Colors.orangeAccent,
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Text(desc, style: TextStyle(fontSize: 18)),
+                      ),
+                    ),
+                  );
+                }).toList(),
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  matchedPairs.clear();
+                  usedDescriptions.clear();
+                  showResults = false;
+                  selectedMonth = null;
+                });
+              },
+              child: Text("Igraj ponovo"),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  showResults = true;
+                });
+              },
+              child: Text("Provjeri rezultat"),
+            ),
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context),
+              child: Text("Zatvori"),
+            ),
+          ],
+        )
+      ],
     );
   }
 }
