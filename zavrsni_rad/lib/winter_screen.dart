@@ -3,12 +3,26 @@ import 'package:flutter/gestures.dart';
 import 'spring_screen.dart';
 import 'summer_screen.dart';
 import 'fall_screen.dart';
+import "settings_screen.dart";
 
 void main() {
-  runApp(MaterialApp(
-    home: WinterScreen(),
-    debugShowCheckedModeBanner: false,
-  ));
+  runApp(const NavigatorApp());
+}
+
+class NavigatorApp extends StatelessWidget {
+  const NavigatorApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: "/winter", // Set initial route
+      routes: {
+        "/winter" : (context) => const WinterScreen(),
+        "/settings" : (context) => const SettingsScreen(),
+      },
+    );
+  }
 }
 
 class WinterScreen extends StatefulWidget {
@@ -53,15 +67,31 @@ class _WinterScreenState extends State<WinterScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Align(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
+                alignment: Alignment.topCenter,
+                child: Row (
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                    icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                    ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/settings');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: CircleBorder(),
+                      padding: EdgeInsets.all(15),
+                      backgroundColor: Colors.grey[800],
+                    ),
+                    child: Icon(Icons.settings, size: 40, color: Colors.white),
+                  ),
+                ],
               ),
-              const SizedBox(height: 100),
+              ),
+              const SizedBox(height: 50),
               Align(
                 alignment: Alignment.topRight,
                 child: _buildBox(
@@ -70,7 +100,7 @@ class _WinterScreenState extends State<WinterScreen> {
                     "SIJEČANJ",
                     "1.",
                     "31",
-                    "Sa siječnjem započinjemo novu godinu.",
+                    "Sa siječnjem započinjemo novu godinu. Često se prave novogodišnje odluke to jest planovi i želje za godinu koja dolazi. U siječnju se uziva u zadnjim blagdanskim danima i praznicima. Odlazi se na sankanje, grudanje i skijanje. Djeca se vraćaju u školu i nastavljaju učiti.",
                     24,
                     "Klikni za informacije o siječnju!",
                     isSijecanjSelected,
@@ -89,7 +119,7 @@ class _WinterScreenState extends State<WinterScreen> {
                     "VELJAČA",
                     "2.",
                     "28, a svake četvrte godine 29",
-                    "U veljači obilježavamo Maškare.",
+                    "Veljača je najkraći mjesec u godini. Svaka četvrta godina u kojoj veljača ima 29 dana zove se prijestupna godina. Zima još traje, ali dani polako počinju biti duži.\nU veljači se obilježavaju Maškare (Fašnik, Poklade). Djeca se maskiraju u svoje omiljene superjunake, princeze i razne druge likove te se održavaju povorke. \nTakođer, obilježava se i Valentinovo - dan kada posebnu pažnju dodjeljujemo ljubavi prema prijateljima, obitelji, a i simpatijama.",
                     24,
                     "Klikni za informacije o veljači!",
                     isVeljacaSelected,
@@ -108,7 +138,7 @@ class _WinterScreenState extends State<WinterScreen> {
                     "OŽUJAK",
                     "3.",
                     "31",
-                    "Proljetni vjesnici najavljuju dolazak sunčanih dana.",
+                    "Cvijeće raste, drveća pupaju, a ptice pjevaju. Ptice selice poput lastavica, roda i grlica se vraćaju iz toplijih krajeva, a proljeće nagovještaju i vjesnici proljeća - visibabe, jaglaci, ljubičice.\nKrajem ožujka počinje proljeće, a baš tada dan i noć traju približno dugo - njega nazivamo proljetni solsticij.",
                     24,
                     "Klikni za informacije o ožujku!",
                     isOzujakSelected,
@@ -196,13 +226,42 @@ class _WinterScreenState extends State<WinterScreen> {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: Text(title, textAlign: TextAlign.center,),
+                    title: Text(title, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w500)),
                     content: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Redni broj u godini: $monthNumber", style: TextStyle(fontSize: 24)),
-                        Text("Broj dana: $daysInMonth", style: TextStyle(fontSize: 24)),
+                        RichText(
+                          text: TextSpan(
+                            style: TextStyle(fontSize: 24, color: Colors.black, backgroundColor: Colors.amber), // base style
+                            children: [
+                              TextSpan(
+                                text: 'Redni broj u godini: ',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              TextSpan(
+                                text: '$monthNumber',
+                                style: TextStyle(),
+                              ),
+                            ],
+                          ),
+                        ),
+                        //Text("Broj dana: $daysInMonth", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        RichText(
+                          text: TextSpan(
+                            style: TextStyle(fontSize: 24, color: Colors.black, backgroundColor: Colors.amber), // base style
+                            children: [
+                              TextSpan(
+                                text: 'Broj dana: ',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              TextSpan(
+                                text: '$daysInMonth',
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
+                            ],
+                          ),
+                        ),
                         const SizedBox(height: 12),
                         Text(activityText, style: TextStyle(fontSize: 24)),
                       ],

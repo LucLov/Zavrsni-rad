@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
-
+import "settings_screen.dart";
 
 void main() {
-  runApp(MaterialApp(
-    home: SummerScreen(),
-    debugShowCheckedModeBanner: false,
-  ));
+  runApp(const NavigatorApp());
+}
+
+class NavigatorApp extends StatelessWidget {
+  const NavigatorApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: "/summer", // Set initial route
+      routes: {
+        "/summer" : (context) => const SummerScreen(),
+        "/settings" : (context) => const SettingsScreen(),
+      },
+    );
+  }
 }
 
 class SummerScreen extends StatefulWidget {
@@ -46,15 +59,31 @@ class _SummerScreenState extends State<SummerScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Align(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
+                alignment: Alignment.topCenter,
+                child: Row (
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                    icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                    ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/settings');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: CircleBorder(),
+                      padding: EdgeInsets.all(15),
+                      backgroundColor: Colors.grey[800],
+                    ),
+                    child: Icon(Icons.settings, size: 40, color: Colors.white),
+                  ),
+                ],
+              )
               ),
-              const SizedBox(height: 100),
+              const SizedBox(height: 50),
               Align(
                 alignment: Alignment.topRight,
                 child: _buildBox(
@@ -63,7 +92,7 @@ class _SummerScreenState extends State<SummerScreen> {
                     "SRPANJ",
                     "7.",
                     "31",
-                    "Ljetni praznici su u punom jeku, a često se baš srpanj i kolovoz smatraju najtoplijim mjesecima u godini.",
+                    "Srpanj je mjesec kada ljeto prelazi u svoju najživlju fazu. Dani su dugi i vrući, a more i rijeke postaju spas od vrućine. To je vrijeme bezbrižnosti i uživanja.\nSunce neumorno grije, bez oblaka na nebu - takvo stanje visokih temperatura nazivamo toplinski val. Tada je najbolje rashladiti se uz lubenicu!",
                     24,
                     "Klikni za informacije o srpnju!",
                     isSrpanjSelected,
@@ -82,7 +111,7 @@ class _SummerScreenState extends State<SummerScreen> {
                     "KOLOVOZ",
                     "8.",
                     "31",
-                    "Vrijeme je žetve, a i početka berbe nekih voćnih kultura. \nŠto se tiče obale i otoka, sve vrvi od turista.",
+                    "Vrijeme je žetve, a i početka berbe nekih voćnih kultura. Sazrijevaju rajčice, krastavci i kukuruz.\nVisoke temperature i dalje traju, što možemo vidjeti po treperenju zraka. Tu pojavu nazivamo vrela izmaglica (ljetna fatamorgana).\nI dalje je pametno zaštititi se od sunca kapom, svijetlom odjećom i kremom za sunce.",
                     24,
                     "Klikni za informacije o kolovozu!",
                     isKolovozSelected,
@@ -101,7 +130,7 @@ class _SummerScreenState extends State<SummerScreen> {
                     "RUJAN",
                     "9.",
                     "30",
-                    "Jesen je na vidiku - dani su još uvijek topli, a noći postaju svježije. Đaci su ponovno krenuli u školske klupe.",
+                    "Jesen je na vidiku - dani su još uvijek topli, a noći postaju svježije. Vrijeme je berbe grožđa, jabuka i krušaka.\nNakon dugačkog odmora učenici ponovno kreću u školske klupe.\nJesen započinje krajem ovog mjeseca jesenskom ravnodnevnicom.",
                     24,
                     "Klikni za informacije o rujnu!",
                     isRujanSelected,
@@ -188,13 +217,42 @@ class _SummerScreenState extends State<SummerScreen> {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: Text(title, textAlign: TextAlign.center,),
+                    title: Text(title, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w500)),
                     content: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Redni broj u godini: $monthNumber", style: TextStyle(fontSize: 24)),
-                        Text("Broj dana: $daysInMonth", style: TextStyle(fontSize: 24)),
+                        RichText(
+                          text: TextSpan(
+                            style: TextStyle(fontSize: 24, color: Colors.black, backgroundColor: Colors.amber), // base style
+                            children: [
+                              TextSpan(
+                                text: 'Redni broj u godini: ',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              TextSpan(
+                                text: '$monthNumber',
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
+                            ],
+                          ),
+                        ),
+                        //Text("Broj dana: $daysInMonth", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        RichText(
+                          text: TextSpan(
+                            style: TextStyle(fontSize: 24, color: Colors.black, backgroundColor: Colors.amber), // base style
+                            children: [
+                              TextSpan(
+                                text: 'Broj dana: ',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              TextSpan(
+                                text: '$daysInMonth',
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
+                            ],
+                          ),
+                        ),
                         const SizedBox(height: 12),
                         Text(activityText, style: TextStyle(fontSize: 24)),
                       ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'checking_knowledge.dart';
+import 'settings_screen.dart';
 
 void main() {
   runApp(const NavigatorApp());
@@ -15,7 +16,7 @@ class NavigatorApp extends StatelessWidget {
       initialRoute: "/fall", // Set initial route
       routes: {
         "/fall" : (context) => const FallScreen(),
-        //"/fallPractice" : (context) => const SettingsScreen(),
+        "/settings" : (context) => const SettingsScreen(),
         "/checkingKnowledge" : (context) => const CheckingKnowledge(),
       },
     );
@@ -60,15 +61,31 @@ class _FallScreenState extends State<FallScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Align(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
+                alignment: Alignment.topCenter,
+                child: Row (
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                    icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                    ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/settings');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: CircleBorder(),
+                      padding: EdgeInsets.all(15),
+                      backgroundColor: Colors.grey[800],
+                    ),
+                    child: Icon(Icons.settings, size: 40, color: Colors.white),
+                  ),
+                ],
+              )
               ),
-              const SizedBox(height: 100),
+              const SizedBox(height: 50),
               Align(
                 alignment: Alignment.topRight,
                 child: _buildBox(
@@ -77,7 +94,7 @@ class _FallScreenState extends State<FallScreen> {
                     "LISTOPAD",
                     "10.",
                     "31",
-                    "Došlo je hladnije vrijeme, a lišće mijenja boje u crvene, narančaste i žute nijanse. Uživanje u specijalitetima od kestena i bundeva.",
+                    "Drveće se oblači u raskoš crvenih, narančastih i smeđih tonova, jutra su maglovita, a sunca slabašno sija.\nUživamo u specijalitetima od kestena i bundeva. Sazrijevaju i druge kulture poput krumpira i mrkve.",
                     24,
                     "Klikni za informacije o listopadu!",
                     isListopadSelected,
@@ -96,7 +113,7 @@ class _FallScreenState extends State<FallScreen> {
                     "STUDENI",
                     "11.",
                     "30",
-                    "Jesen se bliži kraju - dani postaju kraći, a temperature sve niže.",
+                    "Jesen se bliži kraju - dani postaju kraći, a temperature sve niže. Životinje završavaju pripreme za zimu, a neke se spremaju utonuti u zimski san. Ptice selice putuju u toplije krajeve.",
                     24,
                     "Klikni za informacije o studenom!",
                     isStudeniSelected,
@@ -115,7 +132,7 @@ class _FallScreenState extends State<FallScreen> {
                     "PROSINAC",
                     "12.",
                     "31",
-                    "Krenuo je advent - vrijeme blagdana i darivanja. Odbrojavamo dane do Božića i Nove godine.\n Krajem prosinca kreće zima, a taj isti dan je i najdulji u godini.",
+                    "Prosinac je posljednji mjesec u godini. Ujedno je i mjesec najkraćih dana, a onog najkraćeg ulazimo u zimu (zimski solsticij).\nSnijeg, mraz i magla obavijaju krajolike.\nVrijeme provodimo okruženi s obitelji i prijateljima povodom Božića i Nove godine.",
                     24,
                     "Klikni za informacije o prosincu!",
                     isProsinacSelected,
@@ -125,7 +142,7 @@ class _FallScreenState extends State<FallScreen> {
                       });
                     }),
               ),
-              const SizedBox(height: 70),
+              const SizedBox(height: 50),
               SizedBox(
                 width: double.infinity,
                 height: 100,
@@ -225,13 +242,42 @@ class _FallScreenState extends State<FallScreen> {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: Text(title, textAlign: TextAlign.center,),
+                    title: Text(title, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w500)),
                     content: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Redni broj u godini: $monthNumber", style: TextStyle(fontSize: 24)),
-                        Text("Broj dana: $daysInMonth", style: TextStyle(fontSize: 24)),
+                        RichText(
+                          text: TextSpan(
+                            style: TextStyle(fontSize: 24, color: Colors.black, backgroundColor: Colors.amber), // base style
+                            children: [
+                              TextSpan(
+                                text: 'Redni broj u godini: ',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              TextSpan(
+                                text: '$monthNumber',
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
+                            ],
+                          ),
+                        ),
+                        //Text("Broj dana: $daysInMonth", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        RichText(
+                          text: TextSpan(
+                            style: TextStyle(fontSize: 24, color: Colors.black, backgroundColor: Colors.amber), // base style
+                            children: [
+                              TextSpan(
+                                text: 'Broj dana: ',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              TextSpan(
+                                text: '$daysInMonth',
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
+                            ],
+                          ),
+                        ),
                         const SizedBox(height: 12),
                         Text(activityText, style: TextStyle(fontSize: 24)),
                       ],

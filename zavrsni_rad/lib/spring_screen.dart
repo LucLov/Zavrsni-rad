@@ -1,11 +1,24 @@
 import 'package:flutter/material.dart';
-
+import "settings_screen.dart";
 
 void main() {
-  runApp(MaterialApp(
-    home: SpringScreen(),
-    debugShowCheckedModeBanner: false,
-  ));
+  runApp(const NavigatorApp());
+}
+
+class NavigatorApp extends StatelessWidget {
+  const NavigatorApp({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      initialRoute: "/spring", // Set initial route
+      routes: {
+        "/spring" : (context) => const SpringScreen(),
+        "/settings" : (context) => const SettingsScreen(),
+      },
+    );
+  }
 }
 
 class SpringScreen extends StatefulWidget {
@@ -46,15 +59,31 @@ class _SpringScreenState extends State<SpringScreen> {
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               Align(
-                alignment: Alignment.topLeft,
-                child: IconButton(
-                  icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                ),
+                alignment: Alignment.topCenter,
+                child: Row (
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    IconButton(
+                    icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
+                    onPressed: () {
+                      Navigator.pop(context);
+                    },
+                  ),
+                    ElevatedButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/settings');
+                    },
+                    style: ElevatedButton.styleFrom(
+                      shape: CircleBorder(),
+                      padding: EdgeInsets.all(15),
+                      backgroundColor: Colors.grey[800],
+                    ),
+                    child: Icon(Icons.settings, size: 40, color: Colors.white),
+                  ),
+                ],
+              )
               ),
-              const SizedBox(height: 100),
+              const SizedBox(height: 50),
               Align(
                 alignment: Alignment.topRight,
                 child: _buildBox(
@@ -63,7 +92,7 @@ class _SpringScreenState extends State<SpringScreen> {
                     "TRAVANJ",
                     "4.",
                     "30",
-                    "Prvi dan ovog mjesec poznatiji je kao Dan šale - stoga nemoj zaboraviti nasamariti nekoga!\nInače, u travnju najčešće slavimo Uskrs i bojamo pisanice.",
+                    "U travnju su dani sve topliji što znači da sve više vremena možemo provoditi vani na otvorenom. Osim toga, vrijeme može biti nepredvidivo zbog pokojeg kišnog oblaka na nebu.\nU travnju se najčešće obilježava Uskrs kojem se sva djeca vesele jer s njime dolaze i proljetni praznici.\nPrvi dan ovog mjeseca poznatiji je kao Dan šale ili Prvi April stoga nemoj zaboraviti nasamariti nekoga!",
                     24,
                     "Klikni za informacije o travnju!",
                     isTravanjSelected,
@@ -82,7 +111,7 @@ class _SpringScreenState extends State<SpringScreen> {
                     "SVIBANJ",
                     "5.",
                     "30",
-                    "Ovaj mjesec je obilježen vedrim proljetnim vremenom koje iskorištavamo provodeći dane u prirodi.",
+                    "Proljeće je u punom jeku i dani su sve duži. Livade, vrtovi i parkovi su puni boja i mirisa koje obogaćuju pčelice i leptiri. U svibnju uživamo u slatkim jagodama i ostalim voćkama koje sazrijevaju.",
                     24,
                     "Klikni za informacije o svibnju!",
                     isSvibanjSelected,
@@ -101,7 +130,7 @@ class _SpringScreenState extends State<SpringScreen> {
                     "LIPANJ",
                     "6.",
                     "31",
-                    "Najdulji dan u godini i početak ljeta padaju krajem ovog mjeseca. Škola završava, a polako se ide i na ljetovanje.",
+                    "Dani su jako dugi i sunce sija po cijele dane. Učenici nestrpljivo čekaju kraj školske godine i početak ljetnih praznika.\nKrajem lipnja započinje ljeto - tada je dan najduži, a noć najkraća. Taj dan nazivamo ljetni solsticij.",
                     24,
                     "Klikni za informacije o lipnju!",
                     isLipanjSelected,
@@ -189,13 +218,42 @@ class _SpringScreenState extends State<SpringScreen> {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: Text(title, textAlign: TextAlign.center,),
+                    title: Text(title, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w500)),
                     content: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text("Redni broj u godini: $monthNumber", style: TextStyle(fontSize: 24)),
-                        Text("Broj dana: $daysInMonth", style: TextStyle(fontSize: 24)),
+                        RichText(
+                          text: TextSpan(
+                            style: TextStyle(fontSize: 24, color: Colors.black, backgroundColor: Colors.amber), // base style
+                            children: [
+                              TextSpan(
+                                text: 'Redni broj u godini: ',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              TextSpan(
+                                text: '$monthNumber',
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
+                            ],
+                          ),
+                        ),
+                        //Text("Broj dana: $daysInMonth", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
+                        RichText(
+                          text: TextSpan(
+                            style: TextStyle(fontSize: 24, color: Colors.black, backgroundColor: Colors.amber), // base style
+                            children: [
+                              TextSpan(
+                                text: 'Broj dana: ',
+                                style: TextStyle(fontWeight: FontWeight.w500),
+                              ),
+                              TextSpan(
+                                text: '$daysInMonth',
+                                style: TextStyle(fontWeight: FontWeight.normal),
+                              ),
+                            ],
+                          ),
+                        ),
                         const SizedBox(height: 12),
                         Text(activityText, style: TextStyle(fontSize: 24)),
                       ],
