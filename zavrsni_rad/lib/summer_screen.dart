@@ -1,8 +1,19 @@
 import 'package:flutter/material.dart';
-import "settings_screen.dart";
+import 'package:provider/provider.dart';
+import 'package:zavrsni_rad/settings_provider.dart';
+import 'package:zavrsni_rad/settings_screen.dart';
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Make sure preferences load first
+  final settingsProvider = SettingsProvider();
+  await settingsProvider.loadSettings();
 
-void main() {
-  runApp(const NavigatorApp());
+  runApp(
+    ChangeNotifierProvider<SettingsProvider>.value(
+      value: settingsProvider,
+      child: const NavigatorApp(),
+    ),
+  );
+  //runApp(const NavigatorApp());
 }
 
 class NavigatorApp extends StatelessWidget {
@@ -35,16 +46,20 @@ class _SummerScreenState extends State<SummerScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final settings = Provider.of<SettingsProvider>(context);
+    final fontSize = settings.fontSize;
+    final fontFamily = settings.fontFamily;
+
     return Scaffold(
       body: PageView(
         children: [
-          _buildSummerPage(context),
+          _buildSummerPage(context, settings),
         ],
       ),
     );
   }
 
-  Widget _buildSummerPage(BuildContext context) {
+  Widget _buildSummerPage(BuildContext context, SettingsProvider settings) {
     return Stack(
       children: [
         Positioned.fill(
@@ -88,12 +103,12 @@ class _SummerScreenState extends State<SummerScreen> {
                 alignment: Alignment.topRight,
                 child: _buildBox(
                     context,
-                    "1. SRPANJ",
+                    settings,
+                    "7. SRPANJ",
                     "SRPANJ",
                     "7.",
+                    "srpanj_slika.png",
                     "31",
-                    "Srpanj je mjesec kada ljeto prelazi u svoju najživlju fazu. Dani su dugi i vrući, a more i rijeke postaju spas od vrućine. To je vrijeme bezbrižnosti i uživanja.\nSunce neumorno grije, bez oblaka na nebu - takvo stanje visokih temperatura nazivamo toplinski val. Tada je najbolje rashladiti se uz lubenicu!",
-                    24,
                     "Klikni za informacije o srpnju!",
                     isSrpanjSelected,
                     (bool isSelected) {
@@ -107,12 +122,12 @@ class _SummerScreenState extends State<SummerScreen> {
                 alignment: Alignment.centerLeft,
                 child: _buildBox(
                     context,
+                    settings,
                     "8. KOLOVOZ",
                     "KOLOVOZ",
                     "8.",
+                    "kolovoz_slika.png",
                     "31",
-                    "Vrijeme je žetve, a i početka berbe nekih voćnih kultura. Sazrijevaju rajčice, krastavci i kukuruz.\nVisoke temperature i dalje traju, što možemo vidjeti po treperenju zraka. Tu pojavu nazivamo vrela izmaglica (ljetna fatamorgana).\nI dalje je pametno zaštititi se od sunca kapom, svijetlom odjećom i kremom za sunce.",
-                    24,
                     "Klikni za informacije o kolovozu!",
                     isKolovozSelected,
                     (bool isSelected) {
@@ -126,12 +141,12 @@ class _SummerScreenState extends State<SummerScreen> {
                 alignment: Alignment.centerRight,
                 child: _buildBox(
                     context,
+                    settings,
                     "9. RUJAN",
                     "RUJAN",
                     "9.",
+                    "rujan_slika.png",
                     "30",
-                    "Jesen je na vidiku - dani su još uvijek topli, a noći postaju svježije. Vrijeme je berbe grožđa, jabuka i krušaka.\nNakon dugačkog odmora učenici ponovno kreću u školske klupe.\nJesen započinje krajem ovog mjeseca jesenskom ravnodnevnicom.",
-                    24,
                     "Klikni za informacije o rujnu!",
                     isRujanSelected,
                     (bool isSelected) {
@@ -140,23 +155,24 @@ class _SummerScreenState extends State<SummerScreen> {
                       });
                     }),
               ),
-              const SizedBox(height: 150),
+              const SizedBox(height: 115),
               SizedBox(
                 width: double.infinity,
                 height: 100,
                 child: FilledButton(
                   onPressed: () {
-                    _showMatchingGameDialog(context);
+                    _showMatchingGameDialog(context, settings);
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
                       Colors.deepOrange,
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     "Provježbaj znanje o ljetnim mjesecima!",
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: settings.fontSize,
+                      fontFamily: settings.fontFamily,
                       color: Colors.white,
                     ),
                   ),
@@ -171,12 +187,12 @@ class _SummerScreenState extends State<SummerScreen> {
 
   Widget _buildBox(
     BuildContext context,
+    SettingsProvider settings,
     String buttonText,
     String title,
     String monthNumber,
+    String monthPicture,
     String daysInMonth,
-    String activityText,
-    double fontSize,
     String instructionText,
     bool isSelected,
     Function(bool) onSelected,
@@ -188,7 +204,8 @@ class _SummerScreenState extends State<SummerScreen> {
         children: [
           Text(
             instructionText,
-            style: TextStyle(fontSize: fontSize - 4, color: Colors.black),
+            style: TextStyle(
+                      fontSize: settings.fontSize - 4, fontFamily: settings.fontFamily, color: Colors.black),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),
@@ -204,7 +221,7 @@ class _SummerScreenState extends State<SummerScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                   side: BorderSide(
-                    color: Colors.transparent, // Blue border when selected
+                    color: Colors.transparent,
                     width: 3,
                   ),
                 ),
@@ -217,50 +234,108 @@ class _SummerScreenState extends State<SummerScreen> {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: Text(title, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w500)),
+                    title: Text(title, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w500, fontFamily: settings.fontFamily, fontSize: settings.fontSize)),
                     content: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Left container
+                            Container(
+                              padding: EdgeInsets.all(12),
+                              width: 200,
+                              decoration: BoxDecoration(
+                                color: Colors.orange[100],
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Redni broj u godini:",
+                                    style: TextStyle(
+                                      fontFamily: settings.fontFamily,
+                                      fontSize: settings.fontSize - 4,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(height: 6),
+                                  Text(
+                                    monthNumber,
+                                    style: TextStyle(
+                                      fontFamily: settings.fontFamily,
+                                      fontSize: settings.fontSize - 4,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                      backgroundColor: Colors.transparent,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              width: 200,
+                              height: 200,
+                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              child: Image.asset('assets/images/$monthPicture'), // <-- replace with your image path
+                            ),
+                            // Right container
+                            Container(
+                              padding: EdgeInsets.all(12),
+                              width: 200,
+                              decoration: BoxDecoration(
+                                color: Colors.orange[100],
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Broj dana:",
+                                    style: TextStyle(
+                                      fontFamily: settings.fontFamily,
+                                      fontSize: settings.fontSize - 4,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(height: 6),
+                                  Text(
+                                    daysInMonth,
+                                    style: TextStyle(
+                                      fontFamily: settings.fontFamily,
+                                      fontSize: settings.fontSize - 4,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                      backgroundColor: Colors.transparent,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 40),
                         RichText(
                           text: TextSpan(
-                            style: TextStyle(fontSize: 24, color: Colors.black, backgroundColor: Colors.amber), // base style
-                            children: [
-                              TextSpan(
-                                text: 'Redni broj u godini: ',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              TextSpan(
-                                text: '$monthNumber',
-                                style: TextStyle(fontWeight: FontWeight.normal),
-                              ),
-                            ],
+                            style: TextStyle(
+                                      fontFamily: settings.fontFamily, fontSize: settings.fontSize, color: Colors.black),
+                            children: _buildActivityText(title, settings),
                           ),
                         ),
-                        //Text("Broj dana: $daysInMonth", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                        RichText(
-                          text: TextSpan(
-                            style: TextStyle(fontSize: 24, color: Colors.black, backgroundColor: Colors.amber), // base style
-                            children: [
-                              TextSpan(
-                                text: 'Broj dana: ',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              TextSpan(
-                                text: '$daysInMonth',
-                                style: TextStyle(fontWeight: FontWeight.normal),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        Text(activityText, style: TextStyle(fontSize: 24)),
                       ],
                     ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: Text('Zatvori', style: TextStyle(fontSize: 24)),
+                        child: Text('Zatvori', style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize - 4,)),
                       ),
                     ],
                   ),
@@ -268,7 +343,7 @@ class _SummerScreenState extends State<SummerScreen> {
               },
               child: Text(
                 buttonText,
-                style: TextStyle(fontSize: fontSize, color: Colors.black),
+                style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, color: Colors.black),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -278,7 +353,38 @@ class _SummerScreenState extends State<SummerScreen> {
     );
   }
 
-  void _showMatchingGameDialog(BuildContext context) {
+  List<TextSpan> _buildActivityText(String title, settings) {
+    List<TextSpan> spans = [];
+    
+    // Example of splitting and applying styles to specific parts of the text
+    if (title == "SRPANJ") {
+      spans.add(TextSpan(text: "Srpanj je mjesec kada ljeto prelazi u svoju najživlju fazu. Dani su dugi i vrući, a more i rijeke postaju spas od vrućine. To je vrijeme bezbrižnosti i uživanja.\nSunce neumorno grije, bez oblaka na nebu - takvo stanje visokih temperatura nazivamo ", style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, color: Colors.black)));
+      spans.add(TextSpan(text: "toplinski val", style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, fontWeight: FontWeight.bold, color: Colors.black)));
+      spans.add(TextSpan(text: ". Tada je najbolje rashladiti se uz", style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, color: Colors.black)));
+      spans.add(TextSpan(text: " lubenicu", style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, fontWeight: FontWeight.bold, color: Colors.black)));
+      spans.add(TextSpan(text: "!", style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, color: Colors.black)));
+    }
+    
+    if (title == "KOLOVOZ") {
+      spans.add(TextSpan(text: "Vrijeme je žetve, a i početka berbe nekih voćnih kultura. Sazrijevaju", style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, color: Colors.black)));
+      spans.add(TextSpan(text: " rajčice, krastavci i kukuruz", style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, fontWeight : FontWeight.bold, color: Colors.black)));
+      spans.add(TextSpan(text: ".\nVisoke temperature i dalje traju, što možemo vidjeti po treperenju zraka. Tu pojavu nazivamo ", style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, color: Colors.black)));
+      spans.add(TextSpan(text: "vrela izmaglica (ljetna fatamorgana)", style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, fontWeight: FontWeight.bold, color: Colors.black)));
+      spans.add(TextSpan(text: ".\nI dalje je pametno zaštititi", style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, color: Colors.black)));
+      spans.add(TextSpan(text: " zaštititi se od sunca", style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, fontWeight : FontWeight.bold, color: Colors.black)));
+      spans.add(TextSpan(text: " kapom, svijetlom odjećom i kremom za sunce.", style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, color: Colors.black)));
+    }
+
+    if (title == "RUJAN") {
+      spans.add(TextSpan(text: "Jesen je na vidiku - dani su još uvijek topli, a noći postaju svježije. Vrijeme je berbe", style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, color: Colors.black)));
+      spans.add(TextSpan(text: " grožđa, jabuka i krušaka", style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, fontWeight: FontWeight.bold, color: Colors.black)));
+      spans.add(TextSpan(text: ".\nNakon dugačkog odmora učenici ponovno kreću u školske klupe.\n", style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, color: Colors.black)));
+      spans.add(TextSpan(text: "Jesen započinje krajem ovog mjeseca jesenskom ravnodnevnicom.", style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, fontWeight: FontWeight.bold, color: Colors.black)));    }
+
+    return spans;
+  }
+}
+  void _showMatchingGameDialog(BuildContext context, SettingsProvider settings) {
     final months = ["srpanj", "kolovoz", "rujan"];
     final descriptions = [
       "Ljetne praznike provodimo opuštajući se.",
@@ -300,7 +406,7 @@ class _SummerScreenState extends State<SummerScreen> {
               ),
               child: ConstrainedBox(
                 constraints: BoxConstraints(
-                  maxWidth: 600,
+                  maxWidth: 700,
                 ),
                 child: InteractiveViewer(
                   panEnabled: true,
@@ -315,8 +421,30 @@ class _SummerScreenState extends State<SummerScreen> {
         );
       },
     );
-  }
+
+    Future.delayed(Duration(milliseconds: 100), () {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Upute za igru", textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+          content: Text(
+            "Spoji svaki mjesec s odgovarajućim opisom.\n\n"
+            "Dovuci opis mjeseca s desne strane do naziva mjeseca s lijeve strane ili klikni mjesec pa zatim klikni na opis mjeseca.\n",
+            style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text("OK", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+            ),
+          ],
+        );
+      },
+    );
+  });
 }
+
 
 class MatchingGame extends StatefulWidget {
   final List<String> months;
@@ -358,10 +486,12 @@ class _MatchingGameState extends State<MatchingGame> {
 
   @override
   Widget build(BuildContext context) {
+    final settings = Provider.of<SettingsProvider>(context);
+
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text("Spoji mjesec s opisom:", style: TextStyle(fontSize: 20)),
+        Text("Spoji mjesec s opisom:", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
         const SizedBox(height: 20),
         Row(
           children: [
@@ -393,7 +523,7 @@ class _MatchingGameState extends State<MatchingGame> {
                           child: Text(
                             matchedDesc != null ? "$month\n $matchedDesc" : month,
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 20),
+                            style: TextStyle(fontSize: settings.fontSize - 4, fontFamily: settings.fontFamily),
                           ),
                         ),
                       );
@@ -416,7 +546,7 @@ class _MatchingGameState extends State<MatchingGame> {
                           color: Colors.orange,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Text(desc, style: TextStyle(fontSize: 18, color: Colors.white)),
+                        child: Text(desc, style: TextStyle(fontSize: settings.fontSize - 4, fontFamily: settings.fontFamily, color: Colors.white)),
                       ),
                     ),
                     childWhenDragging: Container(),
@@ -427,13 +557,14 @@ class _MatchingGameState extends State<MatchingGame> {
                         }
                       },
                       child: Container(
+                        width: double.infinity,
                         padding: const EdgeInsets.all(12),
                         margin: const EdgeInsets.symmetric(vertical: 4),
                         decoration: BoxDecoration(
                           color: Colors.orangeAccent,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Text(desc, style: TextStyle(fontSize: 18)),
+                        child: Text(desc, textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize - 4, fontFamily: settings.fontFamily)),
                       ),
                     ),
                   );
@@ -455,7 +586,7 @@ class _MatchingGameState extends State<MatchingGame> {
                   selectedMonth = null;
                 });
               },
-              child: Text("Igraj ponovo"),
+              child: Text("Igraj ponovo", style: TextStyle(fontSize: settings.fontSize - 2, fontFamily: settings.fontFamily)),
             ),
             ElevatedButton(
               onPressed: () {
@@ -463,11 +594,11 @@ class _MatchingGameState extends State<MatchingGame> {
                   showResults = true;
                 });
               },
-              child: Text("Provjeri rezultat"),
+              child: Text("Provjeri rezultat", style: TextStyle(fontSize: settings.fontSize - 2, fontFamily: settings.fontFamily)),
             ),
             ElevatedButton(
               onPressed: () => Navigator.pop(context),
-              child: Text("Zatvori"),
+              child: Text("Zatvori", style: TextStyle(fontSize: settings.fontSize - 2, fontFamily: settings.fontFamily)),
             ),
           ],
         )

@@ -1,15 +1,33 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:zavrsni_rad/settings_provider.dart';
+import 'package:zavrsni_rad/settings_screen.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Make sure preferences load first
+  final settingsProvider = SettingsProvider();
+  await settingsProvider.loadSettings();
+
+  runApp(
+    ChangeNotifierProvider<SettingsProvider>.value(
+      value: settingsProvider,
+      child: const InfoScreen(),
+    ),
+  );
+  //runApp(const NavigatorApp());
+}
 
 class InfoScreen extends StatelessWidget {
   const InfoScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final settings = Provider.of<SettingsProvider>(context);
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text("Informacije o projektu",
-        style: TextStyle(fontSize: 30),),
+        style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),),
         backgroundColor: Color(0XFFC4E2FF),
         foregroundColor: Color(0xFF9D3D25),
         leading: IconButton(
@@ -27,20 +45,20 @@ class InfoScreen extends StatelessWidget {
         children: [
           Text(
           '''Mobilna aplikacija "Mjesec po Mjesec" izrađena je u sklopu Završnog rada prijediplomskog studija na Fakultetu elektrotehnike i računarstva Sveučilišta u Zagrebu, ak. god. 2024./2025.''',
-            style: TextStyle(fontSize: 24),
+            style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 10),
           Text(
             "Svrha aplikacije je omogućiti korisnicima da na jednostavan i zanimljiv način savladaju mjesece u godini kretajući se kroz različita godišnja doba.",
-            style: TextStyle(fontSize: 24),
+            style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 10),
           Text(
             "Implementacija: Lucija Lovrić\n"
             "Mentorstvo: prof. dr. sc. Željka Car, univ. mag. ing. comp. Ana Radović",
-            style: TextStyle(fontSize: 24),
+            style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
             textAlign: TextAlign.center,
           )
         ],),

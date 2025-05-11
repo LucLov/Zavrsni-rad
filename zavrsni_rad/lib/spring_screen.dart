@@ -1,8 +1,20 @@
 import 'package:flutter/material.dart';
-import "settings_screen.dart";
+import 'package:provider/provider.dart';
+import 'package:zavrsni_rad/settings_provider.dart';
+import 'package:zavrsni_rad/settings_screen.dart';
 
-void main() {
-  runApp(const NavigatorApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Make sure preferences load first
+  final settingsProvider = SettingsProvider();
+  await settingsProvider.loadSettings();
+
+  runApp(
+    ChangeNotifierProvider<SettingsProvider>.value(
+      value: settingsProvider,
+      child: const NavigatorApp(),
+    ),
+  );
+  //runApp(const NavigatorApp());
 }
 
 class NavigatorApp extends StatelessWidget {
@@ -35,16 +47,20 @@ class _SpringScreenState extends State<SpringScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final settings = Provider.of<SettingsProvider>(context);
+    final fontSize = settings.fontSize;
+    final fontFamily = settings.fontFamily;
+
     return Scaffold(
       body: PageView(
         children: [
-          _buildSpringPage(context),
+          _buildSpringPage(context, settings),
         ],
       ),
     );
   }
 
-  Widget _buildSpringPage(BuildContext context) {
+  Widget _buildSpringPage(BuildContext context, SettingsProvider settings) {
     return Stack(
       children: [
         Positioned.fill(
@@ -88,12 +104,12 @@ class _SpringScreenState extends State<SpringScreen> {
                 alignment: Alignment.topRight,
                 child: _buildBox(
                     context,
+                    settings,
                     "4. TRAVANJ",
                     "TRAVANJ",
                     "4.",
+                    "travanj_slika.png",
                     "30",
-                    "U travnju su dani sve topliji što znači da sve više vremena možemo provoditi vani na otvorenom. Osim toga, vrijeme može biti nepredvidivo zbog pokojeg kišnog oblaka na nebu.\nU travnju se najčešće obilježava Uskrs kojem se sva djeca vesele jer s njime dolaze i proljetni praznici.\nPrvi dan ovog mjeseca poznatiji je kao Dan šale ili Prvi April stoga nemoj zaboraviti nasamariti nekoga!",
-                    24,
                     "Klikni za informacije o travnju!",
                     isTravanjSelected,
                     (bool isSelected) {
@@ -107,12 +123,12 @@ class _SpringScreenState extends State<SpringScreen> {
                 alignment: Alignment.centerLeft,
                 child: _buildBox(
                     context,
+                    settings,
                     "5. SVIBANJ",
                     "SVIBANJ",
                     "5.",
+                    "svibanj_slika.png",
                     "30",
-                    "Proljeće je u punom jeku i dani su sve duži. Livade, vrtovi i parkovi su puni boja i mirisa koje obogaćuju pčelice i leptiri. U svibnju uživamo u slatkim jagodama i ostalim voćkama koje sazrijevaju.",
-                    24,
                     "Klikni za informacije o svibnju!",
                     isSvibanjSelected,
                     (bool isSelected) {
@@ -126,12 +142,12 @@ class _SpringScreenState extends State<SpringScreen> {
                 alignment: Alignment.centerRight,
                 child: _buildBox(
                     context,
+                    settings,
                     "6. LIPANJ",
                     "LIPANJ",
                     "6.",
+                    "lipanj_slika.png",
                     "31",
-                    "Dani su jako dugi i sunce sija po cijele dane. Učenici nestrpljivo čekaju kraj školske godine i početak ljetnih praznika.\nKrajem lipnja započinje ljeto - tada je dan najduži, a noć najkraća. Taj dan nazivamo ljetni solsticij.",
-                    24,
                     "Klikni za informacije o lipnju!",
                     isLipanjSelected,
                     (bool isSelected) {
@@ -140,23 +156,24 @@ class _SpringScreenState extends State<SpringScreen> {
                       });
                     }),
               ),
-              const SizedBox(height: 150),
+              const SizedBox(height: 115),
               SizedBox(
                 width: double.infinity,
                 height: 100,
                 child: FilledButton(
                   onPressed: () {
-                    _showMatchingGameDialog(context);
+                    _showMatchingGameDialog(context, settings);
                   },
                   style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(
                      Colors.deepOrange,
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     "Provježbaj znanje o proljetnim mjesecima!",
                     style: TextStyle(
-                      fontSize: 24,
+                      fontSize: settings.fontSize,
+                      fontFamily: settings.fontFamily,
                       color: Colors.white,
                     ),
                   ),
@@ -171,12 +188,12 @@ class _SpringScreenState extends State<SpringScreen> {
 
   Widget _buildBox(
     BuildContext context,
+    SettingsProvider settings,
     String buttonText,
     String title,
     String monthNumber,
+    String monthPicture,
     String daysInMonth,
-    String activityText,
-    double fontSize,
     String instructionText,
     bool isSelected,
     Function(bool) onSelected,
@@ -188,7 +205,7 @@ class _SpringScreenState extends State<SpringScreen> {
         children: [
           Text(
             instructionText,
-            style: TextStyle(fontSize: fontSize - 4, color: Colors.black),
+            style: TextStyle(fontSize: settings.fontSize - 4, color: Colors.black),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),
@@ -204,7 +221,6 @@ class _SpringScreenState extends State<SpringScreen> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),
                   side: BorderSide(
-                    //color: isSelected ? Colors.blue : Colors.transparent, // Blue border when selected
                     color: Colors.transparent,
                     width: 3,
                   ),
@@ -218,44 +234,101 @@ class _SpringScreenState extends State<SpringScreen> {
                 showDialog(
                   context: context,
                   builder: (context) => AlertDialog(
-                    title: Text(title, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w500)),
+                    title: Text(title, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w500, fontFamily: settings.fontFamily, fontSize: settings.fontSize)),
                     content: Column(
                       mainAxisSize: MainAxisSize.min,
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            // Left container
+                            Container(
+                              padding: EdgeInsets.all(12),
+                              width: 200,
+                              decoration: BoxDecoration(
+                                color: Colors.orange[100],
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Redni broj u godini:",
+                                    style: TextStyle(
+                                      fontFamily: settings.fontFamily,
+                                      fontSize: settings.fontSize - 4,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(height: 6),
+                                  Text(
+                                    monthNumber,
+                                    style: TextStyle(
+                                      fontFamily: settings.fontFamily,
+                                      fontSize: settings.fontSize - 4,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                      backgroundColor: Colors.transparent,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Container(
+                              width: 200,
+                              height: 200,
+                              margin: EdgeInsets.symmetric(horizontal: 10),
+                              child: Image.asset('assets/images/$monthPicture'), // <-- replace with your image path
+                            ),
+                            // Right container
+                            Container(
+                              padding: EdgeInsets.all(12),
+                              width: 200,
+                              decoration: BoxDecoration(
+                                color: Colors.orange[100],
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Text(
+                                    "Broj dana:",
+                                    style: TextStyle(
+                                      fontFamily: settings.fontFamily,
+                                      fontSize: settings.fontSize - 4,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                  SizedBox(height: 6),
+                                  Text(
+                                    daysInMonth,
+                                    style: TextStyle(
+                                      fontFamily: settings.fontFamily,
+                                      fontSize: settings.fontSize - 4,
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.w500,
+                                      backgroundColor: Colors.transparent,
+                                    ),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 40),
                         RichText(
                           text: TextSpan(
-                            style: TextStyle(fontSize: 24, color: Colors.black, backgroundColor: Colors.amber), // base style
-                            children: [
-                              TextSpan(
-                                text: 'Redni broj u godini: ',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              TextSpan(
-                                text: '$monthNumber',
-                                style: TextStyle(fontWeight: FontWeight.normal),
-                              ),
-                            ],
+                            style: TextStyle(fontSize: 24, color: Colors.black),
+                            children: _buildActivityText(title, settings),
                           ),
                         ),
-                        //Text("Broj dana: $daysInMonth", style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold)),
-                        RichText(
-                          text: TextSpan(
-                            style: TextStyle(fontSize: 24, color: Colors.black, backgroundColor: Colors.amber), // base style
-                            children: [
-                              TextSpan(
-                                text: 'Broj dana: ',
-                                style: TextStyle(fontWeight: FontWeight.w500),
-                              ),
-                              TextSpan(
-                                text: '$daysInMonth',
-                                style: TextStyle(fontWeight: FontWeight.normal),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 12),
-                        Text(activityText, style: TextStyle(fontSize: 24)),
                       ],
                     ),
                     actions: [
@@ -269,7 +342,7 @@ class _SpringScreenState extends State<SpringScreen> {
               },
               child: Text(
                 buttonText,
-                style: TextStyle(fontSize: fontSize, color: Colors.black),
+                style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -279,45 +352,105 @@ class _SpringScreenState extends State<SpringScreen> {
     );
   }
 
-  void _showMatchingGameDialog(BuildContext context) {
-    final months = ["travanj", "svibanj", "lipanj"];
-    final descriptions = [
-      "Dan šale",
-      "Lijepo vrijeme",
-      "Najdulji dan u godini"
-    ];
+  List<TextSpan> _buildActivityText(String title, SettingsProvider settings) {
+    List<TextSpan> spans = [];
+    
+    // Example of splitting and applying styles to specific parts of the text
+    if (title == "TRAVANJ") {
+      spans.add(TextSpan(text: "U travnju su", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
+      spans.add(TextSpan(text: " dani sve topliji", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black)));
+      spans.add(TextSpan(text: " što znači da sve više vremena možemo provoditi vani na otvorenom. Osim toga, vrijeme može biti nepredvidivo zbog pokojeg kišnog oblaka na nebu.\nU travnju se najčešće obilježava ", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
+      spans.add(TextSpan(text: "Uskrs", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black)));
+      spans.add(TextSpan(text: " kojem se sva djeca vesele jer s njime dolaze i proljetni praznici.\nPrvi dan ovog mjeseca poznatiji je kao", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
+      spans.add(TextSpan(text: " Dan šale", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black)));
+      spans.add(TextSpan(text: " ili", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
+      spans.add(TextSpan(text: " Prvi April", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black)));
+      spans.add(TextSpan(text: " stoga nemoj zaboraviti nasamariti nekoga!", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
 
-    showDialog(
-      context: context,
-      builder: (context) {
-        return Center(
-          child: Material(
-            type: MaterialType.transparency,
-            child: Container(
-              padding: EdgeInsets.all(20),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(15),
+
+    }
+    
+    if (title == "SVIBANJ") {
+      spans.add(TextSpan(text: "Proljeće je u punom jeku i", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
+      spans.add(TextSpan(text: " dani su sve duži", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black)));
+      spans.add(TextSpan(text: ". Livade, vrtovi i parkovi su puni boja i mirisa koje obogaćuju pčelice i leptiri. U svibnju uživamo u slatkim", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
+      spans.add(TextSpan(text: " jagodama", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black)));
+      spans.add(TextSpan(text: " i ostalim voćkama koje sazrijevaju.", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
+
+    }
+    if (title == "LIPANJ") {
+      spans.add(TextSpan(text: "Dani su jako dugi i sunce sija po cijele dane. Učenici nestrpljivo čekaju kraj školske godine i početak ljetnih praznika.\n", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
+      spans.add(TextSpan(text: "Krajem lipnja započinje ljeto", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black)));
+      spans.add(TextSpan(text: " - tada je dan najduži, a noć najkraća. Taj dan nazivamo", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
+      spans.add(TextSpan(text: " ljetni solsticij", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black)));
+      spans.add(TextSpan(text: ".", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
+    }
+    //spans.add(TextSpan(text: activityText, style: TextStyle(fontSize: 24, color: Colors.black)));
+    
+    return spans;
+  }
+}
+  void _showMatchingGameDialog(BuildContext context, SettingsProvider settings) {
+  final months = ["travanj", "svibanj", "lipanj"];
+  final descriptions = [
+    "Dan šale",
+    "Lijepo vrijeme",
+    "Najdulji dan u godini"
+  ];
+
+  showDialog(
+    context: context,
+    builder: (context) {
+      return Center(
+        child: Material(
+          type: MaterialType.transparency,
+          child: Container(
+            padding: EdgeInsets.all(20),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(15),
+            ),
+            child: ConstrainedBox(
+              constraints: BoxConstraints(
+                maxWidth: 700, // Increase width here to avoid overflow
               ),
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  maxWidth: 600,
-                ),
-                child: InteractiveViewer(
-                  panEnabled: true,
-                  child: MatchingGame(
-                    months: months,
-                    descriptions: descriptions,
-                  ),
+              child: SingleChildScrollView(
+                child: MatchingGame(
+                  months: months,
+                  descriptions: descriptions,
                 ),
               ),
             ),
           ),
+        ),
+      );
+    },
+  );
+
+  // Delay the second dialog to show instructions
+  Future.delayed(Duration(milliseconds: 100), () {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text("Upute za igru", textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+          content: Text(
+            "Spoji svaki mjesec s odgovarajućim opisom.\n\n"
+            "Dovuci opis mjeseca s desne strane do naziva mjeseca s lijeve strane ili klikni mjesec pa zatim klikni na opis mjeseca.\n",
+            style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: Text("OK", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+            ),
+          ],
         );
       },
     );
-  }
+  });
 }
+
 
 class MatchingGame extends StatefulWidget {
   final List<String> months;
@@ -359,10 +492,11 @@ class _MatchingGameState extends State<MatchingGame> {
 
   @override
   Widget build(BuildContext context) {
+    final settings = Provider.of<SettingsProvider>(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text("Spoji mjesec s opisom:", style: TextStyle(fontSize: 20)),
+        Text("Spoji mjesec s opisom:", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
         const SizedBox(height: 20),
         Row(
           children: [
@@ -394,7 +528,7 @@ class _MatchingGameState extends State<MatchingGame> {
                           child: Text(
                             matchedDesc != null ? "$month\n $matchedDesc" : month,
                             textAlign: TextAlign.center,
-                            style: TextStyle(fontSize: 20),
+                            style: TextStyle(fontSize: settings.fontSize - 4, fontFamily: settings.fontFamily),
                           ),
                         ),
                       );
@@ -417,7 +551,7 @@ class _MatchingGameState extends State<MatchingGame> {
                           color: Colors.orange,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Text(desc, style: TextStyle(fontSize: 18, color: Colors.white)),
+                        child: Text(desc, style: TextStyle(fontSize: settings.fontSize - 4, fontFamily: settings.fontFamily, color: Colors.white)),
                       ),
                     ),
                     childWhenDragging: Container(),
@@ -428,13 +562,14 @@ class _MatchingGameState extends State<MatchingGame> {
                         }
                       },
                       child: Container(
+                        width: double.infinity,
                         padding: const EdgeInsets.all(12),
                         margin: const EdgeInsets.symmetric(vertical: 4),
                         decoration: BoxDecoration(
                           color: Colors.orangeAccent,
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Text(desc, style: TextStyle(fontSize: 18)),
+                        child: Text(desc, textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize - 4, fontFamily: settings.fontFamily)),
                       ),
                     ),
                   );
@@ -456,7 +591,7 @@ class _MatchingGameState extends State<MatchingGame> {
                   selectedMonth = null;
                 });
               },
-              child: Text("Igraj ponovo"),
+              child: Text("Igraj ponovo", style: TextStyle(fontSize: settings.fontSize - 2, fontFamily: settings.fontFamily)),
             ),
             ElevatedButton(
               onPressed: () {
@@ -464,11 +599,11 @@ class _MatchingGameState extends State<MatchingGame> {
                   showResults = true;
                 });
               },
-              child: Text("Provjeri rezultat"),
+              child: Text("Provjeri rezultat", style: TextStyle(fontSize: settings.fontSize - 2, fontFamily: settings.fontFamily)),
             ),
             ElevatedButton(
               onPressed: () => Navigator.pop(context),
-              child: Text("Zatvori"),
+              child: Text("Zatvori", style: TextStyle(fontSize: settings.fontSize - 2, fontFamily: settings.fontFamily)),
             ),
           ],
         )

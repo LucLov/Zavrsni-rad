@@ -1,10 +1,22 @@
 import 'package:flutter/material.dart';
-import 'settings_screen.dart';
+import 'package:provider/provider.dart';
+import 'package:zavrsni_rad/settings_provider.dart';
+import 'package:zavrsni_rad/settings_screen.dart';
 import 'dart:math' as math;
 
 
-void main() {
-  runApp(const NavigatorApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized(); // Make sure preferences load first
+  final settingsProvider = SettingsProvider();
+  await settingsProvider.loadSettings();
+
+  runApp(
+    ChangeNotifierProvider<SettingsProvider>.value(
+      value: settingsProvider,
+      child: const NavigatorApp(),
+    ),
+  );
+  //runApp(const NavigatorApp());
 }
 
 class NavigatorApp extends StatelessWidget {
@@ -49,51 +61,185 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
     // Each season gets its own question list
   Map<String, List<Map<String, dynamic>>> questionPools = {
     'zima': [
-      {"question": "S kojim mjesecom započinjemo novu godinu?", "correct": "Sa siječanjem.", "wrong": ["S prosincom.", "S travanjom."]},
-      {"question": "Što se često događa zimi?", "correct": "Snježi.", "wrong": ["Cvjeta.", "Žanje se."]},
-      {"question": "Koji mjesec je najkraći mjesec u godini?", "correct": "Veljača.", "wrong": ["Ožujak.", "Siječanj."]},
-      {"question": "Koji mjesec je duži za jedan dan svake prijestupne (četvrte) godine?", "correct": "Veljača.", "wrong": ["Ožujak.", "Siječanj."]},
-      {"question": "U kojem mjesecu obilježavamo Dan zaljubljenih (Valentinovo)?", "correct": "Veljača.", "wrong": ["Siječanj.", "Ožujak."]},
-      {"question": "Što najčešće obilježavamo u veljači?", "correct": "Fašnik (Maškare).", "wrong": ["Božić.", "Uskrs."]},
-      {"question": '''Koje biljke nazivamo "vjesnicima proljeća"?''', "correct": "Visibabe, jaglaci, ljubičice.", "wrong": ["Ruže, šafrani.", "Tulipani, božuri."]},
-      {"question": "Koje se ptice selice vraćaju iz toplijih krajeva u proljeće?", "correct": "Lastavice, rode i grlice.", "wrong": ["Golubovi i vrane.", "galebovi i vrapci"]},
-      {"question": "U kojem mjesecu se odvija prijelaz iz zime u proljeće?", "correct": "Ožujak.", "wrong": ["Siječanj.", "Travanj."]},
+      {
+    "question": "S kojim mjesecom započinje nova godina?",
+    "correct": "Sa siječnjem.",
+    "wrong": ["S prosincem.", "S travnjem."]
+  },
+  {
+    "question": "Što se često događa tijekom zime?",
+    "correct": "Sniježi.",
+    "wrong": ["Cvjeta.", "Žanje se."]
+  },
+  {
+    "question": "Koji je najkraći mjesec u godini?",
+    "correct": "Veljača.",
+    "wrong": ["Ožujak.", "Siječanj."]
+  },
+  {
+    "question": "Koji mjesec ima jedan dan više svake prijestupne (četvrte) godine?",
+    "correct": "Veljača.",
+    "wrong": ["Ožujak.", "Siječanj."]
+  },
+  {
+    "question": "U kojem mjesecu obilježavamo Dan zaljubljenih (Valentinovo)?",
+    "correct": "U veljači.",
+    "wrong": ["U siječnju.", "U ožujku."]
+  },
+  {
+    "question": "Što se najčešće obilježava u veljači?",
+    "correct": "Fašnik (Maškare).",
+    "wrong": ["Božić.", "Uskrs."]
+  },
+  {
+    "question": "Koje biljke nazivamo 'vjesnicima proljeća'?",
+    "correct": "Visibabe, jaglaci i ljubičice.",
+    "wrong": ["Ruže, šafrani.", "Tulipani, božuri."]
+  },
+  {
+    "question": "Koje ptice selice se vraćaju iz toplijih krajeva u proljeće?",
+    "correct": "Lastavice, rode i grlice.",
+    "wrong": ["Golubovi i vrane.", "Galebovi i vrapci."]
+  },
+  {
+    "question": "U kojem mjesecu nastupa prijelaz iz zime u proljeće?",
+    "correct": "U ožujku.",
+    "wrong": ["U siječnju.", "U travnju."]
+  }
     ],
     'proljeće': [
-      {"question": "Što se događa s danima tijekom proljeća?", "correct": "Dani postaju duži.", "wrong": ["Dani postaju kraći.", "Dani ostaju isti."]},
-      {"question": "Koje životinje često povezujemo s proljećem i Uskrsom?", "correct": "Zec, pile.", "wrong": ["Jež, sova.", "Riba, hobotnica."]},
-      {"question": "Što se često događa s drvećem u proljeće?", "correct": "puštaju pupoljke i listove", "wrong": ["opada im lišće", "postaju smeđa"]},
-      {"question": "Koje je obilježje proljetne ravnodnevnice?", "correct": "Dan i noć traju približno jednako dugo.", "wrong": ["Dan traje duže od noći.", "Noć traje duže od dana."]},
-      {"question": "Na prvi dan kojeg mjeseca obilježavamo Dan šale?", "correct": "Travanj.", "wrong": ["Svibanj.", "Lipanj."]},
-      {"question": "Koje godišnje doba započinje u lipnju?", "correct": "Ljeto.", "wrong": ["Jesen.", "Proljeće."]},
-      {"question": "Dan kada dan traje najduže, a noć najkraće događa se krajem kojeg mjeseca?", "correct": "Lipanj.", "wrong": ["Svibanj.", "Srpanj."]},
-      {"question": "Koje voće često jedemo u proljeće?", "correct": "Jagode.", "wrong": ["Jabuke.", "Kruške."]},
-      // Add more...
-    ],
+      {
+    "question": "Što se događa s danima tijekom proljeća?",
+    "correct": "Dani postaju duži.",
+    "wrong": ["Dani postaju kraći.", "Dani ostaju isti."]
+  },
+  {
+    "question": "Koje životinje često povezujemo s proljećem i Uskrsom?",
+    "correct": "Zec i pile.",
+    "wrong": ["Jež i sova.", "Riba i hobotnica."]
+  },
+  {
+    "question": "Što se često događa s drvećem u proljeće?",
+    "correct": "Pušta pupoljke i listove.",
+    "wrong": ["Opada im lišće.", "Postaju smeđa."]
+  },
+  {
+    "question": "Koja je osobitost proljetne ravnodnevnice?",
+    "correct": "Dan i noć traju približno jednako dugo.",
+    "wrong": ["Dan traje dulje od noći.", "Noć traje dulje od dana."]
+  },
+  {
+    "question": "Na prvi dan kojeg mjeseca obilježavamo Dan šale?",
+    "correct": "Travanj.",
+    "wrong": ["Svibanj.", "Lipanj."]
+  },
+  {
+    "question": "Koje godišnje doba započinje u lipnju?",
+    "correct": "Ljeto.",
+    "wrong": ["Jesen.", "Proljeće."]
+  },
+  {
+    "question": "Dan kada dan traje najdulje, a noć najkraće, događa se krajem kojeg mjeseca?",
+    "correct": "Lipnja.",
+    "wrong": ["Svibnja.", "Srpnja."]
+  },
+  {
+    "question": "Koje voće često jedemo u proljeće?",
+    "correct": "Jagode.",
+    "wrong": ["Jabuke.", "Kruške."]
+  }],
     'ljeto': [
-      {"question": "Što ljudi često rade ljeti?", "correct": "Idu na ljetovanje.", "wrong": ["Kopaju krumpire.", "Siju pšenicu."]},
-      {"question": "Koja dva susjedna mjeseca imaju isti broj dana?", "correct": "Srpanj i kolovoz.", "wrong": ["Siječanj i veljača.", "Kolovoz i rujan."]},
-      {"question": "Koje poljoprivredne kulture uzgajamo u ljeto?", "correct": "Kukuruz, rajčicu i krastavac.", "wrong": ["Bundevu", "Kapi znoja"]},
-      {"question": "Koje se voće jede ljeti kako bismo se osvježili?", "correct": "Lubenica.", "wrong": ["Jabuka.", "Banana."]},
-      {"question": "Kako se zove pojava kada su dani jako vrući i bez kiše?", "correct": "Toplinski udar.", "wrong": ["Hladni val.", "Kipuće ljeto."]},
-      {"question": "Što se često koristi za zaštitu od sunca ljeti?", "correct": "Kapa, svijetla odjeća i krema za sunce.", "wrong": ["Šal.", "Kabanica."]},
-      {"question": "Koje godišnje doba započinje u rujnu?", "correct": "Jesen.", "wrong": ["Proljeće.", "Zima."]},
-      {"question": "Kako se zove pojava kada zrak treperi zbog velikih vrućina?", "correct": "Vrela izmaglica (ljetna fatamorgana).", "wrong": ["Vjetar.", "Plima."]},
-      {"question": "Koja pojava predstavlja opasnost za vrijeme velikih vrućina?", "correct": "Požari.", "wrong": ["Poplave.", "Obilne kiše."]},
-      // Add more...
-    ],
+      {
+    "question": "Što ljudi često rade ljeti?",
+    "correct": "Idu na ljetovanje.",
+    "wrong": ["Kopaju krumpire.", "Siju pšenicu."]
+  },
+  {
+    "question": "Koja dva susjedna mjeseca imaju isti broj dana?",
+    "correct": "Srpanj i kolovoz.",
+    "wrong": ["Siječanj i veljača.", "Kolovoz i rujan."]
+  },
+  {
+    "question": "Koje poljoprivredne kulture uzgajamo ljeti?",
+    "correct": "Kukuruz, rajčicu i krastavce.",
+    "wrong": ["Bundevu.", "Kapi znoja."]
+  },
+  {
+    "question": "Koje se voće jede ljeti kako bismo se osvježili?",
+    "correct": "Lubenica.",
+    "wrong": ["Jabuka.", "Banana."]
+  },
+  {
+    "question": "Kako se zove pojava kada su dani jako vrući i bez kiše?",
+    "correct": "Suša.",
+    "wrong": ["Hladni val.", "Kipuće ljeto."]
+  },
+  {
+    "question": "Što se često koristi za zaštitu od sunca ljeti?",
+    "correct": "Kapa, svijetla odjeća i krema za sunčanje.",
+    "wrong": ["Šal.", "Kabanica."]
+  },
+  {
+    "question": "Koje godišnje doba započinje u rujnu?",
+    "correct": "Jesen.",
+    "wrong": ["Proljeće.", "Zima."]
+  },
+  {
+    "question": "Kako se zove pojava kada zrak treperi zbog velikih vrućina?",
+    "correct": "Vrela izmaglica (ljetna fatamorgana).",
+    "wrong": ["Vjetar.", "Plima."]
+  },
+  {
+    "question": "Koja pojava predstavlja opasnost za vrijeme velikih vrućina?",
+    "correct": "Požari.",
+    "wrong": ["Poplave.", "Obilne kiše."]
+  }],
     'jesen': [
-      {"question": "Što pada u jesen?", "correct": "Lišće", "wrong": ["Snijeg", "Kapi znoja"]},
-      {"question": "Koja dva susjedna mjeseca (ne gledajući mjesece unutar jedne godine) imaju isti broj dana?", "correct": "Prosinac i siječanj.", "Rujan i listopad.": ["Kolovoz i rujan.", "Kapi znoja"]},
-      {"question": "Koji plodovi sazrijevaju u jesen?", "correct": "Jabuke, kruške i grožđe.", "wrong": ["Lubenice i dinje.", "Jagode i maline."]},
-      {"question": "U koje boje listovi stabala mijenjaju svoje boje?", "correct": "U žutu, narančastu i smeđu.", "wrong": ["U zelenu.", "U plavu."]},
-      {"question": "Što se događa s danima tijekom jeseni?", "correct": "Dani postaju kraći.", "wrong": ["Dani postaju duži.", "Dani ostaju isti."]},
-      {"question": "Koje povrće sazrijeva u jesen?", "correct": "Krumpire, bundeve i mrkve.", "wrong": ["Krastavce.", "Tikvice."]},
-      {"question": "Kako se zove jesenska pojava kada dan i noć traju jednako dugo?", "correct": "Jesenska ravnodnevnica.", "wrong": ["Ljetni solsticij.", "Zimski solsticij."]},
-      {"question": "Koje godišnje doba započinje krajem prosinca?", "correct": "Zima.", "wrong": ["Proljeće.", "Jesen."]},
-      {"question": "Koji blagdan obilježavamo krajem prosinca?", "correct": "Božić.", "wrong": ["Uskrs.", "Dan državnosti."]},
-
-
+      {
+    "question": "Što pada u jesen?",
+    "correct": "Lišće.",
+    "wrong": ["Snijeg.", "Kapi znoja."]
+  },
+  {
+    "question": "Koja dva susjedna mjeseca (ne gledajući mjesece unutar jedne godine) imaju isti broj dana?",
+    "correct": "Prosinac i siječanj.",
+    "wrong": ["Kolovoz i rujan.", "Rujan i listopad."]
+  },
+  {
+    "question": "Koji plodovi sazrijevaju u jesen?",
+    "correct": "Jabuke, kruške i grožđe.",
+    "wrong": ["Lubenice i dinje.", "Jagode i maline."]
+  },
+  {
+    "question": "U koje boje listovi mijenjaju svoju boju?",
+    "correct": "U žutu, narančastu i smeđu.",
+    "wrong": ["U zelenu.", "U plavu."]
+  },
+  {
+    "question": "Što se događa s danima tijekom jeseni?",
+    "correct": "Dani postaju kraći.",
+    "wrong": ["Dani postaju duži.", "Dani ostaju isti."]
+  },
+  {
+    "question": "Koje povrće sazrijeva u jesen?",
+    "correct": "Krumpir, bundeva i mrkva.",
+    "wrong": ["Krastavci.", "Tikvice."]
+  },
+  {
+    "question": "Kako se zove jesenska pojava kada dan i noć traju jednako dugo?",
+    "correct": "Jesenska ravnodnevnica.",
+    "wrong": ["Ljetni solsticij.", "Zimski solsticij."]
+  },
+  {
+    "question": "Koje godišnje doba započinje krajem prosinca?",
+    "correct": "Zima.",
+    "wrong": ["Proljeće.", "Jesen."]
+  },
+  {
+    "question": "Koji blagdan obilježavamo krajem prosinca?",
+    "correct": "Božić.",
+    "wrong": ["Uskrs.", "Dan državnosti."]
+  }
     ],
   };
 
@@ -149,9 +295,10 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
 
   @override
   Widget build(BuildContext context) {
+    final settings = Provider.of<SettingsProvider>(context);
     return Scaffold (
       backgroundColor: Color(0xFFc4e2ff),
-      body: _body(),
+      body: _body(settings),
     );
   }
   
@@ -197,14 +344,21 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
   }
 
 
-  _gameContent() {
+  _gameContent(SettingsProvider settings) {
     return Stack(
       children: [
         //_gameTitle(),
-        _gameWheel(),
-        if (currentQuestion != null) _quizUI(),
-        _gameActions(),
-        _gameStats(),
+        _gameWheel(settings),
+        if (currentQuestion != null) ...[
+        // 👇 Modal barrier blocks interaction below
+        ModalBarrier(
+          dismissible: false,
+          color: Colors.black.withOpacity(0.5),
+        ),
+        Center(child: _quizUI(settings)), // 👈 Display quiz in center above barrier
+      ],
+        //_gameActions(),
+        //_gameStats(),
         _backButton()  // <-- Add the back button here
       ]
     );
@@ -226,103 +380,96 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
       ),
     );
   }
-/*
-  Widget _gameTitle() {
-    return Align(
-      alignment: Alignment.topCenter,
-      child: Container(
-        margin: const EdgeInsets.only(top: 70),
-        padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 20),
-        decoration: BoxDecoration(
-          borderRadius: const BorderRadius.all(Radius.circular(8)),
-          border: Border.all(
-            color: CupertinoColors.systemYellow,
-            width: 2,
-          ),
-          gradient: const LinearGradient(colors: [
-            Color(0xFF2D014C),
-            Color(0xFFF8009E),
-          ],
-          begin: Alignment.bottomLeft,
-          end: Alignment.topRight,
-          )
-        ),
-        child: const Text(
-          "Kolo sreće o mjesecima u godini",
-          style: TextStyle(
-            fontSize: 40,
-            color: CupertinoColors.systemYellow,
-          ))
-      )
-    );
-  }*/
 
-  Widget _gameWheel() {
-  return Center(
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        Transform.translate(
-          offset: Offset(0, -150),
-          child: Container(
-            padding: const EdgeInsets.only(top: 4.5, left: 1),
-            width: MediaQuery.of(context).size.width * 0.9,
-            height: MediaQuery.of(context).size.width * 0.5,
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                fit: BoxFit.contain,
-                image: AssetImage("assets/images/wheel_belt.png"),
+  Widget _gameWheel(SettingsProvider settings) {
+  return Padding(
+    padding: const EdgeInsets.only(top: 150), // 👈 Shift down here
+    child: Center(
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Transform.translate(
+            offset: Offset(0, 0),
+            child: Container(
+              padding: const EdgeInsets.only(top: 8, left: 1),
+              width: MediaQuery.of(context).size.width * 0.9,
+              height: MediaQuery.of(context).size.width * 0.85,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                  fit: BoxFit.contain,
+                  image: AssetImage("assets/images/wheel_belt.png"),
+                ),
               ),
-            ),
-            child: InkWell(
-              child: AnimatedBuilder(
-                animation: animation,
-                builder: (context, child) {
-                  return Transform.rotate(
-                    angle: controller.value * angle,
-                    child: Container(
-                      margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.023),
-                      decoration: const BoxDecoration(
-                        image: DecorationImage(
-                          fit: BoxFit.contain,
-                          image: AssetImage("assets/images/fortune_wheel-removebg-preview.png"),
+              child: InkWell(
+                child: AnimatedBuilder(
+                  animation: animation,
+                  builder: (context, child) {
+                    return Transform.rotate(
+                      angle: controller.value * angle,
+                      child: Container(
+                        margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.031),
+                        decoration: const BoxDecoration(
+                          image: DecorationImage(
+                            fit: BoxFit.contain,
+                            image: AssetImage("assets/images/fortune_wheel-removebg-preview.png"),
+                          ),
                         ),
                       ),
-                    ),
-                  );
+                    );
+                  },
+                ),
+                onTap: () {
+                  setState(() {
+                    if (!spinning) {
+                      spin();
+                      spinning = true;
+                    }
+                  });
                 },
               ),
-              onTap: () {
-                setState(() {
-                  if (!spinning) {
-                    spin();
-                    spinning = true;
-                  }
-                });
-              },
             ),
           ),
-        ),
-
-        // 👇 This is your message below the wheel
-        //const SizedBox(height: 20),
-        Transform.translate(
-          offset: Offset(0, -120),
-          child: const Text(
-          "Zavrti kolo sreće kako bi izvukao/la pitanje!",
-          style: TextStyle(
-            fontSize: 24,
-            color: Colors.black87,
-            fontWeight: FontWeight.w500,
+          const SizedBox(height: 20),
+          Transform.translate(
+            offset: Offset(0, 0),
+            child: Text(
+              "Provjeri svoje znanje u 12 pitanja.\nZavrti kolo sreće kako bi izvukao/la pitanje!",
+              style: TextStyle(
+                fontSize: settings.fontSize,
+                fontFamily: settings.fontFamily,
+                color: Colors.black87,
+                fontWeight: FontWeight.w500,
+              ),
+              textAlign: TextAlign.center,
+            ),
           ),
-          textAlign: TextAlign.center,
-        ),
-        )
-        
-      ],
+          const SizedBox(height: 30),
+          SizedBox(
+            width: 250,
+            child: ElevatedButton(
+              onPressed: spinning
+                  ? null
+                  : () {
+                      setState(() {
+                        spin();
+                        spinning = true;
+                      });
+                    },
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.white,
+                foregroundColor: Colors.black,
+                padding: const EdgeInsets.symmetric(vertical: 10),
+                textStyle: const TextStyle(fontSize: 24),
+              ),
+              child: Text(spinning ? "Vrti se..." : "Zavrti", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
+            ),
+          ),
+        ],
+      ),
     ),
   );
 }
+
 
   
   void spin() {
@@ -466,7 +613,7 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
         mainAxisSize: MainAxisSize.min,
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
-          SizedBox(
+          /*SizedBox(
             width: 250,
             child: ElevatedButton(
               onPressed: spinning
@@ -484,7 +631,7 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
               ),
               child: const Text("Pokreni ponovno"),
             ),
-          ),
+          ),*/
           const SizedBox(height: 12),
           SizedBox(
             width: 250,
@@ -519,10 +666,10 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
     controller.reset();
   }
 
-  Widget _quizUI() {
+  Widget _quizUI(SettingsProvider settings) {
   return Center(
     child: Transform.translate(
-      offset: Offset(0, 400),
+      offset: Offset(0, 0),
       child: Container(
         padding: EdgeInsets.all(20),
         margin: EdgeInsets.symmetric(horizontal: 20),
@@ -538,37 +685,78 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
           ],
         ),
         child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              currentQuestion!["question"],
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              textAlign: TextAlign.center,
-            ),
-            const SizedBox(height: 30),
-            ...answerOptions.map((option) => Padding(
-              padding: const EdgeInsets.symmetric(vertical: 5),
-              child: ElevatedButton(
-                onPressed: () {
-                  bool isCorrect = option == currentQuestion!["correct"];
-                  _showAnswerFeedback(isCorrect);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.lightBlueAccent,
-                  foregroundColor: Colors.black,
-                  minimumSize: Size(double.infinity, 55), // 45
-                ),
-                child: Text(option, style: TextStyle(fontSize: 24, fontWeight: FontWeight.normal)),
-              ),
-            )),
-          ],
+  mainAxisSize: MainAxisSize.min,
+  children: [
+    RichText(
+      textAlign: TextAlign.center,  // This will center the text within the RichText widget
+      text: TextSpan(
+        style: const TextStyle(
+          fontSize: 24,
+          color: Colors.black,
         ),
+        children: [
+          // First part of the text (first line)
+          TextSpan(
+            text: "Izvukao/la si pitanje iz godišnjeg doba: \n",
+            style: TextStyle(
+              fontSize: settings.fontSize,
+              fontFamily: settings.fontFamily,
+            ),
+          ),
+          // Second part of the text (second line)
+          TextSpan(
+            text: _getSeasonName(earnedValue),
+            style: TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: settings.fontSize,
+              fontFamily: settings.fontFamily,
+            ),
+          ),
+        ],
+      ),
+    ),
+    SizedBox(height: 10),
+    Text(
+      '$spins. ${currentQuestion!["question"]}',
+      style: TextStyle(
+        fontSize: settings.fontSize,
+        fontFamily: settings.fontFamily,
+        fontWeight: FontWeight.bold,
+      ),
+      textAlign: TextAlign.center,
+    ),
+    const SizedBox(height: 30),
+    ...(answerOptions ?? []).map((option) => Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5),
+      child: ElevatedButton(
+        onPressed: () {
+          bool isCorrect = option == currentQuestion!["correct"];
+          _showAnswerFeedback(isCorrect, settings);
+        },
+        style: ElevatedButton.styleFrom(
+          backgroundColor: Colors.lightBlueAccent,
+          foregroundColor: Colors.black,
+          minimumSize: Size(double.infinity, 55), // 45
+        ),
+        child: Text(
+          option,
+          style: TextStyle(
+            fontSize: settings.fontSize,
+            fontFamily: settings.fontFamily,
+            fontWeight: FontWeight.normal,
+          ),
+        ),
+      ),
+    )),
+  ],
+),
+
       ),
     ),
   );
 }
 
-  void _showAnswerFeedback(bool correct) {
+  void _showAnswerFeedback(bool correct, SettingsProvider settings) {
   if (correct) correctAnswers++;
 
   showDialog(
@@ -578,24 +766,35 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
       return AlertDialog(
         title: Text(correct ? "Točno!" : "Netočno!", 
           textAlign: TextAlign.center, 
-          style: TextStyle(fontSize: 24)),
-        content: Text(correct
-            ? "Bravo! Točan odgovor."
-            : "Oh ne! Krivi odgovor.", 
-            style: TextStyle(fontSize: 24)),
+          style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Text(
+              correct ? "Bravo! Točan odgovor." : "Oh ne! Krivi odgovor.", 
+              style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
+            SizedBox(
+              height: 10
+            ),
+            Icon(
+              correct ? Icons.check_circle : Icons.cancel,
+              color: correct ? Colors.green : Colors.red,
+              size: 60, 
+            )
+          ],),
         actions: [
           TextButton(
             onPressed: () {
               Navigator.of(context).pop();
               setState(() {
                 currentQuestion = null;
-
-                if (spins >= 10) {
-                  _showResultPopup(); // 🎉 Show final result here!
+                spinning = false;
+                if (spins >= 12) {
+                  _showResultPopup(settings); // 🎉 Show final result here!
                 }
               });
             },
-            child: const Text("Nastavi", style: TextStyle(fontSize: 24)),
+            child: Text("Nastavi", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
           )
         ],
       );
@@ -603,7 +802,7 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
   );
 }
 
-  void _showResultPopup() {
+  void _showResultPopup(SettingsProvider settings) {
   showDialog(
     context: context,
     barrierDismissible: false,
@@ -620,18 +819,18 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
       }
 
       return AlertDialog(
-        title: const Text("Kviz završen",
+        title: Text("Kviz završen",
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 26)),
+          style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Točno si odgovorio/la na $correctAnswers od 10 pitanja.",
+            Text("Točno si odgovorio/la na $correctAnswers od 12 pitanja.",
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 24)),
+              style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
             const SizedBox(height: 10),
             Text(message,
-              style: TextStyle(fontSize: 24)),
+              style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
           ],
         ),
         actions: [
@@ -640,8 +839,8 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
               Navigator.of(context).pop(); // close popup
               Navigator.of(context).pop(); // go back to main screen
             },
-            child: const Text("Vrati se na početnu stranicu",
-                    style: TextStyle(fontSize: 24)),
+            child: Text("Vrati se na početnu stranicu",
+                    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
           ),
           TextButton(
             onPressed: () {
@@ -650,8 +849,8 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
                 _resetGameCompletely(); // restart game
               });
             },
-            child: const Text("Igraj ponovno",
-                    style: TextStyle(fontSize: 24)),
+            child: Text("Igraj ponovno",
+                    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
           ),
         ],
       );
@@ -678,7 +877,7 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
 
 
 
-  Widget _body() {
+  Widget _body(SettingsProvider settings) {
   return Stack(
     children: [
       Positioned.fill(
@@ -705,7 +904,7 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
       Container(
         height: double.infinity,
         width: double.infinity,
-        child: _gameContent(),
+        child: _gameContent(settings),
       ),
     ],
   );
