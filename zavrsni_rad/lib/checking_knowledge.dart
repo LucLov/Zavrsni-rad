@@ -383,7 +383,7 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
 
   Widget _gameWheel(SettingsProvider settings) {
   return Padding(
-    padding: const EdgeInsets.only(top: 150), // 👈 Shift down here
+    padding: settings.fontSize < 28 ? EdgeInsets.only(top: 150) : EdgeInsets.only(top: 205), // 👈 Shift down here
     child: Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -740,6 +740,7 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
         ),
         child: Text(
           option,
+          textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: settings.fontSize,
             fontFamily: settings.fontFamily,
@@ -830,14 +831,14 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
               style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
             const SizedBox(height: 10),
             Text(message,
+              textAlign: TextAlign.center,
               style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
           ],
         ),
         actions: [
           TextButton(
             onPressed: () {
-              Navigator.of(context).pop(); // close popup
-              Navigator.of(context).pop(); // go back to main screen
+              Navigator.of(context).pushNamed('/'); // go back to main screen
             },
             child: Text("Vrati se na početnu stranicu",
                     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),

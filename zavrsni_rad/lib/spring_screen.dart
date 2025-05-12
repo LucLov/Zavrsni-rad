@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zavrsni_rad/settings_provider.dart';
@@ -171,6 +173,7 @@ class _SpringScreenState extends State<SpringScreen> {
                   ),
                   child: Text(
                     "Provježbaj znanje o proljetnim mjesecima!",
+                    textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: settings.fontSize,
                       fontFamily: settings.fontFamily,
@@ -205,7 +208,7 @@ class _SpringScreenState extends State<SpringScreen> {
         children: [
           Text(
             instructionText,
-            style: TextStyle(fontSize: settings.fontSize - 4, color: Colors.black),
+            style: TextStyle(fontSize: settings.fontSize < 29 ? settings.fontSize - 4 : settings.fontSize - 10, fontFamily: settings.fontFamily, color: Colors.black),
             textAlign: TextAlign.center,
           ),
           const SizedBox(height: 8),
@@ -235,106 +238,116 @@ class _SpringScreenState extends State<SpringScreen> {
                   context: context,
                   builder: (context) => AlertDialog(
                     title: Text(title, textAlign: TextAlign.center, style: TextStyle(fontWeight: FontWeight.w500, fontFamily: settings.fontFamily, fontSize: settings.fontSize)),
-                    content: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            // Left container
-                            Container(
-                              padding: EdgeInsets.all(12),
-                              width: 200,
-                              decoration: BoxDecoration(
-                                color: Colors.orange[100],
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Redni broj u godini:",
-                                    style: TextStyle(
-                                      fontFamily: settings.fontFamily,
-                                      fontSize: settings.fontSize - 4,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black,
-                                    ),
-                                    textAlign: TextAlign.center,
+                    content: SingleChildScrollView(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Center(
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min, // Ensures the row only takes up as much space as needed
+                              mainAxisAlignment: MainAxisAlignment.center, // Ensures the children are centered within the row
+                              children: [
+                                // Left container
+                                Container(
+                                  padding: const EdgeInsets.all(12),
+                                  width: 200,
+                                  decoration: BoxDecoration(
+                                    color: Colors.orange[100],
+                                    borderRadius: BorderRadius.circular(12),
                                   ),
-                                  SizedBox(height: 6),
-                                  Text(
-                                    monthNumber,
-                                    style: TextStyle(
-                                      fontFamily: settings.fontFamily,
-                                      fontSize: settings.fontSize - 4,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                      backgroundColor: Colors.transparent,
-                                    ),
-                                    textAlign: TextAlign.center,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Redni broj u godini:",
+                                        style: TextStyle(
+                                          fontFamily: settings.fontFamily,
+                                          fontSize: settings.fontSize - 6,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      const SizedBox(height: 6),
+                                      Text(
+                                        monthNumber,
+                                        style: TextStyle(
+                                          fontFamily: settings.fontFamily,
+                                          fontSize: settings.fontSize - 6,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
+                                ),
+                                const SizedBox(width: 20), // Space between items
+                                // Image in the center
+                                Container(
+                                  width: 200,
+                                  height: 200,
+                                  margin: const EdgeInsets.symmetric(horizontal: 10),
+                                  child: Image.asset('assets/images/$monthPicture'),
+                                ),
+                                const SizedBox(width: 20), // Space between items
+                                // Right container
+                                Container(
+                                  padding: const EdgeInsets.all(12),
+                                  width: 200,
+                                  decoration: BoxDecoration(
+                                    color: Colors.orange[100],
+                                    borderRadius: BorderRadius.circular(12),
+                                  ),
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.center,
+                                    children: [
+                                      Text(
+                                        "Broj dana:",
+                                        style: TextStyle(
+                                          fontFamily: settings.fontFamily,
+                                          fontSize: settings.fontSize - 6,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                      const SizedBox(height: 6),
+                                      Text(
+                                        daysInMonth,
+                                        style: TextStyle(
+                                          fontFamily: settings.fontFamily,
+                                          fontSize: settings.fontSize - 6,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                        textAlign: TextAlign.center,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ],
                             ),
-                            Container(
-                              width: 200,
-                              height: 200,
-                              margin: EdgeInsets.symmetric(horizontal: 10),
-                              child: Image.asset('assets/images/$monthPicture'), // <-- replace with your image path
-                            ),
-                            // Right container
-                            Container(
-                              padding: EdgeInsets.all(12),
-                              width: 200,
-                              decoration: BoxDecoration(
-                                color: Colors.orange[100],
-                                borderRadius: BorderRadius.circular(12),
-                              ),
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  Text(
-                                    "Broj dana:",
-                                    style: TextStyle(
-                                      fontFamily: settings.fontFamily,
-                                      fontSize: settings.fontSize - 4,
-                                      fontWeight: FontWeight.w500,
-                                      color: Colors.black,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                  SizedBox(height: 6),
-                                  Text(
-                                    daysInMonth,
-                                    style: TextStyle(
-                                      fontFamily: settings.fontFamily,
-                                      fontSize: settings.fontSize - 4,
-                                      color: Colors.black,
-                                      fontWeight: FontWeight.w500,
-                                      backgroundColor: Colors.transparent,
-                                    ),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(height: 40),
-                        RichText(
-                          text: TextSpan(
-                            style: TextStyle(fontSize: 24, color: Colors.black),
-                            children: _buildActivityText(title, settings),
                           ),
-                        ),
-                      ],
+                          const SizedBox(height: 40),
+                          RichText(
+                            text: TextSpan(
+                              style: TextStyle(
+                                fontSize: settings.fontSize,
+                                fontFamily: settings.fontFamily,
+                                color: Colors.black,
+                              ),
+                              children: _buildActivityText(title, settings),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: Text('Zatvori', style: TextStyle(fontSize: 24)),
+                        child: Text('Zatvori', style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
                       ),
                     ],
                   ),
@@ -392,13 +405,16 @@ class _SpringScreenState extends State<SpringScreen> {
 }
   void _showMatchingGameDialog(BuildContext context, SettingsProvider settings) {
   final months = ["travanj", "svibanj", "lipanj"];
-  final descriptions = [
-    "Dan šale",
-    "Lijepo vrijeme",
-    "Najdulji dan u godini"
-  ];
+  final correctDescriptionsMap = {
+      "travanj": "4. mjesec",
+      "svibanj": "5. mjesec",
+      "lipanj": "6. mjesec",
+    };
+
+    final descriptions = correctDescriptionsMap.values.toList()..shuffle();
 
   showDialog(
+    barrierDismissible: false,
     context: context,
     builder: (context) {
       return Center(
@@ -418,6 +434,7 @@ class _SpringScreenState extends State<SpringScreen> {
                 child: MatchingGame(
                   months: months,
                   descriptions: descriptions,
+                  correctDescriptionsMap: correctDescriptionsMap,
                 ),
               ),
             ),
@@ -455,29 +472,45 @@ class _SpringScreenState extends State<SpringScreen> {
 class MatchingGame extends StatefulWidget {
   final List<String> months;
   final List<String> descriptions;
+  final Map<String, String> correctDescriptionsMap;
 
-  const MatchingGame({super.key, required this.months, required this.descriptions});
+
+  const MatchingGame({super.key, required this.months, required this.descriptions, required this.correctDescriptionsMap});
 
   @override
   State<MatchingGame> createState() => _MatchingGameState();
 }
 
 class _MatchingGameState extends State<MatchingGame> {
+  Timer? _autoCloseTimer;
   final Map<String, String> matchedPairs = {};
   final Set<String> usedDescriptions = {};
+  late List<String> randomizedDescriptions;
   bool showResults = false;
   String? selectedMonth;
 
   String? _correctMatch(String month) {
     switch (month) {
       case "travanj":
-        return "Dan šale";
+        return "4. mjesec";
       case "svibanj":
-        return "Lijepo vrijeme";
+        return "5. mjesec";
       case "lipanj":
-        return "Najdulji dan u godini";
+        return "6. mjesec";
     }
     return null;
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    randomizedDescriptions = List.from(widget.descriptions)..shuffle();
+  }
+
+  @override
+  void dispose() {
+    _autoCloseTimer?.cancel();
+    super.dispose();
   }
 
   void _onDrop(String month, String description) {
@@ -540,7 +573,7 @@ class _MatchingGameState extends State<MatchingGame> {
             const SizedBox(width: 20),
             Expanded(
               child: Column(
-                children: widget.descriptions.where((desc) => !usedDescriptions.contains(desc)).map((desc) {
+                children: randomizedDescriptions.where((desc) => !usedDescriptions.contains(desc)).map((desc) {
                   return Draggable<String>(
                     data: desc,
                     feedback: Material(
@@ -583,27 +616,33 @@ class _MatchingGameState extends State<MatchingGame> {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
             ElevatedButton(
-              onPressed: () {
+              onPressed: showResults ? () {
+                _autoCloseTimer?.cancel();
                 setState(() {
                   matchedPairs.clear();
                   usedDescriptions.clear();
                   showResults = false;
                   selectedMonth = null;
+                  randomizedDescriptions = List.from(widget.correctDescriptionsMap.values)..shuffle();
+
                 });
-              },
-              child: Text("Igraj ponovo", style: TextStyle(fontSize: settings.fontSize - 2, fontFamily: settings.fontFamily)),
+              } : null,
+              child: Text("Igraj ponovo", style: TextStyle(fontSize: settings.fontSize - 6, fontFamily: settings.fontFamily)),
             ),
             ElevatedButton(
               onPressed: () {
                 setState(() {
                   showResults = true;
                 });
+                // Pokreni timer koji zatvara dijalog nakon 6 sekundi
+                _autoCloseTimer?.cancel(); // Ako već postoji, otkaži ga
+                _autoCloseTimer = Timer(const Duration(seconds: 3), () {
+                  if (mounted && Navigator.canPop(context)) {
+                    Navigator.of(context).pop(); // Zatvori popup
+                  }
+                });
               },
-              child: Text("Provjeri rezultat", style: TextStyle(fontSize: settings.fontSize - 2, fontFamily: settings.fontFamily)),
-            ),
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text("Zatvori", style: TextStyle(fontSize: settings.fontSize - 2, fontFamily: settings.fontFamily)),
+              child: Text("Provjeri rezultat", style: TextStyle(fontSize: settings.fontSize - 6, fontFamily: settings.fontFamily)),
             ),
           ],
         )

@@ -7,6 +7,8 @@ import 'about_app_screen.dart';
 import 'winter_screen.dart';
 import 'checking_knowledge.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Make sure preferences load first
