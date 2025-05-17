@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
+import 'package:zavrsni_rad/music_controller.dart';
 import 'spring_screen.dart';
 import 'summer_screen.dart';
 import 'fall_screen.dart';
@@ -138,7 +139,7 @@ class _WinterScreenState extends State<WinterScreen> {
                     "VELJAČA",
                     "2.",
                     "veljaca_slika.png",
-                    "28, a svake četvrte godine 29",
+                    "28 (29)",
                     "Klikni za informacije o veljači!",
                     isVeljacaSelected,
                     (bool isSelected) {
@@ -214,10 +215,18 @@ class _WinterScreenState extends State<WinterScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            instructionText,
-            style: TextStyle(fontSize: settings.fontSize < 29 ? settings.fontSize - 4 : settings.fontSize - 10, fontFamily: settings.fontFamily, color: Colors.black),
-            textAlign: TextAlign.center,
+          Container(
+            color: Colors.yellow[600]?.withOpacity(0.5), // Set your desired background color here
+            //padding: EdgeInsets.all(8), // Optional: adds space around the text
+            child: Text(
+              instructionText,
+              style: TextStyle(
+                fontSize: settings.fontSize < 29 ? settings.fontSize - 4 : settings.fontSize - 10,
+                fontFamily: settings.fontFamily,
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.center,
+            ),
           ),
           const SizedBox(height: 8),
           ConstrainedBox(
@@ -268,7 +277,7 @@ class _WinterScreenState extends State<WinterScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text(
-                                        "Redni broj u godini:",
+                                        "Redni broj:",
                                         style: TextStyle(
                                           fontFamily: settings.fontFamily,
                                           fontSize: settings.fontSize - 6,
@@ -376,32 +385,79 @@ class _WinterScreenState extends State<WinterScreen> {
   List<TextSpan> _buildActivityText(String title, SettingsProvider settings) {
     List<TextSpan> spans = [];
     
-    // Example of splitting and applying styles to specific parts of the text
     if (title == "SIJEČANJ") {
-      spans.add(TextSpan(text: "Sa siječnjom ", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
-      spans.add(TextSpan(text: "započinjemo novu godinu", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black)));
-      spans.add(TextSpan(text: ". Često se prave novogodišnje odluke to jest planovi i želje za godinu koja dolazi. U siječnju se uživa u zadnjim blagdanskim danima i praznicima. Odlazi se na sankanje, grudanje i skijanje. Djeca se vraćaju u školu i nastavljaju učiti.", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
-    }
-    
-    if (title == "VELJAČA") {
-      spans.add(TextSpan(text: "Veljača je ", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
-      spans.add(TextSpan(text: "najkraći mjesec u godini. Svaka četvrta godina u kojoj veljača ima 29 dana zove se prijestupna godina. ", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black)));
-      spans.add(TextSpan(text: "Zima još traje, ali dani polako počinju biti duži.\nU veljači se obilježavaju ", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
-      spans.add(TextSpan(text: "Maškare (Fašnik, Poklade)", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black)));
-      spans.add(TextSpan(text: ". Djeca se maskiraju u svoje omiljene superjunake, princeze i razne druge likove te se održavaju povorke. \nTakođer, obilježava se i ", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
-      spans.add(TextSpan(text: "Valentinovo", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black)));
-      spans.add(TextSpan(text: " - dan kada posebnu pažnju dodjeljujemo ljubavi prema prijateljima, obitelji, a i simpatijama.", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
-    }
-    if (title == "OŽUJAK") {
-      spans.add(TextSpan(text: "Cvijeće raste, drveća pupaju, a ptice pjevaju. Ptice selice poput ", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
-      spans.add(TextSpan(text: "lastavica, roda i grlica", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black)));
-      spans.add(TextSpan(text: " se vraćaju iz toplijih krajeva, a proljeće nagovještaju i vjesnici proljeća - ", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
-      spans.add(TextSpan(text: "visibabe, jaglaci, ljubičice.\n", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black)));
-      spans.add(TextSpan(text: "Krajem ožujka počinje proljeće, a baš tada dan i noć traju približno dugo - njega nazivamo ", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
-      spans.add(TextSpan(text: "proljetni solsticij.", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black)));
+  spans.add(TextSpan(
+    text: "Sa siječnjem ",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: "započinje nova godina",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: ". Često donosimo novogodišnje odluke, tj. planove i želje za godinu koja dolazi. U siječnju uživamo u posljednjim blagdanskim danima i praznicima. Odlazi se na sanjkanje, grudanje i skijanje. Djeca se vraćaju u školu i nastavljaju s učenjem.",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+}
 
-    }
-    //spans.add(TextSpan(text: activityText, style: TextStyle(fontSize: 24, color: Colors.black)));
+if (title == "VELJAČA") {
+  spans.add(TextSpan(
+    text: "Veljača je ",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: "najkraći mjesec u godini. Svaka četvrta godina u kojoj veljača ima 29 dana naziva se prijestupnom godinom. ",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: "Zima još traje, ali dani polako postaju duži.\nU veljači se obilježavaju ",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: "maškare (fašnik, poklade)",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: ". Djeca se maskiraju u svoje omiljene superjunake, princeze i razne druge likove te sudjeluju u povorkama.\nTakođer, obilježava se i ",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: "Valentinovo",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: " – dan kada posebnu pažnju posvećujemo ljubavi prema prijateljima, obitelji i simpatijama.",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+}
+
+if (title == "OŽUJAK") {
+  spans.add(TextSpan(
+    text: "Cvijeće raste, drveće pupaju, a ptice pjevaju. Ptice selice poput ",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: "lastavica, roda i grlica",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: " vraćaju se iz toplijih krajeva, a proljeće najavljuju i vjesnici proljeća – ",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: "visibabe, jaglaci i ljubičice.\n",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: "Krajem ožujka počinje proljeće, a tada dan i noć traju približno jednako dugo – taj dan nazivamo ",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: "proljetna ravnodnevnica.",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+}
+
     
     return spans;
   }
@@ -634,10 +690,25 @@ class _MatchingGameState extends State<MatchingGame> {
               child: Text("Igraj ponovo", style: TextStyle(fontSize: settings.fontSize - 6, fontFamily: settings.fontFamily)),
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: matchedPairs.length == widget.months.length ? () {
                 setState(() {
                   showResults = true;
                 });
+
+                if (settings.quizSound) {
+                  final allCorrect = widget.months.every((month) {
+                    final correct = widget.correctDescriptionsMap[month];
+                    final matched = matchedPairs[month];
+                    return matched == correct;
+                  });
+
+                  final soundPath = allCorrect
+                      ? 'audio/right_feedback.mp3'
+                      : 'audio/fail_feedback.mp3';
+
+                  MusicController().playFeedbackSound(soundPath);
+                }
+
                 // Pokreni timer koji zatvara dijalog nakon 6 sekundi
                 _autoCloseTimer?.cancel(); // Ako već postoji, otkaži ga
                 _autoCloseTimer = Timer(const Duration(seconds: 3), () {
@@ -645,7 +716,7 @@ class _MatchingGameState extends State<MatchingGame> {
                     Navigator.of(context).pop(); // Zatvori popup
                   }
                 });
-              },
+              } : null,
               child: Text("Provjeri rezultat", style: TextStyle(fontSize: settings.fontSize - 6, fontFamily: settings.fontFamily)),
             ),
           ],

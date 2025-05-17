@@ -1,5 +1,7 @@
+import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:zavrsni_rad/music_controller.dart';
 import 'package:zavrsni_rad/settings_provider.dart';
 import 'package:zavrsni_rad/settings_screen.dart';
 import 'dart:math' as math;
@@ -16,7 +18,6 @@ void main() async {
       child: const NavigatorApp(),
     ),
   );
-  //runApp(const NavigatorApp());
 }
 
 class NavigatorApp extends StatelessWidget {
@@ -757,50 +758,54 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
   );
 }
 
-  void _showAnswerFeedback(bool correct, SettingsProvider settings) {
-  if (correct) correctAnswers++;
+  Future<void> _showAnswerFeedback(bool correct, SettingsProvider settings) async {
+    if (correct) correctAnswers++;
 
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) {
-      return AlertDialog(
-        title: Text(correct ? "Točno!" : "Netočno!", 
-          textAlign: TextAlign.center, 
-          style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(
-              correct ? "Bravo! Točan odgovor." : "Oh ne! Krivi odgovor.", 
-              style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
-            SizedBox(
-              height: 10
-            ),
-            Icon(
-              correct ? Icons.check_circle : Icons.cancel,
-              color: correct ? Colors.green : Colors.red,
-              size: 60, 
+    if (settings.quizSound) {
+      MusicController().playFeedbackSound(correct ? 'audio/right_feedback.mp3' : 'audio/fail_feedback.mp3');
+    }
+    
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        return AlertDialog(
+          title: Text(correct ? "Točno!" : "Netočno!", 
+            textAlign: TextAlign.center, 
+            style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Text(
+                correct ? "Bravo! Točan odgovor." : "Oh ne! Krivi odgovor.", 
+                style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
+              SizedBox(
+                height: 10
+              ),
+              Icon(
+                correct ? Icons.check_circle : Icons.cancel,
+                color: correct ? Colors.green : Colors.red,
+                size: 60, 
+              )
+            ],),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                setState(() {
+                  currentQuestion = null;
+                  spinning = false;
+                  if (spins >= 12) {
+                    _showResultPopup(settings); // 🎉 Show final result here!
+                  }
+                });
+              },
+              child: Text("Nastavi", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
             )
-          ],),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop();
-              setState(() {
-                currentQuestion = null;
-                spinning = false;
-                if (spins >= 12) {
-                  _showResultPopup(settings); // 🎉 Show final result here!
-                }
-              });
-            },
-            child: Text("Nastavi", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
-          )
-        ],
-      );
-    },
-  );
+          ],
+        );
+      },
+    );
 }
 
   void _showResultPopup(SettingsProvider settings) {
@@ -819,6 +824,10 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
         message = "Ne brini, bit će bolje sljedeći put!";
       }
 
+      if (settings.quizSound) {
+        MusicController().playFeedbackSound('audio/game_over_success.mp3');
+      }
+      
       return AlertDialog(
         title: Text("Kviz završen",
           textAlign: TextAlign.center,
@@ -826,7 +835,7 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Točno si odgovorio/la na $correctAnswers od 12 pitanja.",
+            Text("Rezultat: $correctAnswers/12",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
             const SizedBox(height: 10),
@@ -883,7 +892,7 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
     children: [
       Positioned.fill(
         child: Image.asset(
-          "assets/images/game_background_4.png", // Change this to your image path
+          "assets/images/game_background.png", // Change this to your image path
           fit: BoxFit.cover,
         ),
       ),

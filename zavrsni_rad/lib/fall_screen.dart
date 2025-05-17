@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:zavrsni_rad/music_controller.dart';
 import 'checking_knowledge.dart';
 import 'package:provider/provider.dart';
 import 'package:zavrsni_rad/settings_provider.dart';
@@ -195,7 +196,7 @@ class _FallScreenState extends State<FallScreen> {
                     },
                   style: ButtonStyle(
                     backgroundColor: WidgetStateProperty.all(
-                      Color(0xFF497F03),
+                      Colors.red[700],
                     ),
                   ),
                   child: Text(
@@ -233,10 +234,18 @@ class _FallScreenState extends State<FallScreen> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Text(
-            instructionText,
-            style: TextStyle(fontSize: settings.fontSize < 29 ? settings.fontSize - 4 : settings.fontSize - 10, fontFamily: settings.fontFamily, color: Colors.black),
-            textAlign: TextAlign.center,
+          Container(
+            color: Colors.yellow[600]?.withOpacity(0.5), // Set your desired background color here
+            //padding: EdgeInsets.all(8), // Optional: adds space around the text
+            child: Text(
+              instructionText,
+              style: TextStyle(
+                fontSize: settings.fontSize < 29 ? settings.fontSize - 4 : settings.fontSize - 10,
+                fontFamily: settings.fontFamily,
+                color: Colors.black,
+              ),
+              textAlign: TextAlign.center,
+            ),
           ),
           const SizedBox(height: 8),
           ConstrainedBox(
@@ -287,7 +296,7 @@ class _FallScreenState extends State<FallScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text(
-                                        "Redni broj u godini:",
+                                        "Redni broj:",
                                         style: TextStyle(
                                           fontFamily: settings.fontFamily,
                                           fontSize: settings.fontSize - 6,
@@ -395,29 +404,67 @@ class _FallScreenState extends State<FallScreen> {
   List<TextSpan> _buildActivityText(String title, SettingsProvider settings) {
     List<TextSpan> spans = [];
     
-    // Example of splitting and applying styles to specific parts of the text
     if (title == "LISTOPAD") {
-      spans.add(TextSpan(text: "Drveće se oblači u raskoš crvenih, narančastih i smeđih tonova, jutra su maglovita, a sunca slabašno sija.\nUživamo u specijalitetima od", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
-      spans.add(TextSpan(text: " kestena i bundeva", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black)));
-      spans.add(TextSpan(text: ". Sazrijevaju i druge kulture poput", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
-      spans.add(TextSpan(text: " krumpira i mrkve.", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black)));
-    }
-    
-    if (title == "STUDENI") {
-      spans.add(TextSpan(text: "Jesen se bliži kraju - ", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
-      spans.add(TextSpan(text: "dani postaju kraći, a temperature sve niže", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight : FontWeight.bold, color: Colors.black)));
-      spans.add(TextSpan(text: ". Životinje završavaju pripreme za zimu, a neke se spremaju utonuti u duboki zimski san. Ptice selice putuju u toplije krajeve.", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
-    }
+  spans.add(TextSpan(
+    text: "Drveće se oblači u raskošne crvene, narančaste i smeđe tonove. Jutra su maglovita, a sunce slabašno sja.\nUživamo u specijalitetima od ",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: "kestena i bundeva",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: ". Sazrijevaju i druge kulture poput ",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: "krumpira i mrkve.",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+}
 
-    if (title == "PROSINAC") {
-      spans.add(TextSpan(text: "Prosinac je ", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
-      spans.add(TextSpan(text: "posljednji mjesec u godini", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black)));
-      spans.add(TextSpan(text: ". Ujedno je i mjesec najkraćih dana, a onog najkraćeg ulazimo u zimu (", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));
-      spans.add(TextSpan(text: "zimski solsticij", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black)));
-      spans.add(TextSpan(text: ").\nSnijeg, mraz i magla obavijaju krajolike.\nVrijeme provodimo okruženi s obitelji i prijateljima povodom ", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black)));    
-      spans.add(TextSpan(text: "Božića i Nove godine.", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black)));
+if (title == "STUDENI") {
+  spans.add(TextSpan(
+    text: "Jesen se bliži kraju – ",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: "dani postaju kraći, a temperature sve niže",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: ". Životinje završavaju pripreme za zimu, a neke se spremaju utonuti u duboki zimski san. Ptice selice sele u toplije krajeve.",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+}
 
-    }
+if (title == "PROSINAC") {
+  spans.add(TextSpan(
+    text: "Prosinac je ",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: "posljednji mjesec u godini",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: ". Ujedno je i mjesec najkraćih dana, a onim najkraćim ulazimo u zimu (",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: "zimski solsticij",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: ").\nSnijeg, mraz i magla obavijaju krajolike.\nVrijeme provodimo okruženi obitelji i prijateljima povodom ",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: "Božića i Nove godine.",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+}
+
     return spans;
   }
 }
@@ -646,10 +693,25 @@ class _MatchingGameState extends State<MatchingGame> {
               child: Text("Igraj ponovo", style: TextStyle(fontSize: settings.fontSize - 6, fontFamily: settings.fontFamily)),
             ),
             ElevatedButton(
-              onPressed: () {
+              onPressed: matchedPairs.length == widget.months.length ? () {
                 setState(() {
                   showResults = true;
                 });
+
+                if (settings.quizSound) {
+                  final allCorrect = widget.months.every((month) {
+                    final correct = widget.correctDescriptionsMap[month];
+                    final matched = matchedPairs[month];
+                    return matched == correct;
+                  });
+
+                  final soundPath = allCorrect
+                      ? 'audio/right_feedback.mp3'
+                      : 'audio/fail_feedback.mp3';
+
+                  MusicController().playFeedbackSound(soundPath);
+                }
+
                 // Pokreni timer koji zatvara dijalog nakon 6 sekundi
                 _autoCloseTimer?.cancel(); // Ako već postoji, otkaži ga
                 _autoCloseTimer = Timer(const Duration(seconds: 3), () {
@@ -657,7 +719,7 @@ class _MatchingGameState extends State<MatchingGame> {
                     Navigator.of(context).pop(); // Zatvori popup
                   }
                 });
-              },
+              }: null,
               child: Text("Provjeri rezultat", style: TextStyle(fontSize: settings.fontSize - 6, fontFamily: settings.fontFamily)),
             ),
           ],

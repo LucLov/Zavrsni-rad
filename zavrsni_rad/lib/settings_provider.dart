@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:zavrsni_rad/music_controller.dart';
 
 class SettingsProvider extends ChangeNotifier {
   double _fontSize = 30.0;
@@ -26,6 +27,9 @@ class SettingsProvider extends ChangeNotifier {
     _fontFamily = prefs.getString('fontFamily') ?? 'Sans';
     _backgroundSound = prefs.getBool('backgroundSound') ?? true;
     _quizSound = prefs.getBool('quizSound') ?? true;
+
+    await MusicController().updateMusic(_backgroundSound);
+
     notifyListeners();
   }
 
@@ -41,6 +45,7 @@ class SettingsProvider extends ChangeNotifier {
 
   void setBackgroundSound(bool value) {
     _backgroundSound = value;
+    MusicController().updateMusic(value); // <-- new
     notifyListeners();
   }
 
@@ -48,7 +53,7 @@ class SettingsProvider extends ChangeNotifier {
     _quizSound = value;
     notifyListeners();
   }
-
+  
   Future<void> saveSettings() async {
     final prefs = await SharedPreferences.getInstance();
     await prefs.setDouble('fontSize', _fontSize);

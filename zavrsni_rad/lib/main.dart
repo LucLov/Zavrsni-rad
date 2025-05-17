@@ -21,7 +21,6 @@ void main() async {
       child: const NavigatorApp(),
     ),
   );
-  //runApp(const NavigatorApp());
 }
 
 class NavigatorApp extends StatelessWidget {
