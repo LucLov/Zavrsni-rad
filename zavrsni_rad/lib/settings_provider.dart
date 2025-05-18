@@ -16,17 +16,14 @@ class SettingsProvider extends ChangeNotifier {
   Locale _locale = const Locale('hr');
   Locale get locale => _locale;
 
-  void setLocale(Locale newLocale) {
-    _locale = newLocale;
-    notifyListeners();
-  }
-
   Future<void> loadSettings() async {
     final prefs = await SharedPreferences.getInstance();
     _fontSize = prefs.getDouble('fontSize') ?? 24.0;
     _fontFamily = prefs.getString('fontFamily') ?? 'Sans';
     _backgroundSound = prefs.getBool('backgroundSound') ?? true;
     _quizSound = prefs.getBool('quizSound') ?? true;
+    String? langCode = prefs.getString('languageCode');
+    _locale = langCode != null ? Locale(langCode) : const Locale('hr');
 
     await MusicController().updateMusic(_backgroundSound);
 
@@ -40,6 +37,11 @@ class SettingsProvider extends ChangeNotifier {
 
   void updateFontFamily(String font) {
     _fontFamily = font;
+    notifyListeners();
+  }
+  
+  void setLocale(Locale newLocale) {
+    _locale = newLocale;
     notifyListeners();
   }
 
@@ -60,5 +62,6 @@ class SettingsProvider extends ChangeNotifier {
     await prefs.setString('fontFamily', _fontFamily);
     await prefs.setBool('backgroundSound', _backgroundSound);
     await prefs.setBool('quizSound', _quizSound);
+    await prefs.setString('languageCode', _locale.languageCode);
   }
 }

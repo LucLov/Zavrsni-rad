@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:zavrsni_rad/music_controller.dart';
 import 'package:zavrsni_rad/settings_provider.dart';
 import 'package:zavrsni_rad/settings_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Make sure preferences load first
@@ -68,7 +69,7 @@ class _SpringScreenState extends State<SpringScreen> {
       children: [
         Positioned.fill(
           child: Image.asset(
-            'assets/images/4.png',
+            AppLocalizations.of(context)!.springBg,
             fit: BoxFit.cover,
           ),
         ),
@@ -108,12 +109,12 @@ class _SpringScreenState extends State<SpringScreen> {
                 child: _buildBox(
                     context,
                     settings,
-                    "4. TRAVANJ",
-                    "TRAVANJ",
-                    "4.",
+                    AppLocalizations.of(context)!.aprButtonText,
+                    AppLocalizations.of(context)!.aprTitle,
+                    AppLocalizations.of(context)!.aprMonthNumber,
                     "travanj_slika.png",
                     "30",
-                    "Klikni za informacije o travnju!",
+                    AppLocalizations.of(context)!.aprInstruction,
                     isTravanjSelected,
                     (bool isSelected) {
                       setState(() {
@@ -127,12 +128,12 @@ class _SpringScreenState extends State<SpringScreen> {
                 child: _buildBox(
                     context,
                     settings,
-                    "5. SVIBANJ",
-                    "SVIBANJ",
-                    "5.",
+                    AppLocalizations.of(context)!.mayButtonText,
+                    AppLocalizations.of(context)!.mayTitle,
+                    AppLocalizations.of(context)!.mayMonthNumber,
                     "svibanj_slika.png",
                     "30",
-                    "Klikni za informacije o svibnju!",
+                    AppLocalizations.of(context)!.mayInstruction,
                     isSvibanjSelected,
                     (bool isSelected) {
                       setState(() {
@@ -146,12 +147,12 @@ class _SpringScreenState extends State<SpringScreen> {
                 child: _buildBox(
                     context,
                     settings,
-                    "6. LIPANJ",
-                    "LIPANJ",
-                    "6.",
+                    AppLocalizations.of(context)!.junButtonText,
+                    AppLocalizations.of(context)!.junTitle,
+                    AppLocalizations.of(context)!.junMonthNumber,
                     "lipanj_slika.png",
                     "31",
-                    "Klikni za informacije o lipnju!",
+                    AppLocalizations.of(context)!.junInstruction,
                     isLipanjSelected,
                     (bool isSelected) {
                       setState(() {
@@ -173,7 +174,7 @@ class _SpringScreenState extends State<SpringScreen> {
                     ),
                   ),
                   child: Text(
-                    "Provježbaj znanje o proljetnim mjesecima!",
+                    AppLocalizations.of(context)!.spring_check,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: settings.fontSize,
@@ -269,7 +270,7 @@ class _SpringScreenState extends State<SpringScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text(
-                                        "Redni broj:",
+                                        AppLocalizations.of(context)!.ordinalNumber,
                                         style: TextStyle(
                                           fontFamily: settings.fontFamily,
                                           fontSize: settings.fontSize - 6,
@@ -313,7 +314,7 @@ class _SpringScreenState extends State<SpringScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text(
-                                        "Broj dana:",
+                                        AppLocalizations.of(context)!.numberOfDays,
                                         style: TextStyle(
                                           fontFamily: settings.fontFamily,
                                           fontSize: settings.fontSize - 6,
@@ -356,7 +357,7 @@ class _SpringScreenState extends State<SpringScreen> {
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: Text('Zatvori', style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+                        child: Text(AppLocalizations.of(context)!.closeButton, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
                       ),
                     ],
                   ),
@@ -377,83 +378,75 @@ class _SpringScreenState extends State<SpringScreen> {
   List<TextSpan> _buildActivityText(String title, SettingsProvider settings) {
     List<TextSpan> spans = [];
     
-    if (title == "TRAVANJ") {
+    if (title == "TRAVANJ" || title == "APRIL") {
   spans.add(TextSpan(
-    text: "U travnju su ",
+    text: AppLocalizations.of(context)!.apr1,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: "dani sve topliji",
+    text: AppLocalizations.of(context)!.apr2,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: ", što znači da sve više vremena možemo provoditi vani, na otvorenom. Osim toga, vrijeme može biti nepredvidivo zbog pokojeg kišnog oblaka na nebu.\nU travnju se najčešće obilježava ",
+    text: AppLocalizations.of(context)!.apr3,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: "Uskrs",
+    text: AppLocalizations.of(context)!.apr4,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: ", kojem se djeca posebno vesele jer s njime dolaze i proljetni praznici.\nPrvi dan ovog mjeseca poznat je kao ",
+    text: AppLocalizations.of(context)!.apr5,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: "Dan šale",
+    text: AppLocalizations.of(context)!.apr6,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: " ili ",
-    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
-  ));
-  spans.add(TextSpan(
-    text: "Prvi april",
-    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
-  ));
-  spans.add(TextSpan(
-    text: ", stoga ne zaboravi nekoga nasamariti!",
+    text: AppLocalizations.of(context)!.apr7,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
 }
 
-if (title == "SVIBANJ") {
+if (title == "SVIBANJ" || title == "MAY") {
   spans.add(TextSpan(
-    text: "Proljeće je u punom jeku i ",
+    text: AppLocalizations.of(context)!.may1,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: "dani su sve duži",
+    text: AppLocalizations.of(context)!.may2,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: ". Livade, vrtovi i parkovi puni su boja i mirisa koje obogaćuju pčele i leptiri. U svibnju uživamo u slatkim ",
+    text: AppLocalizations.of(context)!.may3,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: "jagodama",
+    text: AppLocalizations.of(context)!.may4,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: " i ostalim voćkama koje sazrijevaju.",
+    text: AppLocalizations.of(context)!.may5,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
 }
 
-if (title == "LIPANJ") {
+if (title == "LIPANJ" || title == "JUNE") {
   spans.add(TextSpan(
-    text: "Dani su vrlo dugi i sunce sja gotovo cijeli dan. Učenici nestrpljivo iščekuju kraj školske godine i početak ljetnih praznika.\n",
+    text: AppLocalizations.of(context)!.jun1,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: "Krajem lipnja započinje ljeto",
+    text: AppLocalizations.of(context)!.jun2,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: " – tada je dan najduži, a noć najkraća. Taj dan nazivamo ",
+    text: AppLocalizations.of(context)!.jun3,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: "ljetni solsticij",
+    text: AppLocalizations.of(context)!.jun4,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
   ));
   spans.add(TextSpan(
@@ -466,11 +459,11 @@ if (title == "LIPANJ") {
   }
 }
   void _showMatchingGameDialog(BuildContext context, SettingsProvider settings) {
-  final months = ["travanj", "svibanj", "lipanj"];
+  final months = [AppLocalizations.of(context)!.gameAprName, AppLocalizations.of(context)!.gameMayName, AppLocalizations.of(context)!.gameJunName];
   final correctDescriptionsMap = {
-      "travanj": "4. mjesec",
-      "svibanj": "5. mjesec",
-      "lipanj": "6. mjesec",
+      AppLocalizations.of(context)!.gameAprName: AppLocalizations.of(context)!.gameAprNum,
+      AppLocalizations.of(context)!.gameMayName: AppLocalizations.of(context)!.gameMayNum,
+      AppLocalizations.of(context)!.gameJunName: AppLocalizations.of(context)!.gameJunNum,
     };
 
     final descriptions = correctDescriptionsMap.values.toList()..shuffle();
@@ -512,10 +505,9 @@ if (title == "LIPANJ") {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Upute za igru", textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+          title: Text(AppLocalizations.of(context)!.gameInstuctionTitle, textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
           content: Text(
-            "Spoji svaki mjesec s odgovarajućim opisom.\n\n"
-            "Dovuci opis mjeseca s desne strane do naziva mjeseca s lijeve strane ili klikni mjesec pa zatim klikni na opis mjeseca.\n",
+            AppLocalizations.of(context)!.gameInstuctions,
             style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
           ),
           actions: [
@@ -552,14 +544,16 @@ class _MatchingGameState extends State<MatchingGame> {
   String? selectedMonth;
 
   String? _correctMatch(String month) {
-    switch (month) {
-      case "travanj":
-        return "4. mjesec";
-      case "svibanj":
-        return "5. mjesec";
-      case "lipanj":
-        return "6. mjesec";
+    final localizations = AppLocalizations.of(context)!;
+
+    if (month == localizations.gameAprName) {
+      return localizations.gameAprNum;
+    } else if (month == localizations.gameMayName) {
+      return localizations.gameMayNum;
+    } else if (month == localizations.gameJunName) {
+      return localizations.gameJunNum;
     }
+
     return null;
   }
 
@@ -591,7 +585,7 @@ class _MatchingGameState extends State<MatchingGame> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text("Spoji mjesec s opisom:", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+        Text(AppLocalizations.of(context)!.smallInstruction, textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
         const SizedBox(height: 20),
         Row(
           children: [
@@ -689,7 +683,7 @@ class _MatchingGameState extends State<MatchingGame> {
 
                 });
               } : null,
-              child: Text("Igraj ponovo", style: TextStyle(fontSize: settings.fontSize - 6, fontFamily: settings.fontFamily)),
+              child: Text(AppLocalizations.of(context)!.playAgain, style: TextStyle(fontSize: settings.fontSize - 6, fontFamily: settings.fontFamily)),
             ),
             ElevatedButton(
               onPressed: matchedPairs.length == widget.months.length ?() {
@@ -718,7 +712,7 @@ class _MatchingGameState extends State<MatchingGame> {
                   }
                 });
               } : null,
-              child: Text("Provjeri rezultat", style: TextStyle(fontSize: settings.fontSize - 6, fontFamily: settings.fontFamily)),
+              child: Text(AppLocalizations.of(context)!.checkResults, style: TextStyle(fontSize: settings.fontSize - 6, fontFamily: settings.fontFamily)),
             ),
           ],
         )

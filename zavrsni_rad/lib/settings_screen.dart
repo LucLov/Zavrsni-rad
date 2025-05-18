@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zavrsni_rad/settings_provider.dart';
 import 'package:zavrsni_rad/music_controller.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
@@ -15,6 +17,12 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late String _tempFontFamily;
   late bool _tempBackgroundSound;
   late bool _tempQuizSound;
+  late String _tempLanguageCode;
+  static const Map<String, String> languageMap = {
+    'hr': 'Hrvatski',
+    'en': 'English',
+  };
+
 
   late bool _originalBackgroundSound;
   bool _applied = false;
@@ -29,7 +37,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
     _tempFontFamily = settings.fontFamily;
     _tempBackgroundSound = settings.backgroundSound;
     _tempQuizSound = settings.quizSound;
-
+    _tempLanguageCode = settings.locale.languageCode;
     _originalBackgroundSound = settings.backgroundSound;
   }
 
@@ -57,7 +65,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
       onWillPop: _handleBack,
       child: Scaffold(
         appBar: AppBar(
-          title: Text("Postavke", style: TextStyle(fontSize: settings.fontSize + 6, fontFamily: settings.fontFamily)),
+          title: Text(AppLocalizations.of(context)!.settingsTitle, style: TextStyle(fontSize: settings.fontSize + 6, fontFamily: settings.fontFamily)),
           backgroundColor: const Color(0XFFC4E2FF),
           foregroundColor: const Color(0xFF9D3D25),
           leading: IconButton(
@@ -73,7 +81,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text("Izaberi font:", style: TextStyle(fontSize: settings.fontSize, fontWeight: FontWeight.bold, fontFamily: settings.fontFamily)),
+              Text(AppLocalizations.of(context)!.selectFont, style: TextStyle(fontSize: settings.fontSize, fontWeight: FontWeight.bold, fontFamily: settings.fontFamily)),
               DropdownButton<String>(
                 value: _tempFontFamily,
                 isExpanded: true,
@@ -93,7 +101,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 }).toList(),
               ),
               const SizedBox(height: 20),
-              Text("Prilagodi veličinu fonta:", style: TextStyle(fontSize: settings.fontSize, fontWeight: FontWeight.bold, fontFamily: settings.fontFamily)),
+              Text(AppLocalizations.of(context)!.adjustFontSize, style: TextStyle(fontSize: settings.fontSize, fontWeight: FontWeight.bold, fontFamily: settings.fontFamily)),
               Slider(
                 value: _tempFontSize,
                 min: 24.0,
@@ -107,14 +115,35 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 },
               ),
               const SizedBox(height: 20),
-              Text("Izgled odabranih opcija:", style: TextStyle(fontSize: settings.fontSize, fontWeight: FontWeight.bold, fontFamily: settings.fontFamily)),
+              Text(AppLocalizations.of(context)!.preview, style: TextStyle(fontSize: settings.fontSize, fontWeight: FontWeight.bold, fontFamily: settings.fontFamily)),
               const SizedBox(height: 10),
               Text(
-                "Ovo je primjer teksta",
+                AppLocalizations.of(context)!.previewText,
                 style: TextStyle(fontSize: _tempFontSize, fontFamily: _tempFontFamily),
               ),
+              const SizedBox(height: 20),
+              Text(AppLocalizations.of(context)!.chooseLanguage, style: TextStyle(fontSize: settings.fontSize, fontWeight: FontWeight.bold, fontFamily: settings.fontFamily)),
+              DropdownButton<String>(
+                value: _tempLanguageCode,
+                isExpanded: true,
+                iconSize: 40,
+                onChanged: (String? newCode) {
+                  if (newCode != null) {
+                    setState(() {
+                      _tempLanguageCode = newCode;
+                    });
+                  }
+                },
+                items: languageMap.entries.map((entry) {
+                  return DropdownMenuItem<String>(
+                    value: entry.key,
+                    child: Text(entry.value, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+                  );
+                }).toList(),
+              ),
+
               SwitchListTile(
-                title: Text("Pozadinski zvuk", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+                title: Text(AppLocalizations.of(context)!.backgroundSound, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
                 value: _tempBackgroundSound,
                 onChanged: (bool value) {
                   setState(() {
@@ -125,7 +154,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 },
               ),
               SwitchListTile(
-                title: Text("Zvuk kao rezultat rješenja", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+                title: Text(AppLocalizations.of(context)!.quizSound, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
                 value: _tempQuizSound,
                 onChanged: (bool value) {
                   setState(() {
@@ -141,6 +170,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     settings.updateFontSize(_tempFontSize);
                     settings.setBackgroundSound(_tempBackgroundSound);
                     settings.setQuizSound(_tempQuizSound);
+                    settings.setLocale(Locale(_tempLanguageCode));
                     await settings.saveSettings();
 
                     _applied = true;
@@ -148,7 +178,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text("Postavke su spremljene", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+                        content: Text(AppLocalizations.of(context)!.settingsSaved, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
                       ),
                     );
                   },
@@ -158,7 +188,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                     foregroundColor: Colors.black,
                     textStyle: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
                   ),
-                  child: const Text("Primijeni"),
+                  child: Text(AppLocalizations.of(context)!.apply),
                 ),
               ),
             ],

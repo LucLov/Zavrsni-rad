@@ -9,6 +9,7 @@ import 'fall_screen.dart';
 import 'package:provider/provider.dart';
 import 'package:zavrsni_rad/settings_provider.dart';
 import 'package:zavrsni_rad/settings_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Make sure preferences load first
@@ -76,7 +77,7 @@ class _WinterScreenState extends State<WinterScreen> {
       children: [
         Positioned.fill(
           child: Image.asset(
-            'assets/images/3.png',
+            AppLocalizations.of(context)!.winterBg,
             fit: BoxFit.cover,
           ),
         ),
@@ -116,12 +117,12 @@ class _WinterScreenState extends State<WinterScreen> {
                 child: _buildBox(
                     context,
                     settings,
-                    "1. SIJEČANJ",
-                    "SIJEČANJ",
-                    "1.",
+                    AppLocalizations.of(context)!.janButtonText,
+                    AppLocalizations.of(context)!.janTitle,
+                    AppLocalizations.of(context)!.janMonthNumber,
                     "sijecanj_slika.png",
                     "31",
-                    "Klikni za informacije o siječnju!",
+                    AppLocalizations.of(context)!.janInstruction,
                     isSijecanjSelected,
                     (bool isSelected) {
                       setState(() {
@@ -135,12 +136,12 @@ class _WinterScreenState extends State<WinterScreen> {
                 child: _buildBox(
                     context,
                     settings,
-                    "2. VELJAČA",
-                    "VELJAČA",
-                    "2.",
+                    AppLocalizations.of(context)!.febButtonText,
+                    AppLocalizations.of(context)!.febTitle,
+                    AppLocalizations.of(context)!.febMonthNumber,
                     "veljaca_slika.png",
                     "28 (29)",
-                    "Klikni za informacije o veljači!",
+                    AppLocalizations.of(context)!.febInstruction,
                     isVeljacaSelected,
                     (bool isSelected) {
                       setState(() {
@@ -154,12 +155,12 @@ class _WinterScreenState extends State<WinterScreen> {
                 child: _buildBox(
                     context,
                     settings,
-                    "3. OŽUJAK",
-                    "OŽUJAK",
-                    "3.",
+                    AppLocalizations.of(context)!.marButtonText,
+                    AppLocalizations.of(context)!.marTitle,
+                    AppLocalizations.of(context)!.marMonthNumber,
                     "ozujak_slika.png",
                     "31",
-                    "Klikni za informacije o ožujku!",
+                    AppLocalizations.of(context)!.marInstruction,
                     isOzujakSelected,
                     (bool isSelected) {
                       setState(() {
@@ -181,7 +182,7 @@ class _WinterScreenState extends State<WinterScreen> {
                     ),
                   ),
                   child: Text(
-                    "Provježbaj znanje o zimskim mjesecima!",
+                    AppLocalizations.of(context)!.winter_check,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: settings.fontSize,
@@ -277,7 +278,7 @@ class _WinterScreenState extends State<WinterScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text(
-                                        "Redni broj:",
+                                        AppLocalizations.of(context)!.ordinalNumber,
                                         style: TextStyle(
                                           fontFamily: settings.fontFamily,
                                           fontSize: settings.fontSize - 6,
@@ -321,7 +322,7 @@ class _WinterScreenState extends State<WinterScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text(
-                                        "Broj dana:",
+                                        AppLocalizations.of(context)!.numberOfDays,
                                         style: TextStyle(
                                           fontFamily: settings.fontFamily,
                                           fontSize: settings.fontSize - 6,
@@ -364,7 +365,7 @@ class _WinterScreenState extends State<WinterScreen> {
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: Text('Zatvori', style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+                        child: Text(AppLocalizations.of(context)!.closeButton, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
                       ),
                     ],
                   ),
@@ -385,76 +386,80 @@ class _WinterScreenState extends State<WinterScreen> {
   List<TextSpan> _buildActivityText(String title, SettingsProvider settings) {
     List<TextSpan> spans = [];
     
-    if (title == "SIJEČANJ") {
+    if (title == "SIJEČANJ" || title == "JANUARY") {
   spans.add(TextSpan(
-    text: "Sa siječnjem ",
+    text: AppLocalizations.of(context)!.jan1,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: "započinje nova godina",
+    text: AppLocalizations.of(context)!.jan2,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: ". Često donosimo novogodišnje odluke, tj. planove i želje za godinu koja dolazi. U siječnju uživamo u posljednjim blagdanskim danima i praznicima. Odlazi se na sanjkanje, grudanje i skijanje. Djeca se vraćaju u školu i nastavljaju s učenjem.",
+    text: AppLocalizations.of(context)!.jan3,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
 }
 
-if (title == "VELJAČA") {
+if (title == "VELJAČA" || title == "FEBRUARY") {
   spans.add(TextSpan(
-    text: "Veljača je ",
+    text: AppLocalizations.of(context)!.feb1,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: "najkraći mjesec u godini. Svaka četvrta godina u kojoj veljača ima 29 dana naziva se prijestupnom godinom. ",
+    text: AppLocalizations.of(context)!.feb2,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: "Zima još traje, ali dani polako postaju duži.\nU veljači se obilježavaju ",
+    text: AppLocalizations.of(context)!.feb3,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: "maškare (fašnik, poklade)",
+    text: AppLocalizations.of(context)!.feb4,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: ". Djeca se maskiraju u svoje omiljene superjunake, princeze i razne druge likove te sudjeluju u povorkama.\nTakođer, obilježava se i ",
+    text: AppLocalizations.of(context)!.feb5,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: "Valentinovo",
+    text: AppLocalizations.of(context)!.feb6,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: " – dan kada posebnu pažnju posvećujemo ljubavi prema prijateljima, obitelji i simpatijama.",
+    text: AppLocalizations.of(context)!.feb7,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
 }
 
-if (title == "OŽUJAK") {
+if (title == "OŽUJAK" || title == "MARCH") {
   spans.add(TextSpan(
-    text: "Cvijeće raste, drveće pupaju, a ptice pjevaju. Ptice selice poput ",
+    text: AppLocalizations.of(context)!.mar1,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: "lastavica, roda i grlica",
+    text: AppLocalizations.of(context)!.mar2,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: " vraćaju se iz toplijih krajeva, a proljeće najavljuju i vjesnici proljeća – ",
+    text: AppLocalizations.of(context)!.mar3,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: "visibabe, jaglaci i ljubičice.\n",
+    text: AppLocalizations.of(context)!.mar4,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: "Krajem ožujka počinje proljeće, a tada dan i noć traju približno jednako dugo – taj dan nazivamo ",
+    text: AppLocalizations.of(context)!.mar5,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: "proljetna ravnodnevnica.",
+    text: AppLocalizations.of(context)!.mar6,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: ".",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
 }
 
@@ -465,11 +470,11 @@ if (title == "OŽUJAK") {
 
 
   void _showMatchingGameDialog(BuildContext context, SettingsProvider settings) {
-    final months = ["siječanj", "veljača", "ožujak"];
+    final months = [AppLocalizations.of(context)!.gameJanName, AppLocalizations.of(context)!.gameFebName, AppLocalizations.of(context)!.gameMarName];
     final correctDescriptionsMap = {
-      "siječanj": "1. mjesec",
-      "veljača": "2. mjesec",
-      "ožujak": "3. mjesec",
+      AppLocalizations.of(context)!.gameJanName: AppLocalizations.of(context)!.gameJanNum,
+      AppLocalizations.of(context)!.gameFebName: AppLocalizations.of(context)!.gameFebNum,
+      AppLocalizations.of(context)!.gameMarName: AppLocalizations.of(context)!.gameMarNum,
     };
 
     final descriptions = correctDescriptionsMap.values.toList()..shuffle();
@@ -512,10 +517,9 @@ if (title == "OŽUJAK") {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Upute za igru", textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+          title: Text(AppLocalizations.of(context)!.gameInstuctionTitle, textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
           content: Text(
-            "Spoji svaki mjesec s odgovarajućim opisom.\n\n"
-            "Dovuci opis mjeseca s desne strane do naziva mjeseca s lijeve strane ili klikni mjesec pa zatim klikni na opis mjeseca.\n",
+            AppLocalizations.of(context)!.gameInstuctions,
             style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
           ),
           actions: [
@@ -551,16 +555,19 @@ class _MatchingGameState extends State<MatchingGame> {
   String? selectedMonth;
 
   String? _correctMatch(String month) {
-    switch (month) {
-      case "siječanj":
-        return "1. mjesec";
-      case "veljača":
-        return "2. mjesec";
-      case "ožujak":
-        return "3. mjesec";
+    final localizations = AppLocalizations.of(context)!;
+
+    if (month == localizations.gameJanName) {
+      return localizations.gameJanNum;
+    } else if (month == localizations.gameFebName) {
+      return localizations.gameFebNum;
+    } else if (month == localizations.gameMarName) {
+      return localizations.gameMarNum;
     }
+
     return null;
   }
+
 
   @override
   void initState() {
@@ -590,7 +597,7 @@ class _MatchingGameState extends State<MatchingGame> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text("Spoji mjesec s opisom:", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+        Text(AppLocalizations.of(context)!.smallInstruction, textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
         const SizedBox(height: 20),
         Row(
           children: [
@@ -687,7 +694,7 @@ class _MatchingGameState extends State<MatchingGame> {
                   randomizedDescriptions = List.from(widget.correctDescriptionsMap.values)..shuffle();
                 });
               } : null,
-              child: Text("Igraj ponovo", style: TextStyle(fontSize: settings.fontSize - 6, fontFamily: settings.fontFamily)),
+              child: Text(AppLocalizations.of(context)!.playAgain, style: TextStyle(fontSize: settings.fontSize - 6, fontFamily: settings.fontFamily)),
             ),
             ElevatedButton(
               onPressed: matchedPairs.length == widget.months.length ? () {
@@ -717,7 +724,7 @@ class _MatchingGameState extends State<MatchingGame> {
                   }
                 });
               } : null,
-              child: Text("Provjeri rezultat", style: TextStyle(fontSize: settings.fontSize - 6, fontFamily: settings.fontFamily)),
+              child: Text(AppLocalizations.of(context)!.checkResults, style: TextStyle(fontSize: settings.fontSize - 6, fontFamily: settings.fontFamily)),
             ),
           ],
         ),

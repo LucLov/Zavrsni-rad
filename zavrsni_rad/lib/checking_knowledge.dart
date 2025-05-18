@@ -5,6 +5,7 @@ import 'package:zavrsni_rad/music_controller.dart';
 import 'package:zavrsni_rad/settings_provider.dart';
 import 'package:zavrsni_rad/settings_screen.dart';
 import 'dart:math' as math;
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 
 void main() async {
@@ -60,211 +61,333 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
   late Animation<double> animation;
 
     // Each season gets its own question list
-  Map<String, List<Map<String, dynamic>>> questionPools = {
-    'zima': [
+  Map<String, List<Map<String, dynamic>>> getQuestionPools(BuildContext context) {
+  return {
+    AppLocalizations.of(context)!.winter: [
       {
-    "question": "S kojim mjesecom započinje nova godina?",
-    "correct": "Sa siječnjem.",
-    "wrong": ["S prosincem.", "S travnjem."]
-  },
-  {
-    "question": "Što se često događa tijekom zime?",
-    "correct": "Sniježi.",
-    "wrong": ["Cvjeta.", "Žanje se."]
-  },
-  {
-    "question": "Koji je najkraći mjesec u godini?",
-    "correct": "Veljača.",
-    "wrong": ["Ožujak.", "Siječanj."]
-  },
-  {
-    "question": "Koji mjesec ima jedan dan više svake prijestupne (četvrte) godine?",
-    "correct": "Veljača.",
-    "wrong": ["Ožujak.", "Siječanj."]
-  },
-  {
-    "question": "U kojem mjesecu obilježavamo Dan zaljubljenih (Valentinovo)?",
-    "correct": "U veljači.",
-    "wrong": ["U siječnju.", "U ožujku."]
-  },
-  {
-    "question": "Što se najčešće obilježava u veljači?",
-    "correct": "Fašnik (Maškare).",
-    "wrong": ["Božić.", "Uskrs."]
-  },
-  {
-    "question": "Koje biljke nazivamo 'vjesnicima proljeća'?",
-    "correct": "Visibabe, jaglaci i ljubičice.",
-    "wrong": ["Ruže, šafrani.", "Tulipani, božuri."]
-  },
-  {
-    "question": "Koje ptice selice se vraćaju iz toplijih krajeva u proljeće?",
-    "correct": "Lastavice, rode i grlice.",
-    "wrong": ["Golubovi i vrane.", "Galebovi i vrapci."]
-  },
-  {
-    "question": "U kojem mjesecu nastupa prijelaz iz zime u proljeće?",
-    "correct": "U ožujku.",
-    "wrong": ["U siječnju.", "U travnju."]
-  }
+        "question": AppLocalizations.of(context)!.winter_question_1,
+        "correct": AppLocalizations.of(context)!.winter_correct_1,
+        "wrong": [
+          AppLocalizations.of(context)!.winter_wrong_1_1,
+          AppLocalizations.of(context)!.winter_wrong_1_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.winter_question_2,
+        "correct": AppLocalizations.of(context)!.winter_correct_2,
+        "wrong": [
+          AppLocalizations.of(context)!.winter_wrong_2_1,
+          AppLocalizations.of(context)!.winter_wrong_2_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.winter_question_3,
+        "correct": AppLocalizations.of(context)!.winter_correct_3,
+        "wrong": [
+          AppLocalizations.of(context)!.winter_wrong_3_1,
+          AppLocalizations.of(context)!.winter_wrong_3_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.winter_question_4,
+        "correct": AppLocalizations.of(context)!.winter_correct_4,
+        "wrong": [
+          AppLocalizations.of(context)!.winter_wrong_4_1,
+          AppLocalizations.of(context)!.winter_wrong_4_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.winter_question_5,
+        "correct": AppLocalizations.of(context)!.winter_correct_5,
+        "wrong": [
+          AppLocalizations.of(context)!.winter_wrong_5_1,
+          AppLocalizations.of(context)!.winter_wrong_5_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.winter_question_6,
+        "correct": AppLocalizations.of(context)!.winter_correct_6,
+        "wrong": [
+          AppLocalizations.of(context)!.winter_wrong_6_1,
+          AppLocalizations.of(context)!.winter_wrong_6_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.winter_question_7,
+        "correct": AppLocalizations.of(context)!.winter_correct_7,
+        "wrong": [
+          AppLocalizations.of(context)!.winter_wrong_7_1,
+          AppLocalizations.of(context)!.winter_wrong_7_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.winter_question_8,
+        "correct": AppLocalizations.of(context)!.winter_correct_8,
+        "wrong": [
+          AppLocalizations.of(context)!.winter_wrong_8_1,
+          AppLocalizations.of(context)!.winter_wrong_8_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.winter_question_9,
+        "correct": AppLocalizations.of(context)!.winter_correct_9,
+        "wrong": [
+          AppLocalizations.of(context)!.winter_wrong_9_1,
+          AppLocalizations.of(context)!.winter_wrong_9_2,
+        ],
+      },
     ],
-    'proljeće': [
+    AppLocalizations.of(context)!.spring: [
       {
-    "question": "Što se događa s danima tijekom proljeća?",
-    "correct": "Dani postaju duži.",
-    "wrong": ["Dani postaju kraći.", "Dani ostaju isti."]
-  },
-  {
-    "question": "Koje životinje često povezujemo s proljećem i Uskrsom?",
-    "correct": "Zec i pile.",
-    "wrong": ["Jež i sova.", "Riba i hobotnica."]
-  },
-  {
-    "question": "Što se često događa s drvećem u proljeće?",
-    "correct": "Pušta pupoljke i listove.",
-    "wrong": ["Opada im lišće.", "Postaju smeđa."]
-  },
-  {
-    "question": "Koja je osobitost proljetne ravnodnevnice?",
-    "correct": "Dan i noć traju približno jednako dugo.",
-    "wrong": ["Dan traje dulje od noći.", "Noć traje dulje od dana."]
-  },
-  {
-    "question": "Na prvi dan kojeg mjeseca obilježavamo Dan šale?",
-    "correct": "Travanj.",
-    "wrong": ["Svibanj.", "Lipanj."]
-  },
-  {
-    "question": "Koje godišnje doba započinje u lipnju?",
-    "correct": "Ljeto.",
-    "wrong": ["Jesen.", "Proljeće."]
-  },
-  {
-    "question": "Dan kada dan traje najdulje, a noć najkraće, događa se krajem kojeg mjeseca?",
-    "correct": "Lipnja.",
-    "wrong": ["Svibnja.", "Srpnja."]
-  },
-  {
-    "question": "Koje voće često jedemo u proljeće?",
-    "correct": "Jagode.",
-    "wrong": ["Jabuke.", "Kruške."]
-  }],
-    'ljeto': [
+        "question": AppLocalizations.of(context)!.spring_question_1,
+        "correct": AppLocalizations.of(context)!.spring_correct_1,
+        "wrong": [
+          AppLocalizations.of(context)!.spring_wrong_1_1,
+          AppLocalizations.of(context)!.spring_wrong_1_2,
+        ],
+      },
       {
-    "question": "Što ljudi često rade ljeti?",
-    "correct": "Idu na ljetovanje.",
-    "wrong": ["Kopaju krumpire.", "Siju pšenicu."]
-  },
-  {
-    "question": "Koja dva susjedna mjeseca imaju isti broj dana?",
-    "correct": "Srpanj i kolovoz.",
-    "wrong": ["Siječanj i veljača.", "Kolovoz i rujan."]
-  },
-  {
-    "question": "Koje poljoprivredne kulture uzgajamo ljeti?",
-    "correct": "Kukuruz, rajčicu i krastavce.",
-    "wrong": ["Bundevu.", "Kapi znoja."]
-  },
-  {
-    "question": "Koje se voće jede ljeti kako bismo se osvježili?",
-    "correct": "Lubenica.",
-    "wrong": ["Jabuka.", "Banana."]
-  },
-  {
-    "question": "Kako se zove pojava kada su dani jako vrući i bez kiše?",
-    "correct": "Suša.",
-    "wrong": ["Hladni val.", "Kipuće ljeto."]
-  },
-  {
-    "question": "Što se često koristi za zaštitu od sunca ljeti?",
-    "correct": "Kapa, svijetla odjeća i krema za sunčanje.",
-    "wrong": ["Šal.", "Kabanica."]
-  },
-  {
-    "question": "Koje godišnje doba započinje u rujnu?",
-    "correct": "Jesen.",
-    "wrong": ["Proljeće.", "Zima."]
-  },
-  {
-    "question": "Kako se zove pojava kada zrak treperi zbog velikih vrućina?",
-    "correct": "Vrela izmaglica (ljetna fatamorgana).",
-    "wrong": ["Vjetar.", "Plima."]
-  },
-  {
-    "question": "Koja pojava predstavlja opasnost za vrijeme velikih vrućina?",
-    "correct": "Požari.",
-    "wrong": ["Poplave.", "Obilne kiše."]
-  }],
-    'jesen': [
+        "question": AppLocalizations.of(context)!.spring_question_2,
+        "correct": AppLocalizations.of(context)!.spring_correct_2,
+        "wrong": [
+          AppLocalizations.of(context)!.spring_wrong_2_1,
+          AppLocalizations.of(context)!.spring_wrong_2_2,
+        ],
+      },
       {
-    "question": "Što pada u jesen?",
-    "correct": "Lišće.",
-    "wrong": ["Snijeg.", "Kapi znoja."]
-  },
-  {
-    "question": "Koja dva susjedna mjeseca (ne gledajući mjesece unutar jedne godine) imaju isti broj dana?",
-    "correct": "Prosinac i siječanj.",
-    "wrong": ["Kolovoz i rujan.", "Rujan i listopad."]
-  },
-  {
-    "question": "Koji plodovi sazrijevaju u jesen?",
-    "correct": "Jabuke, kruške i grožđe.",
-    "wrong": ["Lubenice i dinje.", "Jagode i maline."]
-  },
-  {
-    "question": "U koje boje listovi mijenjaju svoju boju?",
-    "correct": "U žutu, narančastu i smeđu.",
-    "wrong": ["U zelenu.", "U plavu."]
-  },
-  {
-    "question": "Što se događa s danima tijekom jeseni?",
-    "correct": "Dani postaju kraći.",
-    "wrong": ["Dani postaju duži.", "Dani ostaju isti."]
-  },
-  {
-    "question": "Koje povrće sazrijeva u jesen?",
-    "correct": "Krumpir, bundeva i mrkva.",
-    "wrong": ["Krastavci.", "Tikvice."]
-  },
-  {
-    "question": "Kako se zove jesenska pojava kada dan i noć traju jednako dugo?",
-    "correct": "Jesenska ravnodnevnica.",
-    "wrong": ["Ljetni solsticij.", "Zimski solsticij."]
-  },
-  {
-    "question": "Koje godišnje doba započinje krajem prosinca?",
-    "correct": "Zima.",
-    "wrong": ["Proljeće.", "Jesen."]
-  },
-  {
-    "question": "Koji blagdan obilježavamo krajem prosinca?",
-    "correct": "Božić.",
-    "wrong": ["Uskrs.", "Dan državnosti."]
-  }
+        "question": AppLocalizations.of(context)!.spring_question_3,
+        "correct": AppLocalizations.of(context)!.spring_correct_3,
+        "wrong": [
+          AppLocalizations.of(context)!.spring_wrong_3_1,
+          AppLocalizations.of(context)!.spring_wrong_3_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.spring_question_4,
+        "correct": AppLocalizations.of(context)!.spring_correct_4,
+        "wrong": [
+          AppLocalizations.of(context)!.spring_wrong_4_1,
+          AppLocalizations.of(context)!.spring_wrong_4_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.spring_question_5,
+        "correct": AppLocalizations.of(context)!.spring_correct_5,
+        "wrong": [
+          AppLocalizations.of(context)!.spring_wrong_5_1,
+          AppLocalizations.of(context)!.spring_wrong_5_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.spring_question_6,
+        "correct": AppLocalizations.of(context)!.spring_correct_6,
+        "wrong": [
+          AppLocalizations.of(context)!.spring_wrong_6_1,
+          AppLocalizations.of(context)!.spring_wrong_6_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.spring_question_7,
+        "correct": AppLocalizations.of(context)!.spring_correct_7,
+        "wrong": [
+          AppLocalizations.of(context)!.spring_wrong_7_1,
+          AppLocalizations.of(context)!.spring_wrong_7_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.spring_question_8,
+        "correct": AppLocalizations.of(context)!.spring_correct_8,
+        "wrong": [
+          AppLocalizations.of(context)!.spring_wrong_8_1,
+          AppLocalizations.of(context)!.spring_wrong_8_2,
+        ],
+      },
+    ],
+    AppLocalizations.of(context)!.summer: [
+      {
+        "question": AppLocalizations.of(context)!.summer_question_1,
+        "correct": AppLocalizations.of(context)!.summer_correct_1,
+        "wrong": [
+          AppLocalizations.of(context)!.summer_wrong_1_1,
+          AppLocalizations.of(context)!.summer_wrong_1_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.summer_question_2,
+        "correct": AppLocalizations.of(context)!.summer_correct_2,
+        "wrong": [
+          AppLocalizations.of(context)!.summer_wrong_2_1,
+          AppLocalizations.of(context)!.summer_wrong_2_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.summer_question_3,
+        "correct": AppLocalizations.of(context)!.summer_correct_3,
+        "wrong": [
+          AppLocalizations.of(context)!.summer_wrong_3_1,
+          AppLocalizations.of(context)!.summer_wrong_3_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.summer_question_4,
+        "correct": AppLocalizations.of(context)!.summer_correct_4,
+        "wrong": [
+          AppLocalizations.of(context)!.summer_wrong_4_1,
+          AppLocalizations.of(context)!.summer_wrong_4_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.summer_question_5,
+        "correct": AppLocalizations.of(context)!.summer_correct_5,
+        "wrong": [
+          AppLocalizations.of(context)!.summer_wrong_5_1,
+          AppLocalizations.of(context)!.summer_wrong_5_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.summer_question_6,
+        "correct": AppLocalizations.of(context)!.summer_correct_6,
+        "wrong": [
+          AppLocalizations.of(context)!.summer_wrong_6_1,
+          AppLocalizations.of(context)!.summer_wrong_6_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.summer_question_7,
+        "correct": AppLocalizations.of(context)!.summer_correct_7,
+        "wrong": [
+          AppLocalizations.of(context)!.summer_wrong_7_1,
+          AppLocalizations.of(context)!.summer_wrong_7_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.summer_question_8,
+        "correct": AppLocalizations.of(context)!.summer_correct_8,
+        "wrong": [
+          AppLocalizations.of(context)!.summer_wrong_8_1,
+          AppLocalizations.of(context)!.summer_wrong_8_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.summer_question_9,
+        "correct": AppLocalizations.of(context)!.summer_correct_9,
+        "wrong": [
+          AppLocalizations.of(context)!.summer_wrong_9_1,
+          AppLocalizations.of(context)!.summer_wrong_9_2,
+        ],
+      },
+    ],
+    AppLocalizations.of(context)!.fall: [
+      {
+        "question": AppLocalizations.of(context)!.fall_question_1,
+        "correct": AppLocalizations.of(context)!.fall_correct_1,
+        "wrong": [
+          AppLocalizations.of(context)!.fall_wrong_1_1,
+          AppLocalizations.of(context)!.fall_wrong_1_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.fall_question_2,
+        "correct": AppLocalizations.of(context)!.fall_correct_2,
+        "wrong": [
+          AppLocalizations.of(context)!.fall_wrong_2_1,
+          AppLocalizations.of(context)!.fall_wrong_2_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.fall_question_3,
+        "correct": AppLocalizations.of(context)!.fall_correct_3,
+        "wrong": [
+          AppLocalizations.of(context)!.fall_wrong_3_1,
+          AppLocalizations.of(context)!.fall_wrong_3_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.fall_question_4,
+        "correct": AppLocalizations.of(context)!.fall_correct_4,
+        "wrong": [
+          AppLocalizations.of(context)!.fall_wrong_4_1,
+          AppLocalizations.of(context)!.fall_wrong_4_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.fall_question_5,
+        "correct": AppLocalizations.of(context)!.fall_correct_5,
+        "wrong": [
+          AppLocalizations.of(context)!.fall_wrong_5_1,
+          AppLocalizations.of(context)!.fall_wrong_5_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.fall_question_6,
+        "correct": AppLocalizations.of(context)!.fall_correct_6,
+        "wrong": [
+          AppLocalizations.of(context)!.fall_wrong_6_1,
+          AppLocalizations.of(context)!.fall_wrong_6_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.fall_question_7,
+        "correct": AppLocalizations.of(context)!.fall_correct_7,
+        "wrong": [
+          AppLocalizations.of(context)!.fall_wrong_7_1,
+          AppLocalizations.of(context)!.fall_wrong_7_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.fall_question_8,
+        "correct": AppLocalizations.of(context)!.fall_correct_8,
+        "wrong": [
+          AppLocalizations.of(context)!.fall_wrong_8_1,
+          AppLocalizations.of(context)!.fall_wrong_8_2,
+        ],
+      },
+      {
+        "question": AppLocalizations.of(context)!.fall_question_9,
+        "correct": AppLocalizations.of(context)!.fall_correct_9,
+        "wrong": [
+          AppLocalizations.of(context)!.fall_wrong_9_1,
+          AppLocalizations.of(context)!.fall_wrong_9_2,
+        ],
+      },
     ],
   };
+}
 
   int correctAnswers = 0;
+  late Map<String, List<int>> usedQuestionIndexes;
 
   // Track used questions per season
-  Map<String, List<int>> usedQuestionIndexes = {
-    'zima': [],
-    'proljeće': [],
-    'ljeto': [],
-    'jesen': [],
-  };
+  Map<String, List<int>> getUsedQuestionIndexes(BuildContext context) {
+  if (usedQuestionIndexes == null) {
+    usedQuestionIndexes = {
+      AppLocalizations.of(context)!.winter: [],
+      AppLocalizations.of(context)!.spring: [],
+      AppLocalizations.of(context)!.summer: [],
+      AppLocalizations.of(context)!.fall: [],
+    };
+  }
+  return usedQuestionIndexes!;
+}
+
 
   // Store current question for display
   Map<String, dynamic>? currentQuestion;
   List<String> answerOptions = [];
 
 
-
   @override
   void initState() {
     super.initState();
-
     generateSectorRadians();
+
+    /*usedQuestionIndexes ??= {
+      AppLocalizations.of(context)!.winter: [],
+      AppLocalizations.of(context)!.spring: [],
+      AppLocalizations.of(context)!.summer: [],
+      AppLocalizations.of(context)!.fall: [],
+    };*/
+
 
     controller = AnimationController(
       vsync: this,
@@ -286,6 +409,17 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
         });
       }
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    usedQuestionIndexes = {
+      AppLocalizations.of(context)!.winter: [],
+      AppLocalizations.of(context)!.spring: [],
+      AppLocalizations.of(context)!.summer: [],
+      AppLocalizations.of(context)!.fall: [],
+    };
   }
 
   @override
@@ -312,17 +446,24 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
   }
   
   void recordStats() {
-    earnedValue = sectors[sectors.length - (randomSectorIndex + 1)];
+    // Validate randomSectorIndex to avoid errors
+    if (randomSectorIndex < 0 || randomSectorIndex >= sectors.length) {
+      // Handle invalid index (fallback to first sector)
+      earnedValue = sectors[0];
+    } else {
+      earnedValue = sectors[randomSectorIndex];
+    }
+
     spins++;
 
     String season = _getSeasonName(earnedValue);
-
-    // Fetch unused question
+    final questionPools = getQuestionPools(context);
     List<Map<String, dynamic>> pool = questionPools[season]!;
+
     List<int> used = usedQuestionIndexes[season]!;
 
     if (used.length >= pool.length) {
-      // Reset used questions if all are shown
+      // Reset used questions if all have been shown
       used.clear();
     }
 
@@ -333,16 +474,15 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
 
     used.add(index);
 
-    // Set current question
     currentQuestion = pool[index];
     answerOptions = [
       currentQuestion!["correct"],
       ...currentQuestion!["wrong"]
-    ]..shuffle(); // Shuffle options
+    ]..shuffle();
 
-    // Force UI to rebuild to show question
     setState(() {});
   }
+
 
 
   _gameContent(SettingsProvider settings) {
@@ -434,7 +574,7 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
           Transform.translate(
             offset: Offset(0, 0),
             child: Text(
-              "Provjeri svoje znanje u 12 pitanja.\nZavrti kolo sreće kako bi izvukao/la pitanje!",
+              AppLocalizations.of(context)!.testInstructions,
               style: TextStyle(
                 fontSize: settings.fontSize,
                 fontFamily: settings.fontFamily,
@@ -462,7 +602,7 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 textStyle: const TextStyle(fontSize: 24),
               ),
-              child: Text(spinning ? "Vrti se..." : "Zavrti", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
+              child: Text(spinning ? AppLocalizations.of(context)!.spinning : AppLocalizations.of(context)!.spin, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
             ),
           ),
         ],
@@ -593,13 +733,13 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
   String _getSeasonName(var val) {
     switch (val) {
     case 1:
-      return 'zima';
+      return AppLocalizations.of(context)!.winter;
     case 2:
-      return 'proljeće';
+      return AppLocalizations.of(context)!.spring;
     case 3:
-      return 'ljeto';
+      return AppLocalizations.of(context)!.summer;
     case 4:
-      return 'jesen';
+      return AppLocalizations.of(context)!.fall;
     default:
       return ''; // fallback
     }
@@ -698,7 +838,7 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
         children: [
           // First part of the text (first line)
           TextSpan(
-            text: "Izvukao/la si pitanje iz godišnjeg doba: \n",
+            text: AppLocalizations.of(context)!.theme,
             style: TextStyle(
               fontSize: settings.fontSize,
               fontFamily: settings.fontFamily,
@@ -718,7 +858,7 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
     ),
     SizedBox(height: 10),
     Text(
-      '$spins. ${currentQuestion!["question"]}',
+      '$spins) ${currentQuestion!["question"]}',
       style: TextStyle(
         fontSize: settings.fontSize,
         fontFamily: settings.fontFamily,
@@ -770,14 +910,14 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
       barrierDismissible: false,
       builder: (context) {
         return AlertDialog(
-          title: Text(correct ? "Točno!" : "Netočno!", 
+          title: Text(correct ? AppLocalizations.of(context)!.correct : AppLocalizations.of(context)!.incorrect, 
             textAlign: TextAlign.center, 
             style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
           content: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
               Text(
-                correct ? "Bravo! Točan odgovor." : "Oh ne! Krivi odgovor.", 
+                correct ? AppLocalizations.of(context)!.correct_more : AppLocalizations.of(context)!.incorrect_more, 
                 style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
               SizedBox(
                 height: 10
@@ -800,7 +940,7 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
                   }
                 });
               },
-              child: Text("Nastavi", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
+              child: Text(AppLocalizations.of(context)!.continueWord, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
             )
           ],
         );
@@ -814,14 +954,14 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
     barrierDismissible: false,
     builder: (context) {
       String message;
-      if (correctAnswers == 10) {
-        message = "Savršeno! Sve točno!";
-      } else if (correctAnswers >= 7) {
-        message = "Odlično! Znaš puno o godišnjim dobima!";
-      } else if (correctAnswers >= 4) {
-        message = "Dobro je! Ali može i bolje.";
+      if (correctAnswers == 12) {
+        message = AppLocalizations.of(context)!.message1;
+      } else if (correctAnswers >= 9) {
+        message = AppLocalizations.of(context)!.message2;
+      } else if (correctAnswers >= 6) {
+        message = AppLocalizations.of(context)!.message3;
       } else {
-        message = "Ne brini, bit će bolje sljedeći put!";
+        message = AppLocalizations.of(context)!.message4;
       }
 
       if (settings.quizSound) {
@@ -829,13 +969,13 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
       }
       
       return AlertDialog(
-        title: Text("Kviz završen",
+        title: Text(AppLocalizations.of(context)!.quizCompleted,
           textAlign: TextAlign.center,
           style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Text("Rezultat: $correctAnswers/12",
+            Text("${AppLocalizations.of(context)!.result}: $correctAnswers/12",
               textAlign: TextAlign.center,
               style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
             const SizedBox(height: 10),
@@ -845,22 +985,34 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
           ],
         ),
         actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pushNamed('/'); // go back to main screen
-            },
-            child: Text("Vrati se na početnu stranicu",
-                    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
-          ),
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); // close popup
-              setState(() {
-                _resetGameCompletely(); // restart game
-              });
-            },
-            child: Text("Igraj ponovno",
-                    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
+          Row(
+            children: [
+              Expanded(
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pushNamed('/');
+                  },
+                  child: Text(
+                    AppLocalizations.of(context)!.goToHome,
+                    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    setState(() {
+                      _resetGameCompletely();
+                    });
+                  },
+                  child: Text(
+                    AppLocalizations.of(context)!.playAgain,
+                    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
+                  ),
+                ),
+              ),
+            ],
           ),
         ],
       );
@@ -877,6 +1029,7 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
   currentQuestion = null;
 
   // Reset used question indexes
+  //final usedQuestionIndexes = getUsedQuestionIndexes(context);
   for (var season in usedQuestionIndexes.keys) {
     usedQuestionIndexes[season] = [];
   }
@@ -892,7 +1045,7 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
     children: [
       Positioned.fill(
         child: Image.asset(
-          "assets/images/game_background.png", // Change this to your image path
+          AppLocalizations.of(context)!.gameBg, // Change this to your image path
           fit: BoxFit.cover,
         ),
       ),

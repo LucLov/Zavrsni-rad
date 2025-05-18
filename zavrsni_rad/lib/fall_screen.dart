@@ -6,6 +6,7 @@ import 'checking_knowledge.dart';
 import 'package:provider/provider.dart';
 import 'package:zavrsni_rad/settings_provider.dart';
 import 'package:zavrsni_rad/settings_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Make sure preferences load first
@@ -70,7 +71,7 @@ class _FallScreenState extends State<FallScreen> {
       children: [
         Positioned.fill(
           child: Image.asset(
-            'assets/images/6.png',
+            AppLocalizations.of(context)!.fallBg,
             fit: BoxFit.cover,
           ),
         ),
@@ -110,12 +111,12 @@ class _FallScreenState extends State<FallScreen> {
                 child: _buildBox(
                     context,
                     settings,
-                    "10. LISTOPAD",
-                    "LISTOPAD",
-                    "10.",
+                    AppLocalizations.of(context)!.octButtonText,
+                    AppLocalizations.of(context)!.octTitle,
+                    AppLocalizations.of(context)!.octMonthNumber,
                     "listopad_slika.png",
                     "31",
-                    "Klikni za informacije o listopadu!",
+                    AppLocalizations.of(context)!.octInstruction,
                     isListopadSelected,
                     (bool isSelected) {
                       setState(() {
@@ -129,12 +130,12 @@ class _FallScreenState extends State<FallScreen> {
                 child: _buildBox(
                     context,
                     settings,
-                    "11. STUDENI",
-                    "STUDENI",
-                    "11.",
+                    AppLocalizations.of(context)!.novButtonText,
+                    AppLocalizations.of(context)!.novTitle,
+                    AppLocalizations.of(context)!.novMonthNumber,
                     "studeni_slika.png",
                     "30",
-                    "Klikni za informacije o studenom!",
+                    AppLocalizations.of(context)!.novInstruction,
                     isStudeniSelected,
                     (bool isSelected) {
                       setState(() {
@@ -148,12 +149,12 @@ class _FallScreenState extends State<FallScreen> {
                 child: _buildBox(
                     context,
                     settings,
-                    "12. PROSINAC",
-                    "PROSINAC",
-                    "12.",
+                    AppLocalizations.of(context)!.decButtonText,
+                    AppLocalizations.of(context)!.decTitle,
+                    AppLocalizations.of(context)!.decMonthNumber,
                     "prosinac_slika.png",
                     "31",
-                    "Klikni za informacije o prosincu!",
+                    AppLocalizations.of(context)!.decInstruction,
                     isProsinacSelected,
                     (bool isSelected) {
                       setState(() {
@@ -175,7 +176,7 @@ class _FallScreenState extends State<FallScreen> {
                     ),
                   ),
                   child: Text(
-                    "Provježbaj znanje o jesenskim mjesecima!",
+                    AppLocalizations.of(context)!.fall_check,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: settings.fontSize,
@@ -200,7 +201,7 @@ class _FallScreenState extends State<FallScreen> {
                     ),
                   ),
                   child: Text(
-                    "Ispitaj znanje o svim mjesecima!",
+                    AppLocalizations.of(context)!.testAllMonths,
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: settings.fontSize,
@@ -296,7 +297,7 @@ class _FallScreenState extends State<FallScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text(
-                                        "Redni broj:",
+                                        AppLocalizations.of(context)!.ordinalNumber,
                                         style: TextStyle(
                                           fontFamily: settings.fontFamily,
                                           fontSize: settings.fontSize - 6,
@@ -340,7 +341,7 @@ class _FallScreenState extends State<FallScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.center,
                                     children: [
                                       Text(
-                                        "Broj dana:",
+                                        AppLocalizations.of(context)!.numberOfDays,
                                         style: TextStyle(
                                           fontFamily: settings.fontFamily,
                                           fontSize: settings.fontSize - 6,
@@ -383,7 +384,7 @@ class _FallScreenState extends State<FallScreen> {
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.pop(context),
-                        child: Text('Zatvori', style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+                        child: Text(AppLocalizations.of(context)!.closeButton, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
                       ),
                     ],
                   ),
@@ -404,76 +405,83 @@ class _FallScreenState extends State<FallScreen> {
   List<TextSpan> _buildActivityText(String title, SettingsProvider settings) {
     List<TextSpan> spans = [];
     
-    if (title == "LISTOPAD") {
+    if (title == "LISTOPAD" || title == "OCTOBER") {
   spans.add(TextSpan(
-    text: "Drveće se oblači u raskošne crvene, narančaste i smeđe tonove. Jutra su maglovita, a sunce slabašno sja.\nUživamo u specijalitetima od ",
+    text: AppLocalizations.of(context)!.oct1,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: "kestena i bundeva",
+    text: AppLocalizations.of(context)!.oct2,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: ". Sazrijevaju i druge kulture poput ",
+    text: AppLocalizations.of(context)!.oct3,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: "krumpira i mrkve.",
-    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
-  ));
-}
-
-if (title == "STUDENI") {
-  spans.add(TextSpan(
-    text: "Jesen se bliži kraju – ",
-    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
-  ));
-  spans.add(TextSpan(
-    text: "dani postaju kraći, a temperature sve niže",
+    text: AppLocalizations.of(context)!.oct4,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: ". Životinje završavaju pripreme za zimu, a neke se spremaju utonuti u duboki zimski san. Ptice selice sele u toplije krajeve.",
+    text: ".",
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
 }
 
-if (title == "PROSINAC") {
+if (title == "STUDENI" || title == "NOVEMBER") {
   spans.add(TextSpan(
-    text: "Prosinac je ",
+    text: AppLocalizations.of(context)!.nov1,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: "posljednji mjesec u godini",
+    text: AppLocalizations.of(context)!.nov2,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
   ));
   spans.add(TextSpan(
-    text: ". Ujedno je i mjesec najkraćih dana, a onim najkraćim ulazimo u zimu (",
+    text: AppLocalizations.of(context)!.nov3,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
-  ));
-  spans.add(TextSpan(
-    text: "zimski solsticij",
-    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
-  ));
-  spans.add(TextSpan(
-    text: ").\nSnijeg, mraz i magla obavijaju krajolike.\nVrijeme provodimo okruženi obitelji i prijateljima povodom ",
-    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
-  ));
-  spans.add(TextSpan(
-    text: "Božića i Nove godine.",
-    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
   ));
 }
 
+if (title == "PROSINAC" || title == "DECEMBER") {
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.dec1,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.dec2,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.dec3,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.dec4,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.dec5,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.dec6,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: ".",
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+}
     return spans;
   }
 }
   void _showMatchingGameDialog(BuildContext context, SettingsProvider settings) {
-    final months = ["listopad", "studeni", "prosinac"];
+    final months = [AppLocalizations.of(context)!.gameOctName, AppLocalizations.of(context)!.gameNovName, AppLocalizations.of(context)!.gameDecName];
     final correctDescriptionsMap = {
-      "listopad": "10. mjesec",
-      "studeni": "11. mjesec",
-      "prosinac": "12. mjesec",
+      AppLocalizations.of(context)!.gameOctName: AppLocalizations.of(context)!.gameOctNum,
+      AppLocalizations.of(context)!.gameNovName: AppLocalizations.of(context)!.gameNovNum,
+      AppLocalizations.of(context)!.gameDecName: AppLocalizations.of(context)!.gameDecNum,
     };
 
     final descriptions = correctDescriptionsMap.values.toList()..shuffle();
@@ -515,10 +523,9 @@ if (title == "PROSINAC") {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text("Upute za igru", textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+          title: Text(AppLocalizations.of(context)!.gameInstuctionTitle, textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
           content: Text(
-            "Spoji svaki mjesec s odgovarajućim opisom.\n\n"
-            "Dovuci opis mjeseca s desne strane do naziva mjeseca s lijeve strane ili klikni mjesec pa zatim klikni na opis mjeseca.\n",
+            AppLocalizations.of(context)!.gameInstuctions,
             style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
           ),
           actions: [
@@ -554,14 +561,16 @@ class _MatchingGameState extends State<MatchingGame> {
   String? selectedMonth;
 
   String? _correctMatch(String month) {
-    switch (month) {
-      case "listopad":
-        return "10. mjesec";
-      case "studeni":
-        return "11. mjesec";
-      case "prosinac":
-        return "12. mjesec";
+    final localizations = AppLocalizations.of(context)!;
+
+    if (month == localizations.gameOctName) {
+      return localizations.gameOctNum;
+    } else if (month == localizations.gameNovName) {
+      return localizations.gameNovNum;
+    } else if (month == localizations.gameDecName) {
+      return localizations.gameDecNum;
     }
+
     return null;
   }
 
@@ -593,7 +602,7 @@ class _MatchingGameState extends State<MatchingGame> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text("Spoji mjesec s opisom:", style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+        Text(AppLocalizations.of(context)!.smallInstruction, textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
         const SizedBox(height: 20),
         Row(
           children: [
@@ -690,7 +699,7 @@ class _MatchingGameState extends State<MatchingGame> {
                   randomizedDescriptions = List.from(widget.correctDescriptionsMap.values)..shuffle();
                 });
               } : null,
-              child: Text("Igraj ponovo", style: TextStyle(fontSize: settings.fontSize - 6, fontFamily: settings.fontFamily)),
+              child: Text(AppLocalizations.of(context)!.playAgain, style: TextStyle(fontSize: settings.fontSize - 6, fontFamily: settings.fontFamily)),
             ),
             ElevatedButton(
               onPressed: matchedPairs.length == widget.months.length ? () {
@@ -720,7 +729,7 @@ class _MatchingGameState extends State<MatchingGame> {
                   }
                 });
               }: null,
-              child: Text("Provjeri rezultat", style: TextStyle(fontSize: settings.fontSize - 6, fontFamily: settings.fontFamily)),
+              child: Text(AppLocalizations.of(context)!.checkResults, style: TextStyle(fontSize: settings.fontSize - 6, fontFamily: settings.fontFamily)),
             ),
           ],
         )

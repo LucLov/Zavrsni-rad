@@ -32,6 +32,17 @@ class NavigatorApp extends StatelessWidget {
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      locale: settings.locale,
+      supportedLocales: const [
+        Locale('en'), // English
+        Locale('hr'), // Croatian (example)
+      ],
+      localizationsDelegates: const [
+        AppLocalizations.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       initialRoute: "/", // Set initial route
       routes: {
         "/" : (context) => const HomeScreen(),
@@ -64,9 +75,9 @@ class _HomeScreenState extends State<HomeScreen> {
       body: Stack(
         children: [
           Container(
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               image: DecorationImage(
-                image: AssetImage("assets/images/naslovnica2.png"),
+                image: AssetImage(AppLocalizations.of(context)!.homeBg),
                 fit: BoxFit.cover,
               ),
             ),
@@ -93,8 +104,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      child: const Text(
-                        "Nauči i provježbaj znanje o mjesecima",
+                      child: Text(
+                        AppLocalizations.of(context)!.learnAndPractice,
                         textAlign: TextAlign.center,
                       ),
                     ),
@@ -117,8 +128,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      child: const Text(
-                        "Ispitaj znanje o mjesecima",
+                      child: Text(
+                        AppLocalizations.of(context)!.testKnowledge,
                         textAlign: TextAlign.center,
                       ),
                     ),

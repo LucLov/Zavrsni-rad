@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zavrsni_rad/settings_provider.dart';
 import 'package:zavrsni_rad/settings_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Make sure preferences load first
@@ -26,7 +27,7 @@ class InfoScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Informacije o projektu",
+        title: Text(AppLocalizations.of(context)!.infoTitle,
         style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),),
         backgroundColor: Color(0XFFC4E2FF),
         foregroundColor: Color(0xFF9D3D25),
@@ -44,20 +45,19 @@ class InfoScreen extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-          '''Mobilna aplikacija "Mjesec po Mjesec" izrađena je u sklopu Završnog rada prijediplomskog studija na Fakultetu elektrotehnike i računarstva Sveučilišta u Zagrebu, ak. god. 2024./2025.''',
+            AppLocalizations.of(context)!.info1,
             style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 10),
           Text(
-            "Svrha aplikacije je omogućiti korisnicima da na jednostavan i zanimljiv način savladaju mjesece u godini kretajući se kroz različita godišnja doba.",
+            AppLocalizations.of(context)!.info2,
             style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
             textAlign: TextAlign.center,
           ),
           SizedBox(height: 10),
           Text(
-            "Implementacija: Lucija Lovrić\n"
-            "Mentorstvo: prof. dr. sc. Željka Car, univ. mag. ing. comp. Ana Radović",
+            AppLocalizations.of(context)!.info3,
             style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
             textAlign: TextAlign.center,
           )

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:zavrsni_rad/settings_provider.dart';
 import 'package:zavrsni_rad/settings_screen.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Make sure preferences load first
@@ -25,7 +26,7 @@ class AboutAppScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
-        title: Text("Informacije o aplikaciji",
+        title: Text(AppLocalizations.of(context)!.aboutTitle,
         style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
         backgroundColor: Color(0XFFC4E2FF),
         foregroundColor: Color(0xFF9D3D25),
@@ -43,25 +44,25 @@ class AboutAppScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start, // Optional, depending on the layout you want
             children: [
               Text(
-                '''Ova je mobilna aplikacija zasnovana na principu "Različitih načina reprezentacije" Univerzalnog dizajna za učenje (Universal Design in Learning, UDL) kako bi pružila interaktivno i personalizirano obrazovno iskustvo pri učenju mjeseca u godini.''',
+                AppLocalizations.of(context)!.about1,
                 style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 10), // Optional space between text blocks
               Text(
-                '''Namijenjena je široj publici što uključuje djecu, osobe s poteškoćama te učenike hrvatskog i engleskog jezika.''',
+                AppLocalizations.of(context)!.about2,
                 style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 10), // Optional space between text blocks
               Text(
-                '''Ova ozbiljna igra je zamišljena da korisnika vodi kroz 3 različite faze: učenje o mjesecima, vježbanje i ispitivanje znanja o mjesecima.''',
+                AppLocalizations.of(context)!.about3,
                 style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
                 textAlign: TextAlign.center,
               ),
               SizedBox(height: 10), // Optional space between text blocks
               Text(
-                '''Korisnik će kroz sekvencijalni pristup naučiti o mjesecima unutar svakog godišnjeg doba (zima, proljeće, ljeto, jesen). Nakon učenja o mjesecima u godišnjem dobu, to znanje će se i provježbati jednostavnom igrom povezivanja pojmova. Kada se korisnik upozna sa svim mjesecima, imat će mogućnost ispitati stečeno znanje u obliku kviza. Korisniku će se na kraju kviza ispisati njegov rezultat.''',
+                AppLocalizations.of(context)!.about4,
                 style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
                 textAlign: TextAlign.center,
               ),
