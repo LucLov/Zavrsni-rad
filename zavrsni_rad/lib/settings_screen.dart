@@ -19,7 +19,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
   late bool _originalBackgroundSound;
   bool _applied = false;
 
-  final List<String> _fonts = ['Sans', 'Monospace', 'Serif'];
+  final List<String> _fonts = ['Sans', 'Monospace', 'Serif', 'OpenDyslexic'];
 
   @override
   void initState() {

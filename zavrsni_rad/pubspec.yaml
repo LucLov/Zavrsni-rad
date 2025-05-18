@@ -10,9 +10,15 @@ environment:
 flutter:
   generate: true
   uses-material-design: true
+
   assets:
     - assets/images/
     - assets/audio/
+
+  fonts:
+    - family: OpenDyslexic
+      fonts:
+        - asset: assets/fonts/OpenDyslexic-Regular.otf
 
 dependencies:
   flutter:
