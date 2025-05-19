@@ -100,7 +100,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   );
                 }).toList(),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 30),
               Text(AppLocalizations.of(context)!.adjustFontSize, style: TextStyle(fontSize: settings.fontSize, fontWeight: FontWeight.bold, fontFamily: settings.fontFamily)),
               Slider(
                 value: _tempFontSize,
@@ -114,14 +114,14 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   });
                 },
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 30),
               Text(AppLocalizations.of(context)!.preview, style: TextStyle(fontSize: settings.fontSize, fontWeight: FontWeight.bold, fontFamily: settings.fontFamily)),
               const SizedBox(height: 10),
               Text(
                 AppLocalizations.of(context)!.previewText,
                 style: TextStyle(fontSize: _tempFontSize, fontFamily: _tempFontFamily),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 30),
               Text(AppLocalizations.of(context)!.chooseLanguage, style: TextStyle(fontSize: settings.fontSize, fontWeight: FontWeight.bold, fontFamily: settings.fontFamily)),
               DropdownButton<String>(
                 value: _tempLanguageCode,
@@ -141,7 +141,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   );
                 }).toList(),
               ),
-
+              SizedBox(height: 30,),
               SwitchListTile(
                 title: Text(AppLocalizations.of(context)!.backgroundSound, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
                 value: _tempBackgroundSound,
@@ -153,6 +153,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   MusicController().updateMusic(value);
                 },
               ),
+              SizedBox(height: 30,),
               SwitchListTile(
                 title: Text(AppLocalizations.of(context)!.quizSound, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
                 value: _tempQuizSound,

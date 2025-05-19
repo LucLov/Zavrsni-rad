@@ -8,12 +8,20 @@ import 'winter_screen.dart';
 import 'checking_knowledge.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:flutter/services.dart';
 
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Make sure preferences load first
   final settingsProvider = SettingsProvider();
   await settingsProvider.loadSettings();
+
+  WidgetsFlutterBinding.ensureInitialized();
+
+  await SystemChrome.setPreferredOrientations([
+    DeviceOrientation.portraitUp,
+    //DeviceOrientation.portraitDown,  // Optional: if you want to allow upside-down portrait
+  ]);
 
   runApp(
     ChangeNotifierProvider<SettingsProvider>.value(

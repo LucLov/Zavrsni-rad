@@ -88,28 +88,32 @@ class _WinterScreenState extends State<WinterScreen> {
             children: [
               Align(
                 alignment: Alignment.topCenter,
-                child: Row (
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.white, size: 30),
-                    onPressed: () {
-                      Navigator.pop(context);
-                    },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () => Navigator.pop(context),
+                        style: ElevatedButton.styleFrom(
+                          shape: const CircleBorder(),
+                          padding: const EdgeInsets.all(15),
+                          backgroundColor: Colors.blueAccent,
+                        ),
+                        child: const Icon(Icons.arrow_back, size: 40, color: Colors.white),
+                      ),
+                      ElevatedButton(
+                        onPressed: () => Navigator.of(context).pushNamed('/settings'),
+                        style: ElevatedButton.styleFrom(
+                          shape: const CircleBorder(),
+                          padding: const EdgeInsets.all(15),
+                          backgroundColor: Colors.grey[800],
+                        ),
+                        child: const Icon(Icons.settings, size: 40, color: Colors.white),
+                      ),
+                    ],
                   ),
-                    ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/settings');
-                    },
-                    style: ElevatedButton.styleFrom(
-                      shape: CircleBorder(),
-                      padding: EdgeInsets.all(15),
-                      backgroundColor: Colors.grey[800],
-                    ),
-                    child: Icon(Icons.settings, size: 40, color: Colors.white),
-                  ),
-                ],
-              ),
+                ),
               ),
               const SizedBox(height: 50),
               Align(
@@ -217,12 +221,17 @@ class _WinterScreenState extends State<WinterScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            color: Colors.yellow[600]?.withOpacity(0.5), // Set your desired background color here
-            //padding: EdgeInsets.all(8), // Optional: adds space around the text
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 115, 175, 227).withOpacity(0.7),
+              borderRadius: BorderRadius.circular(10), // Adjust radius as needed
+            ),
+            padding: EdgeInsets.symmetric(horizontal: 4),// Optional: adds padding inside
             child: Text(
               instructionText,
               style: TextStyle(
-                fontSize: settings.fontSize < 29 ? settings.fontSize - 4 : settings.fontSize - 10,
+                fontSize: settings.fontSize < 29
+                    ? settings.fontSize - 4
+                    : settings.fontSize - 10,
                 fontFamily: settings.fontFamily,
                 color: Colors.black,
               ),
@@ -416,7 +425,7 @@ if (title == "VELJAČA" || title == "FEBRUARY") {
   ));
   spans.add(TextSpan(
     text: AppLocalizations.of(context)!.feb4,
-    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold,color: Colors.black),
   ));
   spans.add(TextSpan(
     text: AppLocalizations.of(context)!.feb5,
@@ -424,10 +433,34 @@ if (title == "VELJAČA" || title == "FEBRUARY") {
   ));
   spans.add(TextSpan(
     text: AppLocalizations.of(context)!.feb6,
-    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold,color: Colors.black),
   ));
   spans.add(TextSpan(
     text: AppLocalizations.of(context)!.feb7,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.feb8,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold,color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.feb9,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.feb10,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.feb11,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.feb12,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,  fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: ".",
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
 }
@@ -517,10 +550,11 @@ if (title == "OŽUJAK" || title == "MARCH") {
       context: context,
       builder: (context) {
         return AlertDialog(
-          title: Text(AppLocalizations.of(context)!.gameInstuctionTitle, textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
-          content: Text(
-            AppLocalizations.of(context)!.gameInstuctions,
-            style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
+          title: Text(AppLocalizations.of(context)!.gameInstructionTitle, textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold)),
+          content: SingleChildScrollView(
+            child: Text.rich(
+              buildInstructionsTextSpan(settings, context),
+            ),
           ),
           actions: [
             TextButton(
@@ -533,6 +567,79 @@ if (title == "OŽUJAK" || title == "MARCH") {
     );
   });
   }
+
+TextSpan buildInstructionsTextSpan(SettingsProvider settings, BuildContext context) {
+  return TextSpan(children: [
+    TextSpan(
+      text: AppLocalizations.of(context)!.gameInstructions1,
+      style: TextStyle(
+        fontSize: settings.fontSize,
+        fontFamily: settings.fontFamily,
+        color: Colors.black,
+      ),
+    ),
+    TextSpan(
+      text: AppLocalizations.of(context)!.gameInstructions2,
+      style: TextStyle(
+        fontSize: settings.fontSize,
+        fontFamily: settings.fontFamily,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+      ),
+    ),
+    TextSpan(
+      text: AppLocalizations.of(context)!.gameInstructions3,
+      style: TextStyle(
+        fontSize: settings.fontSize,
+        fontFamily: settings.fontFamily,
+        color: Colors.black,
+      ),
+    ),
+    TextSpan(
+      text: AppLocalizations.of(context)!.gameInstructions4,
+      style: TextStyle(
+        fontSize: settings.fontSize,
+        fontFamily: settings.fontFamily,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+      ),
+    ),
+    TextSpan(
+      text: AppLocalizations.of(context)!.gameInstructions5,
+      style: TextStyle(
+        fontSize: settings.fontSize,
+        fontFamily: settings.fontFamily,
+        color: Colors.black,
+      ),
+    ),
+    TextSpan(
+      text: AppLocalizations.of(context)!.gameInstructions6,
+      style: TextStyle(
+        fontSize: settings.fontSize,
+        fontFamily: settings.fontFamily,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+      ),
+    ),
+    TextSpan(
+      text: AppLocalizations.of(context)!.gameInstructions7,
+      style: TextStyle(
+        fontSize: settings.fontSize,
+        fontFamily: settings.fontFamily,
+        color: Colors.black,
+      ),
+    ),
+    TextSpan(
+      text: AppLocalizations.of(context)!.gameInstructions8,
+      style: TextStyle(
+        fontSize: settings.fontSize,
+        fontFamily: settings.fontFamily,
+        fontWeight: FontWeight.bold,
+        color: Colors.black,
+      ),
+    ),
+  ]);
+}
 
 class MatchingGame extends StatefulWidget {
   final List<String> months;

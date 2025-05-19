@@ -500,7 +500,7 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
       ],
         //_gameActions(),
         //_gameStats(),
-        _backButton()  // <-- Add the back button here
+        //_backButton()  // <-- Add the back button here
       ]
     );
   }
@@ -640,7 +640,7 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
     return fullSpins + totalSpin;
   }
 
-  Widget _gameStats() {
+  /*Widget _gameStats() {
   return Stack(
     children: [
       // Broj okretaja (left side)
@@ -703,7 +703,7 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
   );
 }
 
-/*
+
   Column _titleColumn(String title) {
     return Column(
       children: [
@@ -732,20 +732,20 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
 */
   String _getSeasonName(var val) {
     switch (val) {
-    case 1:
-      return AppLocalizations.of(context)!.winter;
-    case 2:
-      return AppLocalizations.of(context)!.spring;
-    case 3:
-      return AppLocalizations.of(context)!.summer;
     case 4:
+      return AppLocalizations.of(context)!.winter; 
+    case 3:
+      return AppLocalizations.of(context)!.spring;
+    case 2:
+      return AppLocalizations.of(context)!.summer;
+    case 1:
       return AppLocalizations.of(context)!.fall;
     default:
       return ''; // fallback
     }
   }
 
-  Widget _gameActions() {
+  /*Widget _gameActions() {
   return Align(
     alignment: Alignment.bottomRight,
     child: Transform.translate(
@@ -798,7 +798,7 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
       ),
     ),
   );
-}
+}*/
   void resetGame() {
     spinning = false;
     angle = 0;
@@ -826,73 +826,72 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
           ],
         ),
         child: Column(
-  mainAxisSize: MainAxisSize.min,
-  children: [
-    RichText(
-      textAlign: TextAlign.center,  // This will center the text within the RichText widget
-      text: TextSpan(
-        style: const TextStyle(
-          fontSize: 24,
-          color: Colors.black,
-        ),
-        children: [
-          // First part of the text (first line)
-          TextSpan(
-            text: AppLocalizations.of(context)!.theme,
-            style: TextStyle(
-              fontSize: settings.fontSize,
-              fontFamily: settings.fontFamily,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            RichText(
+              textAlign: TextAlign.center,  // This will center the text within the RichText widget
+              text: TextSpan(
+                style: const TextStyle(
+                  fontSize: 24,
+                  color: Colors.black,
+                ),
+                children: [
+                  // First part of the text (first line)
+                  TextSpan(
+                    text: AppLocalizations.of(context)!.theme,
+                    style: TextStyle(
+                      fontSize: settings.fontSize,
+                      fontFamily: settings.fontFamily,
+                    ),
+                  ),
+                  // Second part of the text (second line)
+                  TextSpan(
+                    text: _getSeasonName(earnedValue),
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: settings.fontSize,
+                      fontFamily: settings.fontFamily,
+                    ),
+                  ),
+                ],
+              ),
             ),
-          ),
-          // Second part of the text (second line)
-          TextSpan(
-            text: _getSeasonName(earnedValue),
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: settings.fontSize,
-              fontFamily: settings.fontFamily,
+            SizedBox(height: 10),
+            Text(
+              '$spins) ${currentQuestion!["question"]}',
+              style: TextStyle(
+                fontSize: settings.fontSize,
+                fontFamily: settings.fontFamily,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.center,
             ),
-          ),
-        ],
-      ),
-    ),
-    SizedBox(height: 10),
-    Text(
-      '$spins) ${currentQuestion!["question"]}',
-      style: TextStyle(
-        fontSize: settings.fontSize,
-        fontFamily: settings.fontFamily,
-        fontWeight: FontWeight.bold,
-      ),
-      textAlign: TextAlign.center,
-    ),
-    const SizedBox(height: 30),
-    ...(answerOptions ?? []).map((option) => Padding(
-      padding: const EdgeInsets.symmetric(vertical: 5),
-      child: ElevatedButton(
-        onPressed: () {
-          bool isCorrect = option == currentQuestion!["correct"];
-          _showAnswerFeedback(isCorrect, settings);
-        },
-        style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.lightBlueAccent,
-          foregroundColor: Colors.black,
-          minimumSize: Size(double.infinity, 55), // 45
+            const SizedBox(height: 30),
+            ...(answerOptions ?? []).map((option) => Padding(
+              padding: const EdgeInsets.symmetric(vertical: 5),
+              child: ElevatedButton(
+                onPressed: () {
+                  bool isCorrect = option == currentQuestion!["correct"];
+                  _showAnswerFeedback(isCorrect, settings);
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.lightBlueAccent,
+                  foregroundColor: Colors.black,
+                  minimumSize: Size(double.infinity, 55), // 45
+                ),
+                child: Text(
+                  option,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: settings.fontSize,
+                    fontFamily: settings.fontFamily,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ),
+            )),
+          ],
         ),
-        child: Text(
-          option,
-          textAlign: TextAlign.center,
-          style: TextStyle(
-            fontSize: settings.fontSize,
-            fontFamily: settings.fontFamily,
-            fontWeight: FontWeight.normal,
-          ),
-        ),
-      ),
-    )),
-  ],
-),
-
       ),
     ),
   );
@@ -971,13 +970,13 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
       return AlertDialog(
         title: Text(AppLocalizations.of(context)!.quizCompleted,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
+          style: TextStyle(fontWeight: FontWeight.bold, fontSize: settings.fontSize + 2, fontFamily: settings.fontFamily,)),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text("${AppLocalizations.of(context)!.result}: $correctAnswers/12",
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
+              style: TextStyle(fontWeight: FontWeight.bold, fontSize: settings.fontSize + 2, fontFamily: settings.fontFamily,)),
             const SizedBox(height: 10),
             Text(message,
               textAlign: TextAlign.center,
@@ -1049,21 +1048,35 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
           fit: BoxFit.cover,
         ),
       ),
-      Positioned(
-            top: 30, 
-            right: 20,
-            child: ElevatedButton(
-              onPressed: () {
-                Navigator.of(context).pushNamed('/settings');
-              },
-              style: ElevatedButton.styleFrom(
-                shape: CircleBorder(),
-                padding: EdgeInsets.all(15),
-                backgroundColor: Colors.grey[800],
+      Align(
+        alignment: Alignment.topCenter,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 35),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                style: ElevatedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  padding: const EdgeInsets.all(15),
+                  backgroundColor: Colors.blueAccent,
+                ),
+                child: const Icon(Icons.arrow_back, size: 40, color: Colors.white),
               ),
-              child: Icon(Icons.settings, size: 40, color: Colors.white),
-            ),
+              ElevatedButton(
+                onPressed: () => Navigator.of(context).pushNamed('/settings'),
+                style: ElevatedButton.styleFrom(
+                  shape: const CircleBorder(),
+                  padding: const EdgeInsets.all(15),
+                  backgroundColor: Colors.grey[800],
+                ),
+                child: const Icon(Icons.settings, size: 40, color: Colors.white),
+              ),
+            ],
           ),
+        ),
+      ),
       Container(
         height: double.infinity,
         width: double.infinity,

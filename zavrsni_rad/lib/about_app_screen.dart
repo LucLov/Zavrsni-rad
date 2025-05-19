@@ -66,6 +66,12 @@ class AboutAppScreen extends StatelessWidget {
                 style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
                 textAlign: TextAlign.center,
               ),
+              SizedBox(height: 10), // Optional space between text blocks
+              Text(
+                AppLocalizations.of(context)!.about5,
+                style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
+                textAlign: TextAlign.center,
+              ),
             ],
           ),),
       ),
