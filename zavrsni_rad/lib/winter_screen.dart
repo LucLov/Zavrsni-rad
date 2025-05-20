@@ -396,19 +396,36 @@ class _WinterScreenState extends State<WinterScreen> {
     List<TextSpan> spans = [];
     
     if (title == "SIJEČANJ" || title == "JANUARY") {
-  spans.add(TextSpan(
-    text: AppLocalizations.of(context)!.jan1,
-    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
-  ));
-  spans.add(TextSpan(
-    text: AppLocalizations.of(context)!.jan2,
-    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
-  ));
-  spans.add(TextSpan(
-    text: AppLocalizations.of(context)!.jan3,
-    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
-  ));
-}
+      spans.add(TextSpan(
+        text: AppLocalizations.of(context)!.jan1,
+        style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+      ));
+      spans.add(TextSpan(
+        text: AppLocalizations.of(context)!.jan2,
+        style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+      ));
+      spans.add(TextSpan(
+        text: AppLocalizations.of(context)!.jan3,
+        style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+      ));
+      spans.add(TextSpan(
+        text: AppLocalizations.of(context)!.jan4,
+        style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+      ));
+      spans.add(TextSpan(
+        text: AppLocalizations.of(context)!.jan5,
+        style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+      ));
+      spans.add(TextSpan(
+        text: AppLocalizations.of(context)!.jan6,
+        style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+      ));
+      spans.add(TextSpan(
+        text: AppLocalizations.of(context)!.jan7,
+        style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+      ));
+    }
+
 
 if (title == "VELJAČA" || title == "FEBRUARY") {
   spans.add(TextSpan(
@@ -704,7 +721,7 @@ class _MatchingGameState extends State<MatchingGame> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(AppLocalizations.of(context)!.smallInstruction, textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+        Text(AppLocalizations.of(context)!.smallInstruction, textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.w500)),
         const SizedBox(height: 20),
         Row(
           children: [

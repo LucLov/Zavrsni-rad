@@ -405,6 +405,30 @@ class _SummerScreenState extends State<SummerScreen> {
     style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, fontWeight: FontWeight.bold, color: Colors.black),
   ));
   spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.jul5,
+    style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.jul6,
+    style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.jul7,
+    style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.jul8,
+    style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.jul9,
+    style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.jul10,
+    style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
     text: "!",
     style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, color: Colors.black),
   ));
@@ -439,6 +463,22 @@ if (title == "KOLOVOZ" || title == "AUGUST") {
     text: AppLocalizations.of(context)!.aug7,
     style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, color: Colors.black),
   ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.aug8,
+    style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.aug9,
+    style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.aug10,
+    style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.aug11,
+    style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, color: Colors.black),
+  ));
 }
 
 if (title == "RUJAN" || title == "SEPTEMBER") {
@@ -456,6 +496,14 @@ if (title == "RUJAN" || title == "SEPTEMBER") {
   ));
   spans.add(TextSpan(
     text: AppLocalizations.of(context)!.sep4,
+    style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.sep5,
+    style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.sep6,
     style: TextStyle(fontFamily: settings.fontFamily, fontSize: settings.fontSize, fontWeight: FontWeight.bold, color: Colors.black),
   ));
 }
@@ -664,7 +712,7 @@ class _MatchingGameState extends State<MatchingGame> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(AppLocalizations.of(context)!.smallInstruction, textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+        Text(AppLocalizations.of(context)!.smallInstruction, textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.w500)),
         const SizedBox(height: 20),
         Row(
           children: [

@@ -388,35 +388,46 @@ class _SpringScreenState extends State<SpringScreen> {
     List<TextSpan> spans = [];
     
     if (title == "TRAVANJ" || title == "APRIL") {
-  spans.add(TextSpan(
-    text: AppLocalizations.of(context)!.apr1,
-    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
-  ));
-  spans.add(TextSpan(
-    text: AppLocalizations.of(context)!.apr2,
-    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
-  ));
-  spans.add(TextSpan(
-    text: AppLocalizations.of(context)!.apr3,
-    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
-  ));
-  spans.add(TextSpan(
-    text: AppLocalizations.of(context)!.apr4,
-    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
-  ));
-  spans.add(TextSpan(
-    text: AppLocalizations.of(context)!.apr5,
-    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
-  ));
-  spans.add(TextSpan(
-    text: AppLocalizations.of(context)!.apr6,
-    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
-  ));
-  spans.add(TextSpan(
-    text: AppLocalizations.of(context)!.apr7,
-    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
-  ));
-}
+      if (title == "TRAVANJ") {
+        spans.add(TextSpan(
+        text: AppLocalizations.of(context)!.apr1,
+        style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+        ));
+        spans.add(TextSpan(
+          text: AppLocalizations.of(context)!.apr2,
+          style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+        ));
+      } else {
+        spans.add(TextSpan(
+          text: AppLocalizations.of(context)!.apr1,
+          style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+        ));
+        spans.add(TextSpan(
+        text: AppLocalizations.of(context)!.apr2,
+        style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+        ));
+      }
+      spans.add(TextSpan(
+        text: AppLocalizations.of(context)!.apr3,
+        style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+      ));
+      spans.add(TextSpan(
+        text: AppLocalizations.of(context)!.apr4,
+        style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+      ));
+      spans.add(TextSpan(
+        text: AppLocalizations.of(context)!.apr5,
+        style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+      ));
+      spans.add(TextSpan(
+        text: AppLocalizations.of(context)!.apr6,
+        style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+      ));
+      spans.add(TextSpan(
+        text: AppLocalizations.of(context)!.apr7,
+        style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+      ));
+    }
 
 if (title == "SVIBANJ" || title == "MAY") {
   spans.add(TextSpan(
@@ -458,6 +469,23 @@ if (title == "LIPANJ" || title == "JUNE") {
     text: AppLocalizations.of(context)!.jun4,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
   ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.jun5,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.jun6,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.jun7,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.jun8,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+
   spans.add(TextSpan(
     text: ".",
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
@@ -667,7 +695,7 @@ class _MatchingGameState extends State<MatchingGame> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(AppLocalizations.of(context)!.smallInstruction, textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+        Text(AppLocalizations.of(context)!.smallInstruction, textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.w500)),
         const SizedBox(height: 20),
         Row(
           children: [

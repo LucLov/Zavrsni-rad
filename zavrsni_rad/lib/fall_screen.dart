@@ -432,6 +432,14 @@ class _FallScreenState extends State<FallScreen> {
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
   ));
   spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.oct5,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.oct6,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
     text: ".",
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
@@ -448,6 +456,14 @@ if (title == "STUDENI" || title == "NOVEMBER") {
   ));
   spans.add(TextSpan(
     text: AppLocalizations.of(context)!.nov3,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.nov4,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.nov5,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
   ));
 }
@@ -475,6 +491,14 @@ if (title == "PROSINAC" || title == "DECEMBER") {
   ));
   spans.add(TextSpan(
     text: AppLocalizations.of(context)!.dec6,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.dec7,
+    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, color: Colors.black),
+  ));
+  spans.add(TextSpan(
+    text: AppLocalizations.of(context)!.dec8,
     style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.bold, color: Colors.black),
   ));
   spans.add(TextSpan(
@@ -686,7 +710,7 @@ class _MatchingGameState extends State<MatchingGame> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
-        Text(AppLocalizations.of(context)!.smallInstruction, textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+        Text(AppLocalizations.of(context)!.smallInstruction, textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.w500)),
         const SizedBox(height: 20),
         Row(
           children: [

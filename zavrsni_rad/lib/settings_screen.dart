@@ -115,13 +115,16 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 },
               ),
               const SizedBox(height: 30),
-              Text(AppLocalizations.of(context)!.preview, style: TextStyle(fontSize: settings.fontSize, fontWeight: FontWeight.bold, fontFamily: settings.fontFamily)),
-              const SizedBox(height: 10),
-              Text(
-                AppLocalizations.of(context)!.previewText,
-                style: TextStyle(fontSize: _tempFontSize, fontFamily: _tempFontFamily),
+              //Text(AppLocalizations.of(context)!.preview, style: TextStyle(fontSize: settings.fontSize, fontWeight: FontWeight.bold, fontFamily: settings.fontFamily)),
+              //const SizedBox(height: 10),
+              Center(
+                child: Text(
+                  AppLocalizations.of(context)!.previewText,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(fontSize: _tempFontSize, fontFamily: _tempFontFamily),
+                ),
               ),
-              const SizedBox(height: 30),
+              const SizedBox(height: 40),
               Text(AppLocalizations.of(context)!.chooseLanguage, style: TextStyle(fontSize: settings.fontSize, fontWeight: FontWeight.bold, fontFamily: settings.fontFamily)),
               DropdownButton<String>(
                 value: _tempLanguageCode,

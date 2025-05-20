@@ -948,76 +948,75 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
 }
 
   void _showResultPopup(SettingsProvider settings) {
-  showDialog(
-    context: context,
-    barrierDismissible: false,
-    builder: (context) {
-      String message;
-      if (correctAnswers == 12) {
-        message = AppLocalizations.of(context)!.message1;
-      } else if (correctAnswers >= 9) {
-        message = AppLocalizations.of(context)!.message2;
-      } else if (correctAnswers >= 6) {
-        message = AppLocalizations.of(context)!.message3;
-      } else {
-        message = AppLocalizations.of(context)!.message4;
-      }
-
-      if (settings.quizSound) {
+    if (settings.quizSound) {
         MusicController().playFeedbackSound('audio/game_over_success.mp3');
       }
-      
-      return AlertDialog(
-        title: Text(AppLocalizations.of(context)!.quizCompleted,
-          textAlign: TextAlign.center,
-          style: TextStyle(fontWeight: FontWeight.bold, fontSize: settings.fontSize + 2, fontFamily: settings.fontFamily,)),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text("${AppLocalizations.of(context)!.result}: $correctAnswers/12",
-              textAlign: TextAlign.center,
-              style: TextStyle(fontWeight: FontWeight.bold, fontSize: settings.fontSize + 2, fontFamily: settings.fontFamily,)),
-            const SizedBox(height: 10),
-            Text(message,
-              textAlign: TextAlign.center,
-              style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
-          ],
-        ),
-        actions: [
-          Row(
+    showDialog(
+      context: context,
+      barrierDismissible: false,
+      builder: (context) {
+        String message;
+        if (correctAnswers == 12) {
+          message = AppLocalizations.of(context)!.message1;
+        } else if (correctAnswers >= 9) {
+          message = AppLocalizations.of(context)!.message2;
+        } else if (correctAnswers >= 6) {
+          message = AppLocalizations.of(context)!.message3;
+        } else {
+          message = AppLocalizations.of(context)!.message4;
+        }
+
+        return AlertDialog(
+          title: Text(AppLocalizations.of(context)!.quizCompleted,
+            textAlign: TextAlign.center,
+            style: TextStyle(fontWeight: FontWeight.bold, fontSize: settings.fontSize + 2, fontFamily: settings.fontFamily,)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
             children: [
-              Expanded(
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pushNamed('/');
-                  },
-                  child: Text(
-                    AppLocalizations.of(context)!.goToHome,
-                    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
-                  ),
-                ),
-              ),
-              Expanded(
-                child: TextButton(
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    setState(() {
-                      _resetGameCompletely();
-                    });
-                  },
-                  child: Text(
-                    AppLocalizations.of(context)!.playAgain,
-                    style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
-                  ),
-                ),
-              ),
+              Text("${AppLocalizations.of(context)!.result}: $correctAnswers/12",
+                textAlign: TextAlign.center,
+                style: TextStyle(fontWeight: FontWeight.bold, fontSize: settings.fontSize + 2, fontFamily: settings.fontFamily,)),
+              const SizedBox(height: 10),
+              Text(message,
+                textAlign: TextAlign.center,
+                style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily,)),
             ],
           ),
-        ],
-      );
-    },
-  );
-}
+          actions: [
+            Row(
+              children: [
+                Expanded(
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pushNamed('/');
+                    },
+                    child: Text(
+                      AppLocalizations.of(context)!.goToHome,
+                      style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
+                    ),
+                  ),
+                ),
+                Expanded(
+                  child: TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                      setState(() {
+                        _resetGameCompletely();
+                      });
+                    },
+                    child: Text(
+                      AppLocalizations.of(context)!.playAgain,
+                      style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void _resetGameCompletely() {
   spinning = false;
