@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:zavrsni_rad/music_controller.dart';
+import 'package:mjesec_po_mjesec/music_controller.dart';
 
 class SettingsProvider extends ChangeNotifier {
   double _fontSize = 30.0;

@@ -2,13 +2,13 @@ import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/gestures.dart';
-import 'package:zavrsni_rad/music_controller.dart';
+import 'package:mjesec_po_mjesec/music_controller.dart';
 import 'spring_screen.dart';
 import 'summer_screen.dart';
 import 'fall_screen.dart';
 import 'package:provider/provider.dart';
-import 'package:zavrsni_rad/settings_provider.dart';
-import 'package:zavrsni_rad/settings_screen.dart';
+import 'package:mjesec_po_mjesec/settings_provider.dart';
+import 'package:mjesec_po_mjesec/settings_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {

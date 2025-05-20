@@ -7,7 +7,7 @@ plugins {
 
 
 android {
-    namespace = "com.example.zavrsni_rad"
+    namespace = "com.example.Mjesec_po_Mjesec"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = "27.0.12077973"
 

@@ -1,9 +1,9 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:zavrsni_rad/music_controller.dart';
-import 'package:zavrsni_rad/settings_provider.dart';
-import 'package:zavrsni_rad/settings_screen.dart';
+import 'package:mjesec_po_mjesec/music_controller.dart';
+import 'package:mjesec_po_mjesec/settings_provider.dart';
+import 'package:mjesec_po_mjesec/settings_screen.dart';
 import 'dart:math' as math;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
