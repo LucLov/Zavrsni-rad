@@ -39,30 +39,40 @@ class InfoScreen extends StatelessWidget {
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(20),
-        child: Column (
-          mainAxisSize: MainAxisSize.min, // Da ne zauzme previše prostora
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            AppLocalizations.of(context)!.info1,
-            style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
-            textAlign: TextAlign.center,
+        padding: const EdgeInsets.all(20),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min, // So it only takes needed space
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                AppLocalizations.of(context)!.info1,
+                style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                AppLocalizations.of(context)!.info2,
+                style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                AppLocalizations.of(context)!.info3,
+                style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                AppLocalizations.of(context)!.info4,
+                style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
-          SizedBox(height: 10),
-          Text(
-            AppLocalizations.of(context)!.info2,
-            style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 10),
-          Text(
-            AppLocalizations.of(context)!.info3,
-            style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
-            textAlign: TextAlign.center,
-          )
-        ],),
+        ),
       ),
+
     );
   }
 }
