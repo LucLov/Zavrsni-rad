@@ -4,7 +4,6 @@ import 'package:mjesec_po_mjesec/settings_provider.dart';
 import 'package:mjesec_po_mjesec/music_controller.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});
 
@@ -44,7 +43,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
   @override
   void dispose() {
     if (!_applied && _tempBackgroundSound != _originalBackgroundSound) {
-      // revert previewed sound
       MusicController().updateMusic(_originalBackgroundSound);
     }
     super.dispose();
@@ -58,116 +56,160 @@ class _SettingsScreenState extends State<SettingsScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
-    final settings = Provider.of<SettingsProvider>(context);
+Widget build(BuildContext context) {
+  final settings = Provider.of<SettingsProvider>(context);
 
-    return WillPopScope(
-      onWillPop: _handleBack,
-      child: Scaffold(
-        appBar: AppBar(
-          title: Text(AppLocalizations.of(context)!.settingsTitle, style: TextStyle(fontSize: settings.fontSize + 6, fontFamily: settings.fontFamily)),
-          backgroundColor: const Color(0XFFC4E2FF),
-          foregroundColor: const Color(0xFF9D3D25),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back, size: 40.0),
-            onPressed: () {
-              _handleBack();
-              Navigator.of(context).pop();
-            },
+  return WillPopScope(
+    onWillPop: _handleBack,
+    child: Scaffold(
+      appBar: AppBar(
+        title: Text(
+          AppLocalizations.of(context)!.settingsTitle,
+          style: TextStyle(
+            fontSize: settings.fontSize + 6,
+            fontFamily: settings.fontFamily,
           ),
         ),
-        body: Padding(
-          padding: const EdgeInsets.all(20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(AppLocalizations.of(context)!.selectFont, style: TextStyle(fontSize: settings.fontSize, fontWeight: FontWeight.bold, fontFamily: settings.fontFamily)),
-              DropdownButton<String>(
-                value: _tempFontFamily,
-                isExpanded: true,
-                iconSize: 40,
-                onChanged: (String? newFont) {
-                  if (newFont != null) {
-                    setState(() {
-                      _tempFontFamily = newFont;
-                    });
-                  }
-                },
-                items: _fonts.map((String font) {
-                  return DropdownMenuItem<String>(
-                    value: font,
-                    child: Text(font, style: TextStyle(fontSize: settings.fontSize, fontFamily: font.toLowerCase())),
-                  );
-                }).toList(),
+        backgroundColor: const Color(0XFFC4E2FF),
+        foregroundColor: const Color(0xFF9D3D25),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back, size: 40.0),
+          onPressed: () {
+            _handleBack();
+            Navigator.of(context).pop();
+          },
+        ),
+      ),
+      body: Column(
+        children: [
+          Expanded(
+            child: SingleChildScrollView(
+              padding: const EdgeInsets.all(20),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(AppLocalizations.of(context)!.selectFont,
+                      style: TextStyle(
+                          fontSize: settings.fontSize,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: settings.fontFamily)),
+                  DropdownButton<String>(
+                    value: _tempFontFamily,
+                    isExpanded: true,
+                    iconSize: 40,
+                    onChanged: (String? newFont) {
+                      if (newFont != null) {
+                        setState(() {
+                          _tempFontFamily = newFont;
+                        });
+                      }
+                    },
+                    items: _fonts.map((String font) {
+                      return DropdownMenuItem<String>(
+                        value: font,
+                        child: Text(font,
+                            style: TextStyle(
+                                fontSize: settings.fontSize,
+                                fontFamily: font.toLowerCase())),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 30),
+                  Text(AppLocalizations.of(context)!.adjustFontSize,
+                      style: TextStyle(
+                          fontSize: settings.fontSize,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: settings.fontFamily)),
+                  Slider(
+                    value: _tempFontSize,
+                    min: 24.0,
+                    max: 34.0,
+                    divisions: 8,
+                    label: _tempFontSize.round().toString(),
+                    onChanged: (value) {
+                      setState(() {
+                        _tempFontSize = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 30),
+                  Center(
+                    child: SizedBox(
+                      height: 60,
+                      child: Text(
+                        AppLocalizations.of(context)!.previewText,
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                            fontSize: _tempFontSize,
+                            fontFamily: _tempFontFamily),
+                      ),)
+                  ),
+                  const SizedBox(height: 40),
+                  Text(AppLocalizations.of(context)!.chooseLanguage,
+                      style: TextStyle(
+                          fontSize: settings.fontSize,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: settings.fontFamily)),
+                  DropdownButton<String>(
+                    value: _tempLanguageCode,
+                    isExpanded: true,
+                    iconSize: 40,
+                    onChanged: (String? newCode) {
+                      if (newCode != null) {
+                        setState(() {
+                          _tempLanguageCode = newCode;
+                        });
+                      }
+                    },
+                    items: languageMap.entries.map((entry) {
+                      return DropdownMenuItem<String>(
+                        value: entry.key,
+                        child: Text(entry.value,
+                            style: TextStyle(
+                                fontSize: settings.fontSize,
+                                fontFamily: settings.fontFamily)),
+                      );
+                    }).toList(),
+                  ),
+                  const SizedBox(height: 30),
+                  SwitchListTile(
+                    title: Text(AppLocalizations.of(context)!.backgroundSound,
+                        style: TextStyle(
+                            fontSize: settings.fontSize,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: settings.fontFamily)),
+                    value: _tempBackgroundSound,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _tempBackgroundSound = value;
+                      });
+                      MusicController().updateMusic(value);
+                    },
+                  ),
+                  const SizedBox(height: 30),
+                  SwitchListTile(
+                    title: Text(AppLocalizations.of(context)!.quizSound,
+                        style: TextStyle(
+                            fontSize: settings.fontSize,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: settings.fontFamily)),
+                    value: _tempQuizSound,
+                    onChanged: (bool value) {
+                      setState(() {
+                        _tempQuizSound = value;
+                      });
+                    },
+                  ),
+                  const SizedBox(height: 30),
+                ],
               ),
-              const SizedBox(height: 30),
-              Text(AppLocalizations.of(context)!.adjustFontSize, style: TextStyle(fontSize: settings.fontSize, fontWeight: FontWeight.bold, fontFamily: settings.fontFamily)),
-              Slider(
-                value: _tempFontSize,
-                min: 24.0,
-                max: 34.0,
-                divisions: 8,
-                label: _tempFontSize.round().toString(),
-                onChanged: (value) {
-                  setState(() {
-                    _tempFontSize = value;
-                  });
-                },
-              ),
-              const SizedBox(height: 30),
-              //Text(AppLocalizations.of(context)!.preview, style: TextStyle(fontSize: settings.fontSize, fontWeight: FontWeight.bold, fontFamily: settings.fontFamily)),
-              //const SizedBox(height: 10),
-              Center(
-                child: Text(
-                  AppLocalizations.of(context)!.previewText,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: _tempFontSize, fontFamily: _tempFontFamily),
-                ),
-              ),
-              const SizedBox(height: 40),
-              Text(AppLocalizations.of(context)!.chooseLanguage, style: TextStyle(fontSize: settings.fontSize, fontWeight: FontWeight.bold, fontFamily: settings.fontFamily)),
-              DropdownButton<String>(
-                value: _tempLanguageCode,
-                isExpanded: true,
-                iconSize: 40,
-                onChanged: (String? newCode) {
-                  if (newCode != null) {
-                    setState(() {
-                      _tempLanguageCode = newCode;
-                    });
-                  }
-                },
-                items: languageMap.entries.map((entry) {
-                  return DropdownMenuItem<String>(
-                    value: entry.key,
-                    child: Text(entry.value, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
-                  );
-                }).toList(),
-              ),
-              SizedBox(height: 30,),
-              SwitchListTile(
-                title: Text(AppLocalizations.of(context)!.backgroundSound, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
-                value: _tempBackgroundSound,
-                onChanged: (bool value) {
-                  setState(() {
-                    _tempBackgroundSound = value;
-                  });
-                  // Preview only, not saved yet
-                  MusicController().updateMusic(value);
-                },
-              ),
-              SizedBox(height: 30,),
-              SwitchListTile(
-                title: Text(AppLocalizations.of(context)!.quizSound, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
-                value: _tempQuizSound,
-                onChanged: (bool value) {
-                  setState(() {
-                    _tempQuizSound = value;
-                  });
-                },
-              ),
-              const SizedBox(height: 30),
-              Center(
+            ),
+          ),
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.all(40),
+              child: SizedBox(
+                //width: double.infinity,
                 child: ElevatedButton(
                   onPressed: () async {
                     settings.updateFontFamily(_tempFontFamily);
@@ -182,23 +224,32 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
                     ScaffoldMessenger.of(context).showSnackBar(
                       SnackBar(
-                        content: Text(AppLocalizations.of(context)!.settingsSaved, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily)),
+                        content: Text(
+                          AppLocalizations.of(context)!.settingsSaved,
+                          style: TextStyle(
+                              fontSize: settings.fontSize,
+                              fontFamily: settings.fontFamily),
+                        ),
                       ),
                     );
                   },
                   style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 15),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 30, vertical: 5),
                     backgroundColor: const Color(0XFFC4E2FF),
                     foregroundColor: Colors.black,
-                    textStyle: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
+                    textStyle: TextStyle(
+                        fontSize: settings.fontSize,
+                        fontFamily: settings.fontFamily),
                   ),
                   child: Text(AppLocalizations.of(context)!.apply),
                 ),
               ),
-            ],
-          ),
-        ),
+            ),
+          )
+        ],
       ),
-    );
-  }
+    ),
+  );
+}
 }

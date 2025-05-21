@@ -13,8 +13,8 @@ class MusicController {
   Future<void> startMusic() async {
     if (!_isPlaying) {
       await _player.setReleaseMode(ReleaseMode.loop);
-      await _feedbackPlayer.setVolume(0.1);
-      await _player.play(AssetSource('audio/background_music.mp3'));
+      await _player.play(AssetSource('audio/background_music_final.mp3'));
+      await _player.setVolume(0.3);
       _isPlaying = true;
     }
   }
@@ -37,5 +37,12 @@ class MusicController {
       await _feedbackPlayer.setVolume(0.7);
     }
     await _feedbackPlayer.play(AssetSource(assetPath));
+  }
+
+  Future<void> dispose() async {
+    await _player.stop();
+    await _player.dispose();
+    await _feedbackPlayer.dispose();
+    _isPlaying = false;
   }
 }

@@ -8,7 +8,7 @@ import 'package:mjesec_po_mjesec/settings_screen.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // Make sure preferences load first
+  WidgetsFlutterBinding.ensureInitialized();
   final settingsProvider = SettingsProvider();
   await settingsProvider.loadSettings();
 
@@ -18,7 +18,6 @@ void main() async {
       child: const NavigatorApp(),
     ),
   );
-  //runApp(const NavigatorApp());
 }
 
 class NavigatorApp extends StatelessWidget {
@@ -28,10 +27,10 @@ class NavigatorApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      initialRoute: "/spring", // Set initial route
+      initialRoute: "/spring",
       routes: {
-        "/spring" : (context) => const SpringScreen(),
-        "/settings" : (context) => const SettingsScreen(),
+        "/spring": (context) => const SpringScreen(),
+        "/settings": (context) => const SettingsScreen(),
       },
     );
   }
@@ -58,7 +57,7 @@ class _SpringScreenState extends State<SpringScreen> {
     return Scaffold(
       body: PageView(
         children: [
-          _buildSpringPage(context, settings),
+        _buildSpringPage(context, settings),
         ],
       ),
     );
@@ -66,19 +65,19 @@ class _SpringScreenState extends State<SpringScreen> {
 
   Widget _buildSpringPage(BuildContext context, SettingsProvider settings) {
     return Stack(
-      children: [
-        Positioned.fill(
-          child: Image.asset(
-            AppLocalizations.of(context)!.springBg,
-            fit: BoxFit.cover,
-          ),
+        children: [
+          Positioned.fill(
+        child: Image.asset(
+          AppLocalizations.of(context)!.springBg,
+          fit: BoxFit.cover,
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 70, horizontal: 20),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Align(
+      ),
+      Padding(
+            padding: const EdgeInsets.symmetric(vertical: 70, horizontal: 20),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Align(
                 alignment: Alignment.topCenter,
                 child: Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -110,7 +109,7 @@ class _SpringScreenState extends State<SpringScreen> {
               const SizedBox(height: 50),
               Align(
                 alignment: Alignment.topRight,
-                child: _buildBox(
+                  child: _buildBox(
                     context,
                     settings,
                     AppLocalizations.of(context)!.aprButtonText,
@@ -126,72 +125,72 @@ class _SpringScreenState extends State<SpringScreen> {
                       });
                     }),
               ),
-              const SizedBox(height: 120),
+              SizedBox(height: 120),
               Align(
-                alignment: Alignment.centerLeft,
-                child: _buildBox(
-                    context,
-                    settings,
-                    AppLocalizations.of(context)!.mayButtonText,
-                    AppLocalizations.of(context)!.mayTitle,
-                    AppLocalizations.of(context)!.mayMonthNumber,
-                    "svibanj_slika.png",
-                    "30",
-                    AppLocalizations.of(context)!.mayInstruction,
-                    isSvibanjSelected,
-                    (bool isSelected) {
-                      setState(() {
-                        isSvibanjSelected = isSelected;
-                      });
-                    }),
-              ),
-              const SizedBox(height: 120),
-              Align(
-                alignment: Alignment.centerRight,
-                child: _buildBox(
-                    context,
-                    settings,
-                    AppLocalizations.of(context)!.junButtonText,
-                    AppLocalizations.of(context)!.junTitle,
-                    AppLocalizations.of(context)!.junMonthNumber,
-                    "lipanj_slika.png",
-                    "31",
-                    AppLocalizations.of(context)!.junInstruction,
-                    isLipanjSelected,
-                    (bool isSelected) {
-                      setState(() {
-                        isLipanjSelected = isSelected;
-                      });
-                    }),
-              ),
-              const SizedBox(height: 115),
-              SizedBox(
-                width: double.infinity,
-                height: 100,
-                child: FilledButton(
-                  onPressed: () {
-                    _showMatchingGameDialog(context, settings);
-                  },
-                  style: ButtonStyle(
-                    backgroundColor: MaterialStateProperty.all(
+                        alignment: Alignment.centerLeft,
+                          child: _buildBox(
+                            context,
+                            settings,
+                            AppLocalizations.of(context)!.mayButtonText,
+                            AppLocalizations.of(context)!.mayTitle,
+                            AppLocalizations.of(context)!.mayMonthNumber,
+                            "svibanj_slika.png",
+                            "31",
+                            AppLocalizations.of(context)!.mayInstruction,
+                            isSvibanjSelected,
+                            (bool isSelected) {
+                              setState(() {
+                                isSvibanjSelected = isSelected;
+                              });
+                            }),
+                    ),
+                    const SizedBox(height: 120),
+                    Align(
+                        alignment: Alignment.centerRight,
+                          child: _buildBox(
+                            context,
+                            settings,
+                            AppLocalizations.of(context)!.junButtonText,
+                            AppLocalizations.of(context)!.junTitle,
+                            AppLocalizations.of(context)!.junMonthNumber,
+                            "lipanj_slika.png",
+                            "30",
+                            AppLocalizations.of(context)!.junInstruction,
+                            isLipanjSelected,
+                            (bool isSelected) {
+                              setState(() {
+                                isLipanjSelected = isSelected;
+                              });
+                            }),
+                    ),
+                    const SizedBox(height: 115),
+                    SizedBox(
+                      width: double.infinity,
+                      height: 100,
+                      child: FilledButton(
+                        onPressed: () {
+                          _showMatchingGameDialog(context, settings);
+                        },
+                        style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all(
                      Colors.deepOrange,
                     ),
-                  ),
-                  child: Text(
-                    AppLocalizations.of(context)!.spring_check,
-                    textAlign: TextAlign.center,
-                    style: TextStyle(
-                      fontSize: settings.fontSize,
-                      fontFamily: settings.fontFamily,
-                      color: Colors.white,
+                        ),
+                        child: Text(
+                          AppLocalizations.of(context)!.spring_check,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: settings.fontSize,
+                            fontFamily: settings.fontFamily,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ),
-            ],
-          ),
-        ),
-      ],
+        ],
     );
   }
 
@@ -695,6 +694,19 @@ class _MatchingGameState extends State<MatchingGame> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            style: ElevatedButton.styleFrom(
+              shape: const CircleBorder(),
+              padding: const EdgeInsets.all(15),
+              backgroundColor: Colors.blueAccent,
+            ),
+            child: const Icon(Icons.arrow_back, size: 30, color: Colors.white),
+          ),
+        ),
+        const SizedBox(height: 10),
         Text(AppLocalizations.of(context)!.smallInstruction, textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.w500)),
         const SizedBox(height: 20),
         Row(

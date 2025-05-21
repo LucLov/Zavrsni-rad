@@ -65,7 +65,7 @@ class _WinterScreenState extends State<WinterScreen> {
         children: [
           _buildWinterPage(context, settings),
           SpringScreen(),
-          SummerScreen(), 
+          SummerScreen(),
           FallScreen(),
         ],
       ),
@@ -204,16 +204,16 @@ class _WinterScreenState extends State<WinterScreen> {
   }
 
   Widget _buildBox(
-    BuildContext context,
-    SettingsProvider settings,
-    String buttonText,
-    String title,
-    String monthNumber,
-    String monthPicture,
-    String daysInMonth,
-    String instructionText,
-    bool isSelected,
-    Function(bool) onSelected,
+  BuildContext context,
+  SettingsProvider settings,
+  String buttonText,
+  String title,
+  String monthNumber,
+  String monthPicture,
+  String daysInMonth,
+  String instructionText,
+  bool isSelected,
+  Function(bool) onSelected,
   ) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 12.0),
@@ -721,6 +721,19 @@ class _MatchingGameState extends State<MatchingGame> {
     return Column(
       mainAxisSize: MainAxisSize.min,
       children: [
+        Align(
+          alignment: Alignment.centerLeft,
+          child: ElevatedButton(
+            onPressed: () => Navigator.pop(context),
+            style: ElevatedButton.styleFrom(
+              shape: const CircleBorder(),
+              padding: const EdgeInsets.all(15),
+              backgroundColor: Colors.blueAccent,
+            ),
+            child: const Icon(Icons.arrow_back, size: 30, color: Colors.white),
+          ),
+        ),
+        const SizedBox(height: 10),
         Text(AppLocalizations.of(context)!.smallInstruction, textAlign: TextAlign.center, style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily, fontWeight: FontWeight.w500)),
         const SizedBox(height: 20),
         Row(

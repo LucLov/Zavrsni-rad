@@ -29,40 +29,50 @@ class InfoScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.infoTitle,
         style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),),
-        backgroundColor: Color(0XFFC4E2FF),
-        foregroundColor: Color(0xFF9D3D25),
+        backgroundColor: const Color(0XFFC4E2FF),
+        foregroundColor: const Color(0xFF9D3D25),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, size: 40.0),
+          icon: const Icon(Icons.arrow_back, size: 40.0),
           onPressed: () {
-            Navigator.of(context).pop(); // Vraća korisnika na prethodnu stranicu
+            Navigator.of(context).pop();
           },
         ),
       ),
       body: Padding(
-        padding: EdgeInsets.all(20),
-        child: Column (
-          mainAxisSize: MainAxisSize.min, // Da ne zauzme previše prostora
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            AppLocalizations.of(context)!.info1,
-            style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
-            textAlign: TextAlign.center,
+        padding: const EdgeInsets.all(20),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisSize: MainAxisSize.min, // So it only takes needed space
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                AppLocalizations.of(context)!.info1,
+                style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                AppLocalizations.of(context)!.info2,
+                style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                AppLocalizations.of(context)!.info3,
+                style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
+                textAlign: TextAlign.center,
+              ),
+              const SizedBox(height: 10),
+              Text(
+                AppLocalizations.of(context)!.info4,
+                style: TextStyle(fontSize: settings.fontSize - 6, fontFamily: settings.fontFamily),
+                textAlign: TextAlign.center,
+              ),
+            ],
           ),
-          SizedBox(height: 10),
-          Text(
-            AppLocalizations.of(context)!.info2,
-            style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
-            textAlign: TextAlign.center,
-          ),
-          SizedBox(height: 10),
-          Text(
-            AppLocalizations.of(context)!.info3,
-            style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
-            textAlign: TextAlign.center,
-          )
-        ],),
+        ),
       ),
+
     );
   }
 }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mjesec_po_mjesec/music_controller.dart';
 import 'package:provider/provider.dart';
 import 'package:mjesec_po_mjesec/settings_provider.dart';
 import 'package:mjesec_po_mjesec/settings_screen.dart';
@@ -31,8 +32,46 @@ void main() async {
   );
 }
 
-class NavigatorApp extends StatelessWidget {
+class NavigatorApp extends StatefulWidget {
   const NavigatorApp({super.key});
+
+  @override
+  State<NavigatorApp> createState() => _NavigatorAppState();
+}
+
+class _NavigatorAppState extends State<NavigatorApp> with WidgetsBindingObserver {
+  bool _wasPlayingMusic = false;
+
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
+    MusicController().dispose(); // Stops and disposes music on app exit
+    super.dispose();
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    final settings = Provider.of<SettingsProvider>(context, listen: false);
+
+    if (state == AppLifecycleState.paused || state == AppLifecycleState.inactive) {
+      // Save the music state before pausing
+      _wasPlayingMusic = settings.backgroundSound;
+      MusicController().stopMusic();
+    }
+
+    if (state == AppLifecycleState.resumed) {
+      // Resume music only if it was playing before
+      if (_wasPlayingMusic && settings.backgroundSound) {
+        MusicController().startMusic();
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -42,8 +81,8 @@ class NavigatorApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       locale: settings.locale,
       supportedLocales: const [
-        Locale('en'), // English
-        Locale('hr'), // Croatian (example)
+        Locale('en'),
+        Locale('hr'),
       ],
       localizationsDelegates: const [
         AppLocalizations.delegate,
@@ -51,7 +90,7 @@ class NavigatorApp extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      initialRoute: "/", // Set initial route
+      initialRoute: "/",
       routes: {
         "/" : (context) => const HomeScreen(),
         "/settings" : (context) => const SettingsScreen(),

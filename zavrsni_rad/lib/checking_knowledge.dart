@@ -984,29 +984,58 @@ class _CheckingKnowledgeState extends State<CheckingKnowledge> with SingleTicker
           ),
           actions: [
             Row(
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 Expanded(
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pushNamed('/');
-                    },
-                    child: Text(
-                      AppLocalizations.of(context)!.goToHome,
-                      style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pushNamed('/');
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        backgroundColor: Colors.blueAccent,
+                        foregroundColor: Colors.white, 
+                        textStyle: TextStyle(
+                          fontSize: settings.fontSize - 4,
+                          fontFamily: settings.fontFamily,
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.goToHome,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                     ),
                   ),
                 ),
                 Expanded(
-                  child: TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                      setState(() {
-                        _resetGameCompletely();
-                      });
-                    },
-                    child: Text(
-                      AppLocalizations.of(context)!.playAgain,
-                      style: TextStyle(fontSize: settings.fontSize, fontFamily: settings.fontFamily),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.of(context).pop();
+                        setState(() {
+                          _resetGameCompletely();
+                        });
+                      },
+                      style: ElevatedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 12),
+                        backgroundColor: Colors.green,
+                        foregroundColor: Colors.white, 
+                        textStyle: TextStyle(
+                          fontSize: settings.fontSize -4,
+                          fontFamily: settings.fontFamily,
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          AppLocalizations.of(context)!.playAgain,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
                     ),
                   ),
                 ),
